@@ -36,7 +36,7 @@ export default function Header() {
           socialLinks.map(link =>
             <a key={link.name} href={link.url}>
               <div
-                className={[link.icon, 'text-2xl text-gray-4 hover:text-dark cursor-pointer', 'link-btn'].join(' ')}
+                className={[link.icon, 'text-2xl text-gray-4 cursor-pointer hover:text-dark', 'link-btn'].join(' ')}
               >
               </div>
             </a>,
