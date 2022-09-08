@@ -11,7 +11,6 @@ export default defineConfig({
   shortcuts: [
     {
       ...commonShortcuts,
-      'link-btn': 'text-2xl hover:pointer-cursor',
     },
   ],
   presets: [
