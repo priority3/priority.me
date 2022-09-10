@@ -14,19 +14,17 @@ export default function Header() {
   ]
 
   return (
-  <div className='sticky w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-b-gray-2 border-b-2px' >
+  <div className='w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-b-gray-2 border-b-2px' >
     <div
-      className="
-        fbc w-100 md:min-w-200
-      "
+      className="fbc w-full px-10"
     >
       <nav>
           <Link to="/">
-          <div
-            className="text-dark-400 text-5 font-sans cursor-pointer"
-          >
-            priority
-          </div>
+            <div
+              className="text-dark-400 text-5 font-sans cursor-pointer"
+            >
+              priority
+            </div>
           </Link>
       </nav>
       <div
@@ -36,7 +34,7 @@ export default function Header() {
           socialLinks.map(link =>
             <a key={link.name} href={link.url}>
               <div
-                className={[link.icon, 'text-2xl text-gray-4 cursor-pointer hover:text-dark', 'link-btn'].join(' ')}
+                className={[link.icon, 'text-2xl text-gray-4 cursor-pointer hover:text-dark'].join(' ')}
               >
               </div>
             </a>,
