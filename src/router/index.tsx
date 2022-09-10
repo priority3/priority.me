@@ -1,6 +1,5 @@
 import type { RouteObject } from 'react-router-dom'
 import { useRoutes } from 'react-router-dom'
-import { render } from 'react-dom'
 import Posts from '../views/posts'
 import Home from '../views/home'
 
