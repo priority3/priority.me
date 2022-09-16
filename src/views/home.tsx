@@ -13,7 +13,7 @@ export default function Home() {
       name: 'Bilibili',
       url: 'https://space.bilibili.com/94544300',
       icon: 'i-ri-bilibili-fill',
-      class: 'linkBtnBilibili',
+      class: 'linkBtnBilibili my-2 md:m0',
     },
     {
       name: 'BlogPosts',
@@ -27,7 +27,7 @@ export default function Home() {
     <div>
       {/* <Plum start={start}/> */}
       <Header />
-      <div className="fc w-full mt-20 " >
+      <div className="fc w-full mt-20 px-3" >
           <div className='fc flex-col gap-7'>
             <div className="!font-700 text-3rem">
               <h1>Hello,</h1>
@@ -39,7 +39,7 @@ export default function Home() {
               <p>do something crazy !</p>
               <p>WIP... 🐱‍👓</p>
             </div>
-            <div className='flex gap-2' >
+            <div className='static md:flex gap-2' >
                 {socialLinks.map(link =>
                   <a key={link.name} href={link.url} >
                     <div className={[link.class, 'linkBtnBase'].join(' ')}>
