@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom'
 export default function Header() {
   const socialLinks = [
     {
+      name: 'Posts',
+      url: '/posts',
+      icon: 'i-arcticons-blogger',
+    },
+    {
       name: 'GitHub',
       url: 'https://github.com/priority3',
       icon: 'i-arcticons-github',
@@ -32,7 +37,7 @@ export default function Header() {
       >
         {
           socialLinks.map(link =>
-            <a key={link.name} href={link.url}>
+            <a key={link.name} href={link.url} title={link.name}>
               <div
                 className={[link.icon, 'text-2xl text-gray-4 cursor-pointer hover:text-dark'].join(' ')}
               >

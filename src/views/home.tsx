@@ -4,16 +4,22 @@ import Project from '../components/project'
 export default function Home() {
   const socialLinks = [
     {
+      name: 'Bilibili',
+      url: 'https://space.bilibili.com/94544300',
+      icon: 'i-ri-bilibili-fill',
+      class: 'linkBtnBilibili',
+    },
+    {
       name: 'GitHub',
       url: 'https://github.com/priority3',
       icon: 'i-ri-github-fill',
       class: 'linkBtnGithub',
     },
     {
-      name: 'Bilibili',
-      url: 'https://space.bilibili.com/94544300',
-      icon: 'i-ri-bilibili-fill',
-      class: 'linkBtnBilibili my-2 md:m0',
+      name: 'Twitter',
+      url: 'https://twitter.com/prioriycc',
+      icon: 'i-ri-twitter-fill',
+      class: 'linkBtnTwitter',
     },
     {
       name: 'BlogPosts',
@@ -29,8 +35,7 @@ export default function Home() {
       <Header />
       <div className="fc w-full mt-20 px-3" >
           <div className='fc flex-col gap-7'>
-            <div className="!font-700 text-3rem">
-              <h1>Hello,</h1>
+            <div className="!font-700 text-3rem mx-auto ">
               <h1>I'm Priority.</h1>
             </div>
             <div className="w-full border-b-1 border-light-700"></div>
