@@ -5,12 +5,12 @@ export default function PTypewriter() {
       <path d="M10 37L18.1434 54.1915C18.4962 54.9364 19.5481 54.9586 19.932 54.2292L29 37L37.0963 54.0921C37.4575 54.8547 38.5425 54.8547 38.9037 54.0921L47 37V64C47 64.5523 46.5523 65 46 65H11C10.4477 65 10 64.5523 10 64V37Z" fill="url(#paint1_linear_2_18)"/>
       <defs>
       <linearGradient id="paint0_linear_2_18" x1="30.5" y1="0" x2="30.5" y2="46" gradientUnits="userSpaceOnUse">
-      <stop stop-color="white"/>
-      <stop offset="1" stop-color="#1AB6CB"/>
+      <stop stopColor="white"/>
+      <stop offset="1" stopColor="#1AB6CB"/>
       </linearGradient>
       <linearGradient id="paint1_linear_2_18" x1="28.5" y1="37" x2="28.5" y2="65" gradientUnits="userSpaceOnUse">
-      <stop stop-color="white"/>
-      <stop offset="1" stop-color="#1AB6CB"/>
+      <stop stopColor="white"/>
+      <stop offset="1" stopColor="#1AB6CB"/>
       </linearGradient>
       </defs>
     </svg>
