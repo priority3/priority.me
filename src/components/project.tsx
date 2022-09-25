@@ -51,15 +51,15 @@ export default function Project() {
                 <div
                   key={project.name}
                   // TODO
-                  className="project-container opacity-30 p3 w-full md:w-40% fbc gap-2 rounded my-2 md:m0 hover:bg-[#ecf0f1] hover:opacity-100 transition-all duration-300"
+                  className="project-container opacity-60 p3 w-full md:w-40% fbc gap-2 rounded my-2 md:m0 hover:bg-[#88888808] hover:opacity-100 transition-all duration-300"
                 >
                   <div >
                     <h2
-                      className="font-sans text-dark-200 text-xl "
+                      className="font-sans text-xl "
                     >
                       {project.name}
                     </h2>
-                    <p className="text-sm text-dark-100 "> {project.description}</p>
+                    <p className="text-sm opacity-50"> {project.description}</p>
                   </div>
                   <div className="icon text-5xl transition-all duration-1500">
                     {getProjectIcon(project.icon)}
