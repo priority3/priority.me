@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useDark } from '@/hooks/useDark'
 export default function Header() {
   const postProfileNameMap = {
     '/': 'BlogPosts',
@@ -13,7 +14,7 @@ export default function Header() {
     '/': 'i-arcticons-blogger',
     '/posts': 'i-arcticons-valkyrieprofile',
   }
-
+  const { toggleTheme } = useDark()
   const [postProfile, setPostProfile] = useState({
     name: 'BlogPosts',
     url: '/posts',
@@ -43,7 +44,7 @@ export default function Header() {
   }, [location])
 
   return (
-  <div className='w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-b-gray-2 border-b-2px' >
+  <div className='w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-base border-b-2px' >
     <div
       className="fbc w-full px-10"
     >
@@ -52,7 +53,7 @@ export default function Header() {
             <div className='fcc gap-2'>
               <div className='i-fluent-emoji-rolling-on-the-floor-laughing'></div>
               <div
-                className="text-dark-400 text-5 font-sans cursor-pointer"
+                className="op-50 text-5 font-sans cursor-pointer"
               >
                 priority
               </div>
@@ -60,18 +61,23 @@ export default function Header() {
           </Link>
       </nav>
       <div
-        className='fc gap-3'
+        className='fcc gap-3'
       >
         {
           socialLinks.map(link =>
             <a key={link.name} href={link.url} title={link.name}>
               <div
-                className={[link.icon, 'text-2xl text-gray-4 cursor-pointer hover:text-dark'].join(' ')}
+                className={[link.icon, 'text-2xl op-60 cursor-pointer hover:op-100'].join(' ')}
               >
               </div>
             </a>,
           )
         }
+        <div
+          className="i-ph-moon-stars-thin dark:i-ph-sun-dim-thin op-50 text-xl op-40 hover:op-100 cursor-pointer"
+          onClick={toggleTheme}
+        />
+
       </div>
     </div>
   </div>

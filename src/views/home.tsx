@@ -33,12 +33,12 @@ export default function Home() {
     <div>
       {/* <Plum start={start}/> */}
       <Header />
-      <div className="fc w-full mt-20 px-3" >
+      <div className="fc w-full mt-30 px-3" >
           <div className='fc flex-col gap-7'>
             <div className="!font-700 text-3rem mx-auto ">
               <h1>I'm Priority.</h1>
             </div>
-            <div className="w-full border-b-1 border-light-700"></div>
+            <div className="w-full border-b-1 border-base" ></div>
             <div className="leading-8">
               <p>I'm a student now, I am interested in open source, like Front-end and design something cool !</p>
               <p>do something crazy !</p>
