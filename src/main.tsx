@@ -5,6 +5,7 @@ import App from './App'
 
 import 'uno.css'
 import '@unocss/reset/tailwind.css'
+import './style.css'
 
 const app = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

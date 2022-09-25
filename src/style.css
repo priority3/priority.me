@@ -1,0 +1,7 @@
+/* do some I don't know how to write style with `unocss` */
+
+
+.project-container:hover .icon {
+  rotate: 360deg;
+  opacity: 100%;
+}
