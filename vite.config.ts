@@ -21,7 +21,9 @@ export default defineConfig({
           const path = resolve(__dirname, route.element.slice(1))
           const md = fs.readFileSync(path, 'utf-8')
           const { data } = matter(md)
-          route.meta = Object.assign(route.meta || {}, { frontmatter: data })
+          // TODO iso-8601 to time
+          const date = /.*/.exec(data.date)[0].slice(0, 15)
+          route.meta = Object.assign(route.meta || {}, { frontmatter: { ...data, date } })
         }
 
         return route

@@ -34,3 +34,11 @@ html{
 .dark *::-webkit-scrollbar-thumb{
    background-color: rgb(104, 104, 104);
 }
+
+
+/* posts */
+.over-desc{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap
+}
