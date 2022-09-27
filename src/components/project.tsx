@@ -2,18 +2,18 @@ import PTypewriter from './icons/p-typewriter'
 
 export default function Project() {
   const projectList = [
-    {
-      name: 'eslint-config',
-      description: 'A shareable eslint config for my projects',
-      github: '',
-      icon: 'i-logos-eslint',
-    },
-    {
-      name: 'fuzzy',
-      description: 'fuzzy ui for vue3 to make easy use components',
-      github: '',
-      icon: 'i-fluent-emoji-bar-chart',
-    },
+    // {
+    //   name: 'eslint-config',
+    //   description: 'A shareable eslint config for my projects',
+    //   github: '',
+    //   icon: 'i-logos-eslint',
+    // },
+    // {
+    //   name: 'fuzzy',
+    //   description: 'fuzzy ui for vue3 to make easy use components',
+    //   github: '',
+    //   icon: 'i-fluent-emoji-bar-chart',
+    // },
     {
       name: 'p-typewriter',
       description: 'typewriter component for vue3',
@@ -51,7 +51,7 @@ export default function Project() {
                 <div
                   key={project.name}
                   // TODO
-                  className="project-container opacity-60 p3 w-full md:w-40% fbc gap-2 rounded my-2 md:m0 hover:bg-[#88888808] hover:opacity-100 transition-all duration-300"
+                  className="project-container opacity-60 p3 w-full md:w-40% fbc gap-2 my-2 md:m0 box-hover"
                 >
                   <div >
                     <h2
