@@ -5,10 +5,13 @@ import Unocss from 'unocss/vite'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import Pages from 'vite-plugin-pages'
+import Markdown from 'vite-plugin-react-markdown'
 export default defineConfig({
   plugins: [
     Unocss(),
-    react(),
+    react({
+      include: [/\.tsx$/, /\.md$/],
+    }),
     Pages({
       dirs: [
         { dir: 'src/views', baseRoute: '' },
@@ -28,6 +31,7 @@ export default defineConfig({
         return route
       },
     }),
+    Markdown(),
   ],
   resolve: {
     alias: {
