@@ -1,6 +1,4 @@
-import Header from '../components/header'
 import Project from '../components/project'
-
 export default function Home() {
   const socialLinks = [
     {
@@ -32,7 +30,6 @@ export default function Home() {
   return (
     <div>
       {/* <Plum start={start}/> */}
-      <Header />
       <div className="fc w-full mt-30 px-3" >
           <div className='fc flex-col gap-7'>
             <div className="!font-700 text-3rem mx-auto ">
