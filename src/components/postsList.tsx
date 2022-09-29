@@ -1,12 +1,19 @@
+import type { RouteObject } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '@/router'
 import type { RouteMeta } from '@/type'
 
+interface RoutePageObj extends RouteObject {
+  meta?: {
+    frontmatter: RouteMeta
+  }
+}
+
 export default function PostsList() {
   const navigate = useNavigate()
-  const pageRaw = routes.filter((page: { path: string }) => page.path === 'page')
-  const pageList = (pageRaw[0].children || []).map((page: { path: string; meta: { frontmatter: RouteMeta } }) => {
-    const { frontmatter } = page.meta
+  const pageRaw = routes.filter((page: RoutePageObj) => page.path === 'page')
+  const pageList = (pageRaw[0].children || []).map((page: RoutePageObj) => {
+    const { frontmatter } = page.meta!
     const { path } = page
 
     return {
@@ -19,7 +26,7 @@ export default function PostsList() {
 
   return (
       <div className='flex flex-col gap-10'>
-        {pageList.map((page: RouteMeta & { path: string }) => {
+        {pageList.map((page) => {
           return (
             <div
               key={page.date}
