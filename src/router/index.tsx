@@ -2,6 +2,7 @@
 import { useRoutes } from 'react-router-dom'
 import Home from '../views/home'
 import routes from '~react-pages'
+import Header from '@/components/header'
 routes.push({
   path: '/',
   element: <Home/>,
@@ -10,6 +11,7 @@ routes.push({
 export default function GeneratToRoute() {
   return (
   <div>
+    <Header />
     {useRoutes(routes)}
   </div>
   )

@@ -1,10 +1,8 @@
-import Header from '../components/header'
 import PostsList from '@/components/postsList'
 
 export default function Posts() {
   return (
     <div>
-      <Header />
       <div className='f-c-c w-full gap-10 mt-20' >
         <h1 className="text-3xl">
           Priority.notes

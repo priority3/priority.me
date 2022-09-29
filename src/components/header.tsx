@@ -2,18 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDark } from '@/hooks/useDark'
 export default function Header() {
-  const postProfileNameMap = {
-    '/': 'BlogPosts',
-    '/posts': 'Profile',
-  }
-  const postProfileUrlMap = {
-    '/': '/posts',
-    '/posts': '/',
-  }
-  const postProfileIconMap = {
-    '/': 'i-arcticons-blogger',
-    '/posts': 'i-arcticons-valkyrieprofile',
-  }
   const { toggleTheme } = useDark()
   const [postProfile, setPostProfile] = useState({
     name: 'BlogPosts',
@@ -37,16 +25,16 @@ export default function Header() {
 
   useEffect(() => {
     setPostProfile({
-      name: postProfileNameMap[location.pathname as keyof typeof postProfileNameMap],
-      url: postProfileUrlMap[location.pathname as keyof typeof postProfileUrlMap],
-      icon: postProfileIconMap[location.pathname as keyof typeof postProfileIconMap],
+      name: location.pathname === '/' ? 'BlogPosts' : 'Profile',
+      url: location.pathname === '/' ? '/posts' : '/',
+      icon: location.pathname === '/' ? 'i-arcticons-blogger' : 'i-arcticons-valkyrieprofile',
     })
   }, [location])
 
   return (
   <div className='w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-base border-b-2px' >
     <div
-      className="fbc w-full px-10"
+      className="fbc w-full md:px-10"
     >
       <nav>
           <Link to="/">

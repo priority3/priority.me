@@ -22,6 +22,8 @@ export default defineConfig({
       'box-hover': 'cursor-pointer hover:bg-[#88888808] hover:opacity-100 transition-all duration-300 rounded',
       // post list
       'over-desc': 'block w-[70%] md:max-w-[80%]',
+      'page-container': 'w-full fcc mt-10 px-10 md:px-0 pb-20',
+      'markdown-container': 'w-full md:w-60%',
     },
   ],
   presets: [
