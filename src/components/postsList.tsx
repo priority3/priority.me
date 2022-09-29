@@ -27,7 +27,7 @@ export default function PostsList() {
               onClick={() => navigate(`/page?profile=${page.path}`)}
             >
               <h1 className='text-xl'>{page.title || 'blog'}</h1>
-              <div className='w-full fbc gap-3 md:gap-15 mt-1 text-sm opacity-60'>
+              <div className='w-full fbc gap-3 md:gap-15 mt-3 text-sm opacity-60'>
                 <span className='over-desc'>{page.desc}</span>
                 <span className='md:min-w-90px '>{page.date?.slice(0, -5)}</span>
               </div>
