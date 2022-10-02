@@ -16,7 +16,8 @@ export default function Page() {
     if (page) {
       fetch(`/pages/${page}.md`).then((res) => {
         res.text().then((text) => {
-          setContent(text.replace(/^-{3}(.|\n|\t)*-{3}/, ''))
+          // TODO ????
+          setContent(text.replace(/^-{3}(.|\n|\t)*-{3}/g, ''))
         })
       })
     }

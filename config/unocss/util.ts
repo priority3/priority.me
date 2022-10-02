@@ -20,3 +20,4 @@ export const commonShortcuts: Record<string, string> = {
   'fw': 'flex justify-wrap',
   'fwr': 'flex justify-wrap-reverse',
 }
+
