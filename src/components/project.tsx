@@ -17,7 +17,7 @@ export default function Project() {
     {
       name: 'p-typewriter',
       description: 'typewriter component for vue3',
-      github: '',
+      github: 'https://github.com/priority3/p-typewriter',
       icon: 'p-typewriter',
     },
   ]
@@ -47,9 +47,9 @@ export default function Project() {
           <div className="mt-5 w-full md:fbc flex-wrap gap-5 cursor-pointer ">
             {projectList.map((project) => {
               return (
-
-                <div
+                <a
                   key={project.name}
+                  href={project.github}
                   // TODO
                   className="project-container opacity-60 p3 w-full md:w-40% fbc gap-2 my-2 md:m0 box-hover"
                 >
@@ -64,7 +64,7 @@ export default function Project() {
                   <div className="icon text-5xl transition-all duration-1500">
                     {getProjectIcon(project.icon)}
                   </div>
-                </div>
+                </a>
               )
             })}
           </div>
