@@ -137,12 +137,12 @@
   font-weight: 600;
   font-size: 0.875em;
 }
-.prose code::before {
-  content: "`";
-}
-.prose code::after {
-  content: "`";
-}
+// .prose code::before {
+//   content: "`";
+// }
+// .prose code::after {
+//   content: "`";
+// }
 .prose a code {
   color: #111827;
 }
