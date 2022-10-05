@@ -28,32 +28,29 @@ export default function Home() {
   ]
 
   return (
-    <div>
-      {/* <Plum start={start}/> */}
       <div className="fc w-full mt-30 px-3" >
-          <div className='fc flex-col gap-7'>
-            <div className="!font-700 text-3rem mx-auto ">
-              <h1>I'm Priority.</h1>
-            </div>
-            <div className="w-full border-b-1 border-base" ></div>
-            <div className="leading-8">
-              <p>I'm a student now, I am interested in open source, like Front-end and design something cool !</p>
-              <p>do something crazy !</p>
-              <p>WIP... 🐱‍👓</p>
-            </div>
-            <div className='static md:flex gap-2' >
-                {socialLinks.map(link =>
-                  <a key={link.name} href={link.url} >
-                    <div className={[link.class, 'linkBtnBase'].join(' ')}>
-                        <div className={link.icon} />
-                        <span>{link.name}</span>
-                    </div>
-                  </a>,
-                )}
-            </div>
-            <Project/>
+        <div className='fc flex-col gap-7'>
+          <div className="!font-700 text-3rem mx-auto ">
+            <h1>hey 🤣, I'm Priority.</h1>
           </div>
-      </div>
+          <div className="w-full border-b-1 border-base" ></div>
+          <div className="leading-8">
+            <p>I'm a student, 21 years old now, I am interested in open source, like Front-end and design something cool ! </p>
+            <p>do something crazy !</p>
+            <p>WIP... 🐱‍👓</p>
+          </div>
+          <div className='static md:flex gap-2' >
+              {socialLinks.map(link =>
+                <a key={link.name} href={link.url} >
+                  <div className={[link.class, 'linkBtnBase'].join(' ')}>
+                      <div className={link.icon} />
+                      <span>{link.name}</span>
+                  </div>
+                </a>,
+              )}
+          </div>
+          <Project/>
+        </div>
     </div>
   )
 }

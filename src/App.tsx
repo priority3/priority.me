@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import GeneratToRoute from './router/index'
+import Loading from './components/loading'
 function App() {
   return (
-    <Suspense fallback={<p> loading... </p>}>
+    <Suspense fallback={<Loading />}>
       <GeneratToRoute />
     </Suspense>
   )
