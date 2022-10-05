@@ -26,6 +26,7 @@ export default defineConfig({
       'markdown-container': 'w-full md:w-60%',
     },
   ],
+  safelist: ['m-auto'],
   presets: [
     presetUno(),
     presetAttributify(),

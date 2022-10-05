@@ -5,8 +5,10 @@ import App from './App'
 
 import 'uno.css'
 import '@unocss/reset/tailwind.css'
-import './style.scss'
+// import './style.scss'
 import '@/style/markdown.scss'
+import '@/style/main.scss'
+import '@/style/prose.scss'
 
 const app = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

@@ -5,7 +5,7 @@ import Unocss from 'unocss/vite'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import Pages from 'vite-plugin-pages'
-import Markdown from 'vite-plugin-react-markdown'
+import Markdown from '@pity/vite-plugin-react-markdown'
 import Shiki from 'markdown-it-shiki'
 import anchor from 'markdown-it-anchor'
 import TOC from 'markdown-it-table-of-contents'
@@ -19,7 +19,7 @@ export default defineConfig({
     Pages({
       dirs: [
         { dir: 'src/views', baseRoute: '' },
-        { dir: 'src/pages', baseRoute: '' },
+        { dir: 'pages', baseRoute: '' },
       ],
       extensions: ['tsx', 'md'],
       extendRoute(route) {
@@ -42,8 +42,9 @@ export default defineConfig({
       },
     }),
     Markdown({
-      wrapperClasses: 'page-container m-auto p-8 lt-md-p-l-0 lt-md-p-r-0',
-      // wrapperComponentPath: './src/components/page',
+      wrapperClasses: 'prose m-auto',
+      wrapperComponentName: 'ReactMarkdown',
+      wrapperComponentPath: './src/components/page',
       markdownItSetup(md) {
         md.use(Shiki, {
           theme: {
