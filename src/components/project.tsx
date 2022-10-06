@@ -35,10 +35,10 @@ export default function Project() {
           <div className="fbc w-full h-10">
             <h2 className="text-2xl font-600"><span className="opacity-40">#</span> Recent Projects</h2>
             <a href="https://github.com/priority3">
-              <div className="i-fluent-emoji-film-projector cursor-pointer text-2xl hover:text-3xl transition-all duration-300" />
+              <div className="i-material-symbols-arrow-outward cursor-pointer text-xl hover:text-2xl transition-all duration-300" />
             </a>
           </div>
-          <div className="mt-5 w-full md:fbc flex-wrap gap-2 cursor-pointer ">
+          <div className="mt-5 w-full md:fbc flex-wrap cursor-pointer ">
             {projectList.map((project) => {
               return (
                 <a

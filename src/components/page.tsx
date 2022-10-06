@@ -14,15 +14,16 @@ function Page(props: Props) {
     let title, date, subtitle
     if (attributes.title)
       title = <h1>{attributes.display ?? attributes.title }</h1>
-    if (attributes.date) {
+      // attributes.date(iso) -> curPage.date(local time)
+    if (curPage.date) {
       date = <p className='opacity-50 !-mt-2'>
-        {curPage.date}
+          {curPage.date}
       </p>
-      if (attributes.subtitle || attributes.desc) {
-        subtitle = <p className='opacity-50 !-mt-6 italic'>
-          {attributes.subtitle ?? attributes.desc}
-        </p>
-      }
+    }
+    if (attributes.subtitle || attributes.desc) {
+      subtitle = <p className='opacity-50 !-mt-6 italic'>
+      {attributes.subtitle ?? attributes.desc}
+    </p>
     }
 
     return (
