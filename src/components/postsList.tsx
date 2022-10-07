@@ -5,7 +5,7 @@ export default function PostsList() {
   const { pageList } = useRouter()
 
   return (
-      <div className='flex flex-col gap-10'>
+      <div className='w-full sm:max-w-max flex flex-col gap-10'>
         {pageList.map((page) => {
           return (
             <Link
@@ -13,10 +13,10 @@ export default function PostsList() {
               className="w-full md:max-w-100 box-hover p3 "
               to={page.path ?? '/'}
             >
-              <h1 className='text-xl'>{page.title || 'blog'}</h1>
+              <h1 className='text-xl max-w-max'>{page.title || 'blog'}</h1>
               <div className='w-full fbc gap-3 md:gap-15 mt-3 text-sm opacity-60'>
                 <span className='over-desc'>{page.desc}</span>
-                <span className='md:min-w-90px '>{page.date?.slice(0, -5)}</span>
+                <span className='md:min-w-90px'>{page.date?.slice(0, -5)}</span>
               </div>
             </Link>
           )

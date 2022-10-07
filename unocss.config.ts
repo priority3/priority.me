@@ -8,6 +8,12 @@ import {
 import { commonShortcuts, projectShortcuts } from './config'
 
 export default defineConfig({
+  theme: {
+    breakpoints: {
+      sm: '400px',
+      md: '640px',
+    },
+  },
   shortcuts: [
     {
       ...commonShortcuts,
