@@ -1,4 +1,5 @@
 import Project from '../components/project'
+import Juejin from '@/components/icons/juejin'
 export default function Home() {
   const socialLinks = [
     {
@@ -25,7 +26,25 @@ export default function Home() {
       icon: 'i-fluent-emoji-bookmark-tabs',
       class: 'linkBtnBlogPosts',
     },
+    {
+      url: 'https://juejin.cn/user/3466114142048472/posts',
+      icon: 'i-juejin',
+      class: 'linkBtnJuejin',
+    },
   ]
+
+  function getSocialLinkIcon(icon: string) {
+    switch (icon) {
+      case 'i-juejin':
+        return (
+          <Juejin />
+        )
+      default:
+        return (
+          <div className={icon}></div>
+        )
+    }
+  }
 
   return (
       <div className="fc w-full mt-30 px-3" >
@@ -41,10 +60,10 @@ export default function Home() {
           </div>
           <div className='static md:flex gap-2' >
               {socialLinks.map(link =>
-                <a key={link.name} href={link.url} >
+                <a key={link.icon} href={link.url} >
                   <div className={[link.class, 'linkBtnBase'].join(' ')}>
-                      <div className={link.icon} />
-                      <span>{link.name}</span>
+                      {getSocialLinkIcon(link.icon)}
+                      {link.name && <span>{link.name}</span>}
                   </div>
                 </a>,
               )}

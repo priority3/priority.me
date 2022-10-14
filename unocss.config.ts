@@ -25,6 +25,7 @@ export default defineConfig({
       'linkBtnBilibili': 'hover:bg-[#00a1d6]',
       'linkBtnTwitter': 'hover:bg-[#219ff5]',
       'linkBtnBlogPosts': 'hover:bg-[#fd79a8]',
+      'linkBtnJuejin': 'hover:bg-[#a7ccfc]',
       'box-hover': 'cursor-pointer hover:bg-[#88888808] hover:opacity-100 transition-all duration-300 rounded',
       // post list
       'over-desc': 'block w-[70%] md:max-w-[80%]',
