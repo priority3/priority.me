@@ -3,6 +3,7 @@ title: Why the blog?
 desc: Why I make the blog website
 date: 2022-10-05
 author: priority
+language: CN
 ---
 
 ## 我的个人Blog

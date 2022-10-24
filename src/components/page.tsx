@@ -15,22 +15,22 @@ function Page(props: Props) {
     if (attributes.title)
       title = <h1>{attributes.display ?? attributes.title }</h1>
       // attributes.date(iso) -> curPage.date(local time)
-    if (curPage.date) {
-      date = <p className='opacity-50 !-mt-2'>
-          {curPage.date}
-      </p>
-    }
     if (attributes.subtitle || attributes.desc) {
       subtitle = <p className='opacity-50 !-mt-6 italic'>
-      {attributes.subtitle ?? attributes.desc}
-    </p>
+        {attributes.subtitle ?? attributes.desc}
+      </p>
+    }
+    if (curPage.date) {
+      date = <p className='opacity-60 !-mt-2'>
+          {curPage.date}
+      </p>
     }
 
     return (
       <div className='m-auto prose mb-10'>
         {title}
-        {date}
         {subtitle}
+        {date}
       </div>
     )
   }

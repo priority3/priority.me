@@ -135,7 +135,9 @@
 .prose code {
   color: var(--fg-deep);
   font-weight: 600;
-  font-size: 0.875em;
+  font-size: .95em;
+  font-family:Arial, Helvetica, sans-serif;
+  color: #728878;
 }
 // .prose code::before {
 //   content: "`";
