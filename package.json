@@ -19,7 +19,7 @@
   "devDependencies": {
     "@iconify/json": "^2.1.118",
     "@pity/eslint-config": "^0.1.9",
-    "@pity/vite-plugin-react-markdown": "0.0.5-beta.0",
+    "@pity/vite-plugin-react-markdown": "0.0.5-beta.1",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.16",
     "@types/react": "^18.0.18",
