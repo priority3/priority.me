@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@iconify/json': ^2.1.118
   '@pity/eslint-config': ^0.1.9
-  '@pity/vite-plugin-react-markdown': 0.0.5-beta.1
+  '@pity/vite-plugin-react-markdown': ^0.1.0
   '@types/fs-extra': ^9.0.13
   '@types/node': ^18.7.16
   '@types/react': ^18.0.18
@@ -38,7 +38,7 @@ dependencies:
 devDependencies:
   '@iconify/json': 2.1.118
   '@pity/eslint-config': 0.1.9_yqf6kl63nyoq5megxukfnom5rm
-  '@pity/vite-plugin-react-markdown': 0.0.5-beta.1_react@18.2.0+vite@3.1.0
+  '@pity/vite-plugin-react-markdown': 0.1.0
   '@types/fs-extra': 9.0.13
   '@types/node': 18.7.16
   '@types/react': 18.0.18
@@ -739,11 +739,8 @@ packages:
       - typescript
     dev: true
 
-  /@pity/vite-plugin-react-markdown/0.0.5-beta.1_react@18.2.0+vite@3.1.0:
-    resolution: {integrity: sha512-Mfz3U5maQ9S61VmAuSdsBVFHkQZiKA0LMMPVCus1EChWjKoIMEg6+Zdbfar+8dgDPxWrQQ1MIY0R0RrUHrcO8w==}
-    peerDependencies:
-      react: ^18.0.0
-      vite: ^3.0.0
+  /@pity/vite-plugin-react-markdown/0.1.0:
+    resolution: {integrity: sha512-G+XFVg3+KtduC13qET83a2+kO3pRidhPL3jHxioOG1KQI6DmB+zTIk9KlXZ+Ob6ok3Nnss8DFprzklULhh9GXA==}
     dependencies:
       '@babel/core': 7.19.3
       '@babel/preset-react': 7.18.6_@babel+core@7.19.3
@@ -757,7 +754,6 @@ packages:
       markdown-it: 13.0.1
       picocolors: 1.0.0
       react: 18.2.0
-      vite: 3.1.0_sass@1.55.0
     transitivePeerDependencies:
       - supports-color
     dev: true

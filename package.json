@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "rimraf dist && vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.{js,ts,jsx,tsx}",
-    "lint:fix": "eslint src/**/*.{js,ts,jsx,tsx} --fix"
+    "lint": "eslint src/**/*.{js,ts,jsx,tsx} --cache",
+    "lint:fix": "pnpm run lint --fix"
   },
   "dependencies": {
     "dayjs": "^1.11.5",
@@ -19,7 +19,7 @@
   "devDependencies": {
     "@iconify/json": "^2.1.118",
     "@pity/eslint-config": "^0.1.9",
-    "@pity/vite-plugin-react-markdown": "0.0.5-beta.1",
+    "@pity/vite-plugin-react-markdown": "^0.1.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.16",
     "@types/react": "^18.0.18",
