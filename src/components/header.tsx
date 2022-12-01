@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDark } from '@/hooks/useDark'
+import './style/header.css'
 export default function Header() {
   const { toggleTheme } = useDark()
   const [postProfile, setPostProfile] = useState({
@@ -32,7 +33,8 @@ export default function Header() {
   }, [location])
 
   return (
-  <div className='w-full top-0 left-0 p-3 f-c  shadow-warm-gray-500 border-base border-b-2px' >
+  <div
+    className='header-container w-full top-0 left-0 p-3 f-c shadow-warm-gray-500 border-base sticky' >
     <div
       className="fbc w-full md:px-10"
     >
