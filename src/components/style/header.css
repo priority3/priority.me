@@ -1,0 +1,15 @@
+.header-container {
+  background: rgba(249, 248, 248, 0.2);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  /* border-radius: 25px; */
+  box-shadow:inset 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+.dark .header-container {
+  background: rgba(49, 49, 49, 0.2);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  /* border-radius: 25px; */
+  box-shadow:inset 0 0 6px rgba(49, 49, 49, 0.2);
+}
