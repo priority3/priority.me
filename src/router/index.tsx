@@ -13,7 +13,7 @@ export default function GeneratToRoute() {
   return (
   <div>
     <Header />
-    {useRoutes(routes)}
+      {useRoutes(routes)}
     <Footer />
   </div>
   )

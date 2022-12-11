@@ -4,6 +4,7 @@ specifiers:
   '@iconify/json': ^2.1.140
   '@pity/eslint-config': ^0.1.9
   '@pity/vite-plugin-react-markdown': ^0.1.1
+  '@types/diacritics': ^1.3.1
   '@types/fs-extra': ^9.0.13
   '@types/node': ^18.11.9
   '@types/react': ^18.0.25
@@ -17,6 +18,7 @@ specifiers:
   fs-extra: ^10.1.0
   gray-matter: ^4.0.3
   markdown-it-anchor: ^8.6.5
+  markdown-it-link-attributes: ^4.0.1
   markdown-it-shiki: ^0.5.1
   markdown-it-table-of-contents: ^0.6.0
   react: ^18.2.0
@@ -39,6 +41,7 @@ devDependencies:
   '@iconify/json': 2.1.140
   '@pity/eslint-config': 0.1.9_e3uo4sehh4zr4i6m57mkkxxv7y
   '@pity/vite-plugin-react-markdown': 0.1.1
+  '@types/diacritics': 1.3.1
   '@types/fs-extra': 9.0.13
   '@types/node': 18.11.9
   '@types/react': 18.0.25
@@ -51,6 +54,7 @@ devDependencies:
   fs-extra: 10.1.0
   gray-matter: 4.0.3
   markdown-it-anchor: 8.6.5
+  markdown-it-link-attributes: 4.0.1
   markdown-it-shiki: 0.5.1
   markdown-it-table-of-contents: 0.6.0
   rimraf: 3.0.2
@@ -835,6 +839,10 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
+    dev: true
+
+  /@types/diacritics/1.3.1:
+    resolution: {integrity: sha512-tAH+RY51Zbz7ZSzN7yxQBKEue78U6weZ1UUBNjFoitoLbJGFJCKI7KVHwGsnYo4s2xSFr9KGEkjst2FolpYqyA==}
     dev: true
 
   /@types/fs-extra/9.0.13:
@@ -3114,6 +3122,10 @@ packages:
     peerDependencies:
       '@types/markdown-it': '*'
       markdown-it: '*'
+    dev: true
+
+  /markdown-it-link-attributes/4.0.1:
+    resolution: {integrity: sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ==}
     dev: true
 
   /markdown-it-shiki/0.5.1:

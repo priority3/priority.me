@@ -6,6 +6,9 @@ author: priority
 language: CN
 ---
 
+[[toc]]
+
+
 ## 我的个人Blog
 
 hey 🤣, 我是 [prioriry](https://github.com/priority3)
