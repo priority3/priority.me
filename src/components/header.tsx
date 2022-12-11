@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDark } from '@/hooks/useDark'
-import './style/header.css'
+import './style/header.scss'
 export default function Header() {
   const { toggleTheme } = useDark()
   const [postProfile, setPostProfile] = useState({

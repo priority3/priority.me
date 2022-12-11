@@ -1,4 +1,4 @@
-import '@/style/loading.scss'
+import './style/loading.scss'
 export default function Loading() {
   return (
     <div id="section-preloader">

@@ -9,13 +9,13 @@ import Markdown from '@pity/vite-plugin-react-markdown'
 import Shiki from 'markdown-it-shiki'
 import anchor from 'markdown-it-anchor'
 import TOC from 'markdown-it-table-of-contents'
+import LinkAttributes from 'markdown-it-link-attributes'
+
 import { slugify } from './config'
 export default defineConfig({
   plugins: [
     Unocss(),
-    react({
-      include: [/\.tsx$/, /\.md$/],
-    }),
+    react(),
     Pages({
       dirs: [
         { dir: 'src/views', baseRoute: '' },
@@ -58,6 +58,14 @@ export default defineConfig({
             symbol: '#',
             renderAttrs: () => ({ 'aria-hidden': 'true' }),
           }),
+        })
+
+        md.use(LinkAttributes, {
+          matcher: (link: string) => /^https?:\/\//.test(link),
+          attrs: {
+            target: '_blank',
+            rel: 'noopener',
+          },
         })
 
         md.use(TOC, {
