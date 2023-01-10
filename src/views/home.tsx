@@ -1,4 +1,4 @@
-import Project from '../components/project'
+import Project from '@/components/project'
 import Juejin from '@/components/icons/juejin'
 export default function Home() {
   const socialLinks = [
@@ -30,6 +30,11 @@ export default function Home() {
       url: 'https://juejin.cn/user/3466114142048472/posts',
       icon: 'i-juejin',
       class: 'linkBtnJuejin',
+    },
+    {
+      url: 'https://leetcode.com/priority3/',
+      icon: 'i-simple-icons:leetcode',
+      class: 'linkBtnLeetcode',
     },
   ]
 
