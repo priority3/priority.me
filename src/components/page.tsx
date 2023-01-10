@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useEventListener, useRouter } from '@/hooks'
+import { useRouter } from '@/hooks'
 
 interface Props {
   attributes: Record<string, any>
@@ -57,7 +57,6 @@ function Page(this: {
     event: MouseEvent & { target: HTMLElement },
   ) => {
     const link = event.target.closest('a')
-    console.log('🚀 ~ file: page.tsx:60 ~ link', event)
 
     if (
       !event.defaultPrevented
@@ -105,7 +104,6 @@ function Page(this: {
     content.current!.addEventListener('click', (event) => {
       handleAnchors(event as any)
     })
-    console.log('🚀 ~ file: page.tsx:105 ~ content.current!.addEventListener ~ content.current!', content.current!)
     navigateTo()
     setTimeout(navigateTo, 500)
   }, [content.current])
