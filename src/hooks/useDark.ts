@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
 
 export function useDark() {
+  const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
+
+  const defaultTheme = localStorage.getItem('theme') ?? (themeMedia.matches ? 'light' : 'dark')
+
+  // const defaultTheme = localStorage.getItem('theme') || 'light'
+
   const [theme, setTheme] = useState(
-    localStorage.getItem('theme') || 'light',
+    defaultTheme,
   )
   const [isDark, setIsDark] = useState(false)
   const toggleTheme = () => {
