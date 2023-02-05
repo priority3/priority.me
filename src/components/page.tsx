@@ -119,7 +119,7 @@ function Page(this: {
         <article ref={content}>
           {children}
         </article>
-        </div>
+      </div>
     </PropsContext.Provider>
   )
 }
