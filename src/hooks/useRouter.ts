@@ -1,11 +1,18 @@
-import type { RouteObject } from 'react-router-dom'
+import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { routes } from '@/router'
 import type { RouteMeta } from '@/type'
-interface RoutePageObj extends RouteObject {
+interface IndexRoutePageObj extends IndexRouteObject {
   meta?: {
     frontmatter: RouteMeta
   }
 }
+interface NonIndexRoutePageObj extends NonIndexRouteObject {
+  meta?: {
+    frontmatter: RouteMeta
+  }
+}
+
+type RoutePageObj = IndexRoutePageObj | NonIndexRoutePageObj
 export function useRouter() {
   const pageRaw = routes.filter((page: RoutePageObj) => {
     return page.path?.includes('blogs')
