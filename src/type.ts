@@ -4,4 +4,5 @@ export type RouteMeta = Partial<{
   date: string
   desc: string
   language: string
+  display: boolean
 }>
