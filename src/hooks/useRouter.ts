@@ -25,9 +25,11 @@ export function useRouter() {
       ...frontmatter,
       path: `/blogs/${path}`,
     }
-  }).sort((pre: any, cur: any) => {
-    return Date.parse(cur.date) - Date.parse(pre.date)
   })
+    .filter(page => page.display ?? true)
+    .sort((pre: any, cur: any) => {
+      return Date.parse(cur.date) - Date.parse(pre.date)
+    })
 
   return {
     routes,
