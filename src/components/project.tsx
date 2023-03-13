@@ -1,5 +1,5 @@
 import PTypewriter from './icons/p-typewriter'
-
+import PLeetcode from './icons/p-leetcode'
 export default function Project() {
   const projectList = [
     {
@@ -9,11 +9,18 @@ export default function Project() {
       icon: 'p-typewriter',
     },
     {
+      name: 'leetcode-daily',
+      description: 'daily algorithm is used in TS/Python/Rust',
+      github: 'https://github.com/priority3/rookie-Algorithm',
+      icon: 'p-leetcode',
+    },
+    {
       name: 'vite-plugin-react-markdown',
       description: 'use mardown in react & vite',
       github: 'https://github.com/priority3/vite-plugin-react-markdown',
       icon: 'i-teenyicons-markdown-outline',
     },
+
   ]
 
   function getProjectIcon(name: string) {
@@ -21,6 +28,10 @@ export default function Project() {
       case 'p-typewriter':
         return (
           <PTypewriter />
+        )
+      case 'p-leetcode':
+        return (
+          <PLeetcode />
         )
       default:
         return (
@@ -55,7 +66,7 @@ export default function Project() {
                     </h2>
                     <p className="text-sm opacity-50"> {project.description}</p>
                   </div>
-                  <div className="text-5xl transition-all duration-1500">
+                  <div className="text-5xl text-center transition-all duration-1500">
                     {getProjectIcon(project.icon)}
                   </div>
                 </a>
