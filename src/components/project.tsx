@@ -3,10 +3,10 @@ import PLeetcode from './icons/p-leetcode'
 export default function Project() {
   const projectList = [
     {
-      name: 'p-typewriter',
-      description: 'typewriter component for vue3',
-      github: 'https://github.com/priority3/p-typewriter',
-      icon: 'p-typewriter',
+      name: 'vite-plugin-react-markdown',
+      description: 'use mardown in react & vite',
+      github: 'https://github.com/priority3/vite-plugin-react-markdown',
+      icon: 'i-teenyicons-markdown-outline',
     },
     {
       name: 'leetcode-daily',
@@ -15,10 +15,10 @@ export default function Project() {
       icon: 'p-leetcode',
     },
     {
-      name: 'vite-plugin-react-markdown',
-      description: 'use mardown in react & vite',
-      github: 'https://github.com/priority3/vite-plugin-react-markdown',
-      icon: 'i-teenyicons-markdown-outline',
+      name: 'p-typewriter',
+      description: 'typewriter component for vue3',
+      github: 'https://github.com/priority3/p-typewriter',
+      icon: 'p-typewriter',
     },
 
   ]
@@ -49,14 +49,14 @@ export default function Project() {
               <div className="i-material-symbols-arrow-outward cursor-pointer text-xl hover:text-2xl transition-all duration-300" />
             </a>
           </div>
-          <div className="mt-5 w-full md:fbc flex-wrap cursor-pointer ">
+          <div className="mt-5 w-full md:fbc flex-wrap cursor-pointer gap-5">
             {projectList.map((project) => {
               return (
                 <a
                   key={project.name}
                   href={project.github}
                   // TODO
-                  className="opacity-60 p3 w-full md:w-44% fbc gap-2 my-2 md:m0 box-hover"
+                  className="p3 w-full md:w-44% fbc gap-2 my-2 md:m0 box-hover dark:bg-gray-50/10 hover:dark:bg-gray-50/20"
                 >
                   <div >
                     <h2
