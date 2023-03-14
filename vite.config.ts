@@ -11,7 +11,7 @@ import anchor from 'markdown-it-anchor'
 import TOC from 'markdown-it-table-of-contents'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Katex from 'markdown-it-katex'
-import { slugify } from './config'
+import { format, slugify } from './config'
 export default defineConfig({
   plugins: [
     Unocss(),
@@ -28,9 +28,11 @@ export default defineConfig({
           if (path.includes('blogs')) {
             const md = fs.readFileSync(path, 'utf-8')
             const { data } = matter(md)
+
             // TODO iso-8601 to time
             const date = /.*/.exec(data.date)![0].slice(0, 15)
-            route.meta = Object.assign(route.meta || {}, { frontmatter: { ...data, date } })
+
+            route.meta = Object.assign(route.meta || {}, { frontmatter: { ...data, date, formatDate: format(data.date) } })
           }
         }
         if (route.children?.length)

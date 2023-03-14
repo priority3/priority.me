@@ -22,3 +22,11 @@ export const slugify = (str: string): string => {
       .toLowerCase()
   )
 }
+
+function extractDate(date: number) {
+  return date > 9 ? `${date}` : `0${date}`
+}
+
+export const format = (date: Date) => {
+  return `${date.getFullYear()}-${extractDate(date.getMonth() + 1)}-${extractDate(date.getDate())}`
+}
