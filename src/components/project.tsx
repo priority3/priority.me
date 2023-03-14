@@ -44,9 +44,9 @@ export default function Project() {
     <div>
       <div className="fi flex-col w-full">
           <div className="fbc w-full h-10">
-            <h2 className="text-2xl font-600"><span className="opacity-40">#</span> Recent Projects</h2>
+            <h2 className="text-2xl font-600 cursor-pointer"><span className="op-40 hover:op-50">#</span > <span className='hover:op-90'>Recent Projects</span></h2>
             <a href="https://github.com/priority3">
-              <div className="i-material-symbols-arrow-outward cursor-pointer text-xl hover:text-2xl transition-all duration-300" />
+              <div className="i-ri-arrow-right-up-line cursor-pointer text-xl hover:text-2xl transition-all duration-300" />
             </a>
           </div>
           <div className="mt-5 w-full md:fbc flex-wrap cursor-pointer gap-5">

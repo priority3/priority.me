@@ -1,5 +1,6 @@
 import Project from '@/components/project'
 import Juejin from '@/components/icons/juejin'
+import BlogPost from '@/components/blogpost'
 export default function Home() {
   const socialLinks = [
     {
@@ -74,6 +75,7 @@ export default function Home() {
               )}
           </div>
           <Project/>
+          <BlogPost/>
         </div>
     </div>
   )
