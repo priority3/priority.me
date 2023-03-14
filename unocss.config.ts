@@ -18,7 +18,7 @@ export default defineConfig({
     {
       ...commonShortcuts,
       ...projectShortcuts,
-      'linkBtnBase': `bg-light-200 rounded-md px-3 py-2 text-gray-700 cursor-pointer h-10
+      'linkBtnBase': `bg-light-200 dark:bg-gray-50/10 dark:text-white rounded-md px-3 py-2 text-gray-700 cursor-pointer h-10
       hover:(text-white) transition-all duration-200 fcc gap-2 my-2 md:m0`,
       'border-base': 'border-[#dfe4ea] dark:border-transparent',
       'linkBtnGithub': 'hover:bg-[#3c3c3c]',
