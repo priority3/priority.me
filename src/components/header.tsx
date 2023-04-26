@@ -7,19 +7,19 @@ export default function Header() {
   const [postProfile, setPostProfile] = useState({
     name: 'BlogPosts',
     url: '/posts',
-    icon: 'i-arcticons-blogger',
+    icon: 'i-carbon-blog',
   })
   const socialLinks = [
     postProfile,
     {
       name: 'GitHub',
       url: 'https://github.com/priority3',
-      icon: 'i-arcticons-github',
+      icon: 'i-carbon-logo-github',
     },
     {
       name: 'Bilibili',
       url: 'https://space.bilibili.com/94544300',
-      icon: 'i-arcticons-bilibili',
+      icon: 'i-carbon-screen',
     },
   ]
   const location = useLocation()
@@ -28,7 +28,7 @@ export default function Header() {
     setPostProfile({
       name: location.pathname === '/' ? 'BlogPosts' : 'Profile',
       url: location.pathname === '/' ? '/posts' : '/',
-      icon: location.pathname === '/' ? 'i-arcticons-blogger' : 'i-arcticons-valkyrieprofile',
+      icon: location.pathname === '/' ? 'i-carbon-blog' : 'i-arcticons-valkyrieprofile',
     })
   }, [location])
 
@@ -57,14 +57,14 @@ export default function Header() {
           socialLinks.map(link =>
             <a key={link.name} href={link.url} title={link.name}>
               <div
-                className={[link.icon, 'text-2xl op-60 cursor-pointer hover:op-100'].join(' ')}
+                className={[link.icon, 'text-xl op-60 cursor-pointer hover:op-100'].join(' ')}
               >
               </div>
             </a>,
           )
         }
         <div
-          className="i-ph-moon-stars-thin dark:i-ph-sun-dim-thin op-50 text-xl op-40 hover:op-100 cursor-pointer"
+          className="i-carbon:moon dark:i-carbon:sun op-50 text-xl op-40 hover:op-100 cursor-pointer"
           onClick={toggleTheme}
         />
 
