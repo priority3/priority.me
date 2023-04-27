@@ -5,7 +5,7 @@ export default function Posts() {
     <div>
       <div className='f-c-c w-full gap-10 mt-20' >
         <h1 className="text-3xl">
-          Priority.notes
+          P.notes
         </h1>
         <PostsList />
       </div>
