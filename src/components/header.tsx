@@ -45,7 +45,7 @@ export default function Header() {
               <div
                 className="op-50 text-5 font-sans cursor-pointer"
               >
-                priority
+                P.
               </div>
             </div>
           </Link>

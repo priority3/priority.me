@@ -9,13 +9,18 @@ html {
 }
 
 html.dark {
-  --c-bg: #050505;
-  --c-scrollbar: #111;
-  --c-scrollbar-hover: #222;
+  --c-bg: #212121;
+  --c-scrollbar: #333333;
+  --c-scrollbar-hover: #363636;
 }
 
 html {
   overflow: scroll;
+}
+
+.title {
+  font-family: 'Hubot Sans,sans-serif';
+
 }
 
 #nprogress {
