@@ -28,7 +28,7 @@ export default function Header() {
     setPostProfile({
       name: location.pathname === '/' ? 'BlogPosts' : 'Profile',
       url: location.pathname === '/' ? '/posts' : '/',
-      icon: location.pathname === '/' ? 'i-carbon-blog' : 'i-arcticons-valkyrieprofile',
+      icon: location.pathname === '/' ? 'i-carbon-blog' : 'i-carbon-home',
     })
   }, [location])
 
