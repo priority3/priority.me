@@ -4,7 +4,6 @@ title: vue diff
 date: 2022-10-21
 desc: Obtaining the longest increasing subsequence with the diff algorithm of vue
 language: EN
-display: false
 ---
 
 [[toc]]
