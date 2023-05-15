@@ -59,7 +59,7 @@ export default function Home() {
             <h1 className='title'>hey 🤣, I'm P.</h1>
           </div>
           <div className="w-full border-b-1 border-base" ></div>
-          <div className="leading-8" >
+          <div className="leading-8 font-mono" >
             <p>I'm a student, 21 years old now, I am interested in open source, like Front-end and design something cool ! </p>
             <p>do something crazy !</p>
             <p>WIP... 🐱‍👓</p>

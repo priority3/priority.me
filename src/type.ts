@@ -7,3 +7,7 @@ export type RouteMeta = Partial<{
   language: string
   display: boolean
 }>
+
+export interface RouterList extends RouteMeta {
+  path: string
+}
