@@ -11,6 +11,7 @@ import anchor from 'markdown-it-anchor'
 import TOC from 'markdown-it-table-of-contents'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Katex from 'markdown-it-katex'
+import TaskList from 'markdown-it-task-lists'
 import { format, slugify } from './config'
 export default defineConfig({
   plugins: [
@@ -76,6 +77,7 @@ export default defineConfig({
         })
 
         md.use(Katex)
+        md.use(TaskList)
       },
     }),
   ],
