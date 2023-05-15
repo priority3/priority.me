@@ -28,5 +28,7 @@ function extractDate(date: number) {
 }
 
 export const format = (date: Date) => {
+  if (!date) return ''
+
   return `${date.getFullYear()}-${extractDate(date.getMonth() + 1)}-${extractDate(date.getDate())}`
 }
