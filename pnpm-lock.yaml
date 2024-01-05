@@ -2,6 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@iconify/json': ^2.1.140
+  '@mdit/plugin-attrs': ^0.4.5
+  '@mdit/plugin-img-lazyload': ^0.4.5
   '@pity/eslint-config': ^0.1.9
   '@pity/vite-plugin-react-markdown': ^0.1.1
   '@types/diacritics': ^1.3.1
@@ -23,6 +25,7 @@ specifiers:
   markdown-it-shiki: ^0.5.1
   markdown-it-table-of-contents: ^0.6.0
   markdown-it-task-lists: ^2.1.1
+  photoswipe: ^5.3.7
   react: ^18.2.0
   react-dom: ^18.2.0
   react-router-dom: ^6.4.3
@@ -41,6 +44,8 @@ dependencies:
 
 devDependencies:
   '@iconify/json': 2.1.140
+  '@mdit/plugin-attrs': 0.4.5
+  '@mdit/plugin-img-lazyload': 0.4.5
   '@pity/eslint-config': 0.1.9_e3uo4sehh4zr4i6m57mkkxxv7y
   '@pity/vite-plugin-react-markdown': 0.1.1
   '@types/diacritics': 1.3.1
@@ -61,6 +66,7 @@ devDependencies:
   markdown-it-shiki: 0.5.1
   markdown-it-table-of-contents: 0.6.0
   markdown-it-task-lists: 2.1.1
+  photoswipe: 5.3.7
   rimraf: 3.0.2
   sass: 1.56.1
   typescript: 4.9.3
@@ -670,6 +676,22 @@ packages:
 
   /@mdit-vue/plugin-component/0.11.1:
     resolution: {integrity: sha512-fCqyYPwEXFa182/Vz6g8McDi3SCIwm3yHWkWddHx+QNn0gMGFqkhJVcz/wjCIA3oCoWUBWM80aZ09ZuoQiOmvQ==}
+    dependencies:
+      '@types/markdown-it': 12.2.3
+      markdown-it: 13.0.1
+    dev: true
+
+  /@mdit/plugin-attrs/0.4.5:
+    resolution: {integrity: sha512-20sfnsVz0IhMMLXJMXhhp8nHF5H8nTnSINlA0bK1b4aaVNLTXXxHqOgXVsfKY+LcjH/rXA1VefItsat0xPN9aw==}
+    engines: {node: '>= 14'}
+    dependencies:
+      '@types/markdown-it': 12.2.3
+      markdown-it: 13.0.1
+    dev: true
+
+  /@mdit/plugin-img-lazyload/0.4.5:
+    resolution: {integrity: sha512-eYG7YBBOPYwSPOP0ku8RHKWLlQXilcCD9BhqYUc1rMOE/eMNDJakicu8w0IsFunaJMaoFBjtQgn9gPby7+MZwg==}
+    engines: {node: '>= 14'}
     dependencies:
       '@types/markdown-it': 12.2.3
       markdown-it: 13.0.1
@@ -3468,6 +3490,11 @@ packages:
 
   /perfect-debounce/0.1.3:
     resolution: {integrity: sha512-NOT9AcKiDGpnV/HBhI22Str++XWcErO/bALvHCuhv33owZW/CjH8KAFLZDCmu3727sihe0wTxpDhyGc6M8qacQ==}
+    dev: true
+
+  /photoswipe/5.3.7:
+    resolution: {integrity: sha512-zsyLsTTLFrj0XR1m4/hO7qNooboFKUrDy+Zt5i2d6qjFPAtBjzaj/Xtydso4uxzcXpcqbTmyxDibb3BcSISseg==}
+    engines: {node: '>= 0.12.0'}
     dev: true
 
   /picocolors/1.0.0:

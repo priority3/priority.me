@@ -12,6 +12,8 @@ import TOC from 'markdown-it-table-of-contents'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Katex from 'markdown-it-katex'
 import TaskList from 'markdown-it-task-lists'
+// import { imgLazyload } from '@mdit/plugin-img-lazyload'
+import { attrs } from '@mdit/plugin-attrs'
 import { format, slugify } from './config'
 export default defineConfig({
   plugins: [
@@ -78,6 +80,7 @@ export default defineConfig({
 
         md.use(Katex)
         md.use(TaskList)
+        md.use(attrs)
       },
     }),
   ],

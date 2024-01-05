@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
 import { useRouter } from '@/hooks'
-
 interface Props {
   attributes: Record<string, any>
   children: ReactNode
@@ -108,6 +108,21 @@ function Page(this: {
     setTimeout(navigateTo, 500)
   }, [content.current])
 
+  // img gallery
+  useEffect(() => {
+    let lightbox = new PhotoSwipeLightbox({
+      gallery: '#gallery',
+      children: 'img',
+      pswpModule: () => import('photoswipe'),
+    })
+    lightbox.init()
+
+    return () => {
+      lightbox.destroy()
+      lightbox = null
+    }
+  }, [])
+
   return (
     <PropsContext.Provider value={props}>
 
@@ -116,7 +131,7 @@ function Page(this: {
           (attributes.display ?? attributes.title)
           && titleContent()
         }
-        <article ref={content}>
+        <article id='gallery' className='pswp-gallery' ref={content}>
           {children}
         </article>
       </div>
