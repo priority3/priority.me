@@ -20,7 +20,7 @@ language: CN
 
 ### 遇到的第一个bug
 在实际的使用当中用到了一个carousel(轮播图)组件。然后遇到一个需求，组件是自带loop(循环播放)的，需要在hover的时候，停止轮播。
-
+"
 ![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54abde32b97442638192b6976bac030e~tplv-k3u1fbpfcp-watermark.image?)
 
 那么在官网的定义中我看到一个**autoplay**属性，于是可以想当然的绑定 **@mouseenter @mouseleave** 动态的修改autoplay的值，但是好像并不能够及时的生效，每次hover时都需要轮播过1至2张图片的时候才会停止，然后疯狂本地debug也并没有发现什么问题，感觉像是vue一次渲染周期没有及时地监听到autoplay的改变。
