@@ -14,4 +14,6 @@ language: CN
 - [ ]  hide the hearder when scroll down in `post page`
 - [ ]  add `search` function in `post page` (`lower priority`)
 - [ ]  ~~refactor to `Vue`~~
+- [ ] when the `md pages` just has one item, the style has some problems
 ...
+
