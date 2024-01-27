@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import Unocss from 'unocss/vite'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
+import type { ReactRoute } from 'vite-plugin-pages'
 import Pages from 'vite-plugin-pages'
 import Markdown from '@pity/vite-plugin-react-markdown'
 import Shiki from 'markdown-it-shiki'
@@ -20,15 +21,19 @@ export default defineConfig({
     Unocss(),
     react(),
     Pages({
+      exclude: [
+        'src/views/page/pageComponents/*.tsx',
+      ],
       dirs: [
         { dir: 'src/views', baseRoute: '' },
         { dir: 'pages', baseRoute: '' },
       ],
       extensions: ['tsx', 'md'],
-      extendRoute(route) {
+      extendRoute(route: ReactRoute) {
         function addMeta(route) {
           const path = resolve(__dirname, route.element.slice(1))
-          if (path.includes('blogs')) {
+
+          if (path.includes('blogs') || path.includes('leetcode')) {
             const md = fs.readFileSync(path, 'utf-8')
             const { data } = matter(md)
 
@@ -38,10 +43,18 @@ export default defineConfig({
             route.meta = Object.assign(route.meta || {}, { frontmatter: { ...data, date, formatDate: format(data.date) } })
           }
         }
-        if (route.children?.length)
-          route.children.forEach(addMeta)
-        else
-          addMeta(route)
+
+        // TODO
+        if (route.children?.length) {
+          route.children.forEach((child) => {
+            if (child.children?.length)
+              child.children.forEach(addMeta)
+
+            else
+              addMeta(child)
+          })
+        }
+        else { addMeta(route) }
 
         return route
       },

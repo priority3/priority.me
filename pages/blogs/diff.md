@@ -9,6 +9,7 @@ language: EN
 [[toc]]
 
 ## Vue renderder
+
 as we know, vue use the diff algorithm to update the dom tree with vnode(which used when ends are `Array`), so we should use some efficient methods to `Patch`, the diff algorithm came into being.
 
 

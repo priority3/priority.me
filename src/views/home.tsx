@@ -1,6 +1,7 @@
 import Project from '@/components/project'
 import Juejin from '@/components/icons/juejin'
 import BlogPost from '@/components/blogpost'
+import { ROUTERLISTTYPE } from '@/constants/router'
 export default function Home() {
   const socialLinks = [
     {
@@ -23,7 +24,7 @@ export default function Home() {
     },
     {
       name: 'BlogPosts',
-      url: '/posts',
+      url: '/page/posts',
       icon: 'i-fluent-emoji-bookmark-tabs',
       class: 'linkBtnBlogPosts',
     },
@@ -33,7 +34,7 @@ export default function Home() {
       class: 'linkBtnJuejin',
     },
     {
-      url: 'https://leetcode.com/priority3/',
+      url: '/page/leetcode',
       icon: 'i-simple-icons:leetcode',
       class: 'linkBtnLeetcode',
     },
@@ -60,7 +61,7 @@ export default function Home() {
           </div>
           <div className="w-full border-b-1 border-base" ></div>
           <div className="leading-8 font-mono" >
-            <p>I'm a student, 21 years old now, I am interested in open source, like Front-end and design something cool ! </p>
+            <p>I'm a student, 23 years old now, I am interested in open source, like Front-end and design something cool ! </p>
             <p>do something crazy !</p>
             <p>WIP... 🐱‍👓</p>
           </div>
@@ -75,7 +76,7 @@ export default function Home() {
               )}
           </div>
           <Project/>
-          <BlogPost/>
+          <BlogPost routerType={ROUTERLISTTYPE.NORMALPAGE}/>
         </div>
     </div>
   )
