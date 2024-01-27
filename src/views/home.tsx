@@ -76,7 +76,7 @@ export default function Home() {
               )}
           </div>
           <Project/>
-          <BlogPost routerType={ROUTERLISTTYPE.NORMALPAGE}/>
+          <BlogPost />
         </div>
     </div>
   )
