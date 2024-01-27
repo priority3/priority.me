@@ -6,7 +6,7 @@ export default function Header() {
   const { toggleTheme } = useDark()
   const [postProfile, setPostProfile] = useState({
     name: 'BlogPosts',
-    url: '/posts',
+    url: '/page/posts',
     icon: 'i-carbon-blog',
   })
   const socialLinks = [
@@ -27,7 +27,7 @@ export default function Header() {
   useEffect(() => {
     setPostProfile({
       name: location.pathname === '/' ? 'BlogPosts' : 'Profile',
-      url: location.pathname === '/' ? '/posts' : '/',
+      url: location.pathname === '/' ? '/page/posts' : '/',
       icon: location.pathname === '/' ? 'i-carbon-blog' : 'i-carbon-home',
     })
   }, [location])

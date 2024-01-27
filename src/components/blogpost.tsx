@@ -1,7 +1,9 @@
 import { useRouter } from '@/hooks'
-
-export default function BlogPost() {
-  const { pageList } = useRouter()
+import type { RouterTypeListProps } from '@/type'
+export default function BlogPost({
+  routerType,
+}: RouterTypeListProps) {
+  const { pageList } = useRouter(routerType)
   const showList = pageList.slice(0, 6).map((item) => {
     return {
       title: item.title,

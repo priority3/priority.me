@@ -1,3 +1,5 @@
+import type { ROUTERLISTTYPE } from './constants/router'
+
 export type RouteMeta = Partial<{
   title: string
   author: string
@@ -10,4 +12,8 @@ export type RouteMeta = Partial<{
 
 export interface RouterList extends RouteMeta {
   path: string
+}
+
+export interface RouterTypeListProps {
+  routerType: `${ROUTERLISTTYPE}`
 }

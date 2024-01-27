@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useRouter } from '@/hooks/useRouter'
-import type { RouterList } from '@/type'
+import type { RouterList, RouterTypeListProps } from '@/type'
 
 interface YearsBlogList {
   [key: string]: Array<RouterList>
 }
 
-export default function PostsList() {
-  const { pageList } = useRouter()
+export default function PostsList({ routerType }: RouterTypeListProps) {
+  const { pageList } = useRouter(routerType)
   const yearsBlogList: YearsBlogList = {}
 
   pageList.forEach((page: RouterList) => {

@@ -13,5 +13,5 @@ language: CN
 
 - [ ]  hide the hearder when scroll down in `post page`
 - [ ]  add `search` function in `post page` (`lower priority`)
-- [ ]  refactor to `Vue`
+- [ ]  ~~refactor to `Vue`~~
 ...
