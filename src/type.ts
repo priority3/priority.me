@@ -11,7 +11,7 @@ export type RouteMeta = Partial<{
 }>
 
 export interface RouterList extends RouteMeta {
-  path: string
+  path?: string
 }
 
 export interface RouterTypeListProps {
