@@ -7,7 +7,7 @@ export default function Posts() {
         <h1 className="text-3xl">
           P.Leetcode
         </h1>
-        <p>record my leetcode travel</p>
+        <p>record my <a className='a-border' href="https://leetcode.com/priority3/">leetcode</a> travel</p>
         <PostsList routerType={ROUTERLISTTYPE.LEETCODEPAGE} />
       </div>
 
