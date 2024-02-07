@@ -15,19 +15,27 @@ interface NonIndexRoutePageObj extends NonIndexRouteObject {
 }
 
 type RoutePageObj = IndexRoutePageObj | NonIndexRoutePageObj
-
 export function useRouter(routerType?: `${ROUTERLISTTYPE}`) {
   const pageRaws = routes.filter((page: RoutePageObj) => {
     return routerType ? page.path?.includes(routerType) : (page.path?.includes(ROUTERLISTTYPE.LEETCODEPAGE) || page.path?.includes(ROUTERLISTTYPE.NORMALPAGE))
   })
-  const pageRaw = pageRaws.length > 1 ? [...(pageRaws[0].children || []), ...(pageRaws[1].children || [])] : pageRaws[0].children || []
-  const pageList: Array<RouterList> = pageRaw.map((page: RoutePageObj) => {
+  const pageRaw: RoutePageObj[] = []
+  pageRaws.forEach((page) => {
+    const { path: parentPath } = page
+    pageRaw.push(...page.children?.map((child: RoutePageObj) => {
+      return {
+        ...child,
+        path: `${parentPath}/${child.path}`,
+      }
+    }).filter(Boolean) as RoutePageObj[])
+  })
+  const pageList: Array<RouterList> = pageRaw?.map((page: RoutePageObj) => {
     const { frontmatter } = page.meta!
     const { path } = page
 
     return {
       ...frontmatter,
-      path: `/${routerType}/${path}`,
+      path,
     }
   })
     .filter(page => page.display ?? true)

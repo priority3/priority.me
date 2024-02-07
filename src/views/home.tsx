@@ -1,7 +1,6 @@
 import Project from '@/components/project'
 import Juejin from '@/components/icons/juejin'
 import BlogPost from '@/components/blogpost'
-import { ROUTERLISTTYPE } from '@/constants/router'
 export default function Home() {
   const socialLinks = [
     {
@@ -54,30 +53,30 @@ export default function Home() {
   }
 
   return (
-      <div className="fc w-full mt-30 px-3" >
-        <div className='fc flex-col gap-7'>
-          <div className="!font-700 text-3rem mx-auto">
-            <h1 className='title'>hey 🤣, I'm P.</h1>
-          </div>
-          <div className="w-full border-b-1 border-base" ></div>
-          <div className="leading-8 font-mono" >
-            <p>I'm a student, 23 years old now, I am interested in open source, like Front-end and design something cool ! </p>
-            <p>do something crazy !</p>
-            <p>WIP... 🐱‍👓</p>
-          </div>
-          <div className='static md:flex gap-2' >
-              {socialLinks.map(link =>
-                <a key={link.icon} href={link.url} >
-                  <div className={[link.class, 'linkBtnBase'].join(' ')}>
-                      {getSocialLinkIcon(link.icon)}
-                      {link.name && <span>{link.name}</span>}
-                  </div>
-                </a>,
-              )}
-          </div>
-          <Project/>
-          <BlogPost />
+    <div className="fc w-full mt-30 px-3" >
+      <div className='fc flex-col gap-7'>
+        <div className="!font-700 text-3rem mx-auto">
+          <h1 className='title'>hey 🤣, I'm P.</h1>
         </div>
+        <div className="w-full border-b-1 border-base" ></div>
+        <div className="leading-8 font-mono" >
+          <p>I'm a student, 23 years old now, I am interested in open source, like Front-end and design something cool ! </p>
+          <p>do something crazy !</p>
+          <p>WIP... 🐱‍👓</p>
+        </div>
+        <div className='static md:flex gap-2' >
+          {socialLinks.map(link =>
+            <a key={link.icon} href={link.url} >
+              <div className={[link.class, 'linkBtnBase'].join(' ')}>
+                {getSocialLinkIcon(link.icon)}
+                {link.name && <span>{link.name}</span>}
+              </div>
+            </a>,
+          )}
+        </div>
+        <Project />
+        <BlogPost />
+      </div>
     </div>
   )
 }
