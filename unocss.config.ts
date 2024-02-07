@@ -32,6 +32,7 @@ export default defineConfig({
       'over-desc': 'block w-[70%] md:max-w-[80%]',
       'page-container': 'w-full  mt-10 px-10 md:px-0 pb-20',
       'markdown-container': 'w-full md:w-60%',
+      'a-border': 'border-b-1 border-[#7d7d7d] border-op-30 hover:border-b-[#555] transition-all duration-300 ease-in-out',
     },
   ],
   safelist: ['m-auto'],
