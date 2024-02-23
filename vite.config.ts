@@ -2,8 +2,6 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import Unocss from 'unocss/vite'
-import fs from 'fs-extra'
-import matter from 'gray-matter'
 import type { ReactRoute } from 'vite-plugin-pages'
 import Pages from 'vite-plugin-pages'
 import Markdown from '@pity/vite-plugin-react-markdown'
@@ -15,7 +13,7 @@ import Katex from 'markdown-it-katex'
 import TaskList from 'markdown-it-task-lists'
 // import { imgLazyload } from '@mdit/plugin-img-lazyload'
 import { attrs } from '@mdit/plugin-attrs'
-import { formatYMDdate, slugify, useMdRouter } from './config'
+import { slugify, useMdRouter } from './config'
 export default defineConfig({
   plugins: [
     Unocss(),
