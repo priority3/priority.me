@@ -10,24 +10,20 @@ interface MdRoute extends ReactRoute {
   children?: MdRoute[] | undefined
 }
 function getLastModifiedTime(file: string): Date | undefined {
-  if (!file.endsWith('.md'))
-    return
-
-  const filePath = getFileCwd(file)
-
-  return statSync(`./${filePath}`).mtime
+  return statSync(file).mtime
 }
 
 function getRouteMeta(element?: string, meta?: RouteMeta) {
-  const path = (element && getFileCwd(element.slice(1))) || ''
   if (element?.endsWith('.md')) {
+    const path = (element && getFileCwd(element.slice(1))) || ''
+
     const md = readFileSync(path, 'utf-8')
     const { data } = matter(md)
 
     // TODO iso-8601 to time
     const date = /.*/.exec(data.date)![0].slice(0, 15)
 
-    const lastModifiedTime = element && getLastModifiedTime(element)
+    const lastModifiedTime = element && getLastModifiedTime(path)
     const newLastfieldTime = lastModifiedTime && formatYMDdate(lastModifiedTime)
     const newMeta = Object.assign(
       meta || {},

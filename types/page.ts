@@ -6,5 +6,8 @@ export type RouteMeta = Partial<{
   desc: string
   language: string
   display: boolean
-  lastModifiedTime: string | Date | undefined
+  lastModifiedTime: string | undefined
 }>
+export interface RouterList extends RouteMeta {
+  path?: string
+}

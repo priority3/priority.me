@@ -3,7 +3,7 @@ author: priority
 title: 记录一些工具
 date: 2024-02-21
 desc: 日常摸鱼
-display: none
+display: false
 ---
 
 
