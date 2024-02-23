@@ -1,26 +1,26 @@
 import { readFileSync, statSync } from 'fs'
-import { resolve } from 'path'
 import type { ReactRoute } from 'vite-plugin-pages'
 import matter from 'gray-matter'
-import { formatYMDdate, isDate } from '../utils/date'
+import { getFileCwd } from '../utils'
+import { formatYMDdate } from '../utils/date'
 import type { RouteMeta } from '#/page'
 
+interface MdRoute extends ReactRoute {
+  meta?: RouteMeta
+  children?: MdRoute[] | undefined
+}
 function getLastModifiedTime(file: string): Date | undefined {
   if (!file.endsWith('.md'))
     return
 
-  const filePath = resolve(process.cwd(), file)
+  const filePath = getFileCwd(file)
 
   return statSync(`./${filePath}`).mtime
 }
 
-interface MdRoute extends ReactRoute {
-  meta?: RouteMeta
-}
-export const useMdRouter = (mdRoute: MdRoute) => {
-  const { element, children, ...others } = mdRoute
-  const path = (element && resolve(__dirname, element.slice(1))) || ''
-  if (path.includes('blogs') || path.includes('leetcode')) {
+function getRouteMeta(element?: string, meta?: RouteMeta) {
+  const path = (element && getFileCwd(element.slice(1))) || ''
+  if (element?.endsWith('.md')) {
     const md = readFileSync(path, 'utf-8')
     const { data } = matter(md)
 
@@ -29,8 +29,8 @@ export const useMdRouter = (mdRoute: MdRoute) => {
 
     const lastModifiedTime = element && getLastModifiedTime(element)
     const newLastfieldTime = lastModifiedTime && formatYMDdate(lastModifiedTime)
-    mdRoute.meta = Object.assign(
-      mdRoute.meta || {},
+    const newMeta = Object.assign(
+      meta || {},
       {
         frontmatter: {
           ...data,
@@ -39,11 +39,26 @@ export const useMdRouter = (mdRoute: MdRoute) => {
           lastModifiedTime: newLastfieldTime,
         },
       })
+
+    return newMeta
+  }
+}
+
+function recursionGetMeta(route?: MdRoute) {
+  if (!route) return
+  if (route.children) {
+    route.children.forEach((child) => {
+      child.meta = recursionGetMeta(child)
+    })
   }
 
-  if (children?.length)
-    children.forEach(useMdRouter)
+  return getRouteMeta(route.element, route.meta)
+}
 
-  return { mdRoute }
+export const useMdRouter = (route: MdRoute) => {
+  const newMeta = recursionGetMeta(route)
+  route.meta = newMeta
+
+  return { mdRoute: route }
 }
 

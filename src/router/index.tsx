@@ -7,15 +7,15 @@ import Footer from '@/components/footer'
 routes.push({
   caseSensitive: true,
   path: '/',
-  element: <Home/>,
+  element: <Home />,
 })
 
 export default function GeneratToRoute() {
   const { pathname } = useLocation()
 
   return (
-  <div>
-    <Header />
+    <div>
+      <Header />
       {useRoutes(routes)}
       {
         pathname !== '/' && pathname !== '/home'
@@ -26,8 +26,8 @@ export default function GeneratToRoute() {
           cd..
         </div>
       }
-    <Footer />
-  </div>
+      <Footer />
+    </div>
   )
 }
 
