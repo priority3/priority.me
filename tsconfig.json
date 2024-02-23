@@ -18,7 +18,8 @@
     "jsx": "react-jsx",
     "types": ["vite-plugin-pages/client", "vite/client"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "#/*": ["./types/*"]
     }
   },
   "include": [

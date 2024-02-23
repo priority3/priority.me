@@ -15,7 +15,7 @@ import Katex from 'markdown-it-katex'
 import TaskList from 'markdown-it-task-lists'
 // import { imgLazyload } from '@mdit/plugin-img-lazyload'
 import { attrs } from '@mdit/plugin-attrs'
-import { format, slugify } from './config'
+import { formatYMDdate, slugify, useMdRouter } from './config'
 export default defineConfig({
   plugins: [
     Unocss(),
@@ -30,33 +30,9 @@ export default defineConfig({
       ],
       extensions: ['tsx', 'md'],
       extendRoute(route: ReactRoute) {
-        function addMeta(route) {
-          const path = resolve(__dirname, route.element.slice(1))
+        const { mdRoute } = useMdRouter(route)
 
-          if (path.includes('blogs') || path.includes('leetcode')) {
-            const md = fs.readFileSync(path, 'utf-8')
-            const { data } = matter(md)
-
-            // TODO iso-8601 to time
-            const date = /.*/.exec(data.date)![0].slice(0, 15)
-
-            route.meta = Object.assign(route.meta || {}, { frontmatter: { ...data, date, formatDate: format(data.date) } })
-          }
-        }
-
-        // TODO
-        if (route.children?.length) {
-          route.children.forEach((child) => {
-            if (child.children?.length)
-              child.children.forEach(addMeta)
-
-            else
-              addMeta(child)
-          })
-        }
-        else { addMeta(route) }
-
-        return route
+        return mdRoute
       },
     }),
     Markdown({
