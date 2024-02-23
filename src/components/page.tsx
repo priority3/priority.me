@@ -18,26 +18,24 @@ function Page(this: {
   const curPage = pageList.filter(e => e.title && e.title === attributes.title)[0]
 
   const titleContent = () => {
-    let title, date, subtitle
-    if (attributes.title)
-      title = <h1>{attributes.display ?? attributes.title }</h1>
-      // attributes.date(iso) -> curPage.date(local time)
+    const titleTemplate = <h1>{attributes.title}</h1>
+    let subtitle
     if (attributes.subtitle || attributes.desc) {
       subtitle = <p className='opacity-50 !-mt-6 italic'>
         {attributes.subtitle ?? attributes.desc}
       </p>
     }
-    if (curPage.date) {
-      date = <p className='opacity-60 !-mt-2'>
-          {curPage.date}
-      </p>
-    }
+    const editTimeTemplate = curPage.lastModifiedTime && <div className='fcc gap-1'>
+      <div className='i-carbon:edit' /><div>{`${curPage.lastModifiedTime}(已编辑)`}</div>
+    </div>
 
     return (
       <div className='m-auto prose mb-10'>
-        {title}
+        {titleTemplate}
         {subtitle}
-        {date}
+        <div className='fbc opacity-60 !-mt-2 text-sm'>
+          {editTimeTemplate}
+        </div>
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { routes } from '@/router'
-import type { RouteMeta, RouterList } from '@/type'
+import type { RouteMeta, RouterList } from '#/page'
 import { ROUTERLISTTYPE } from '@/constants/router'
 
 interface IndexRoutePageObj extends IndexRouteObject {
@@ -25,7 +25,7 @@ export function useRouter(routerType?: `${ROUTERLISTTYPE}`) {
     pageRaw.push(...page.children?.map((child: RoutePageObj) => {
       return {
         ...child,
-        path: `${parentPath}/${child.path}`,
+        path: `/${parentPath}/${child.path}`,
       }
     }).filter(Boolean) as RoutePageObj[])
   })
