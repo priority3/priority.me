@@ -23,12 +23,3 @@ export const slugify = (str: string): string => {
   )
 }
 
-function extractDate(date: number) {
-  return date > 9 ? `${date}` : `0${date}`
-}
-
-export const format = (date: Date) => {
-  if (!date) return ''
-
-  return `${date.getFullYear()}-${extractDate(date.getMonth() + 1)}-${extractDate(date.getDate())}`
-}
