@@ -4,7 +4,8 @@ export default function BlogPost() {
   const showList = pageList.slice(0, 6).map((item) => {
     return {
       title: item.title,
-      formatDate: item.formatDate,
+      // formatDate: item.formatDate?.split(' ')[0],
+      date: item.date,
       path: item.path,
     }
   })
@@ -33,7 +34,7 @@ export default function BlogPost() {
                 </h2>
               </div>
               <div className="font-normal sm:block">
-                {item.formatDate}
+                {item.date}
               </div>
             </a>
           )
