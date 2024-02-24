@@ -1,7 +1,7 @@
 import { useRouter } from '@/hooks'
 export default function BlogPost() {
   const { pageList } = useRouter()
-  const showList = pageList.slice(0, 6).map((item) => {
+  const showList = pageList.slice(0, 5).map((item) => {
     return {
       title: item.title,
       // formatDate: item.formatDate?.split(' ')[0],
