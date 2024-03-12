@@ -14,6 +14,13 @@ language: CN
 - [ ]  hide the hearder when scroll down in `post page`
 - [ ]  add `search` function in `post page` (`lower priority`)
 - [ ]  ~~refactor to `Vue`~~
-- [ ] when the `md pages` just has one item, the style has some problems
+- [ ] when the `md pages` just has one item, the style has some 
+
+### 2024-03-12
+- [ ] add classification func in `leetcode` view page.
+- [ ] add `tag` in `leetcode` pageList.
+- [ ] add `clerk`
+
+problems
 ...
 
