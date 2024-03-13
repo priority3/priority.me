@@ -22,7 +22,7 @@ export default function PostsList({ routerType }: RouterTypeListProps) {
   })
 
   return (
-    <div className='w-full sm:max-w-max flex flex-col gap-10'>
+    <div className='w-full sm:max-w-40% flex flex-col gap-10'>
       {
         Object.keys(yearsBlogList).reverse().map((year) => {
           return (
@@ -63,8 +63,6 @@ export default function PostsList({ routerType }: RouterTypeListProps) {
           )
         })
       }
-
-      { }
     </div>
   )
 }
