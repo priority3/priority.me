@@ -8,7 +8,7 @@ language: EN/CN
 
 [[toc]]
 
-## [the problem link](https://typehero.dev/challenge/hello-world)
+## [the problem link](https://typehero.dev/challenge/awaited)
 
 just paste some code and brief description here, if wanna see the full content, please click the link above.
 
