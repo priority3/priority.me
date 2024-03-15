@@ -1,6 +1,6 @@
 import { useRouter } from '@/hooks'
 export default function BlogPost() {
-  const { pageList } = useRouter()
+  const { pageList } = useRouter('blogs')
   const showList = pageList.slice(0, 5).map((item) => {
     return {
       title: item.title,
