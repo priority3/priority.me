@@ -77,3 +77,31 @@ function applyStringMapping(symbol: Symbol, str: string) {
 }
 ```
 均是通过内置函数来实现的；
+
+## 相关联的另一道题目
+
+link: [EndsWith](https://typehero.dev/challenge/endswith)
+
+### case:
+```typescript
+type EndsWith<T extends string, U extends string> = any
+```
+```typescript
+type cases = [
+  Expect<Equal<EndsWith<'abc', 'bc'>, true>>,
+  Expect<Equal<EndsWith<'abc', 'abc'>, true>>,
+  Expect<Equal<EndsWith<'abc', 'd'>, false>>,
+  Expect<Equal<EndsWith<'abc', 'ac'>, false>>,
+  Expect<Equal<EndsWith<'abc', ''>, true>>,
+  Expect<Equal<EndsWith<'abc', ' '>, false>>,
+]
+```
+
+
+
+### 简述思路
+这题的思路是递归的去判断是否以某个字符串结尾，递归的终止条件是`T`与`U`相等，或者`T`为空字符串，这两种情况都是返回`true`，否则就是去递归的去判断`T`去除掉第一个字符后的子串是否以`U`结尾；
+
+```typescript
+type EndsWith<T extends string, U extends string> = T extends U ? true : T extends `${infer P}${infer K}` ? EndsWith<K,U> : false
+```
