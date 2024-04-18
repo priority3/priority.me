@@ -1,5 +1,5 @@
 import PostsList from './pageComponents/postsList'
-import { ROUTERLISTTYPE } from '@/constants/router'
+import { RouterListType } from '@/constants/router'
 export default function Posts() {
   return (
     <div>
@@ -7,7 +7,7 @@ export default function Posts() {
         <h1 className="text-3xl">
           P.notes
         </h1>
-        <PostsList routerType={ROUTERLISTTYPE.NORMALPAGE} />
+        <PostsList routerType={RouterListType.normalPage} />
       </div>
 
     </div>

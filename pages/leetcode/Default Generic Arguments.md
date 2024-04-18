@@ -4,6 +4,7 @@ title: Default Generic Arguments
 date: 2024-03-12
 desc: for typehero
 language: EN/CN
+tag: typehero
 ---
 
 [[toc]]

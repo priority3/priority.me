@@ -24,7 +24,8 @@
   },
   "include": [
     "src",
-    "config"
+    "config",
+    "types"
   ],
   "exclude": ["node_modules", "dist"]
 }

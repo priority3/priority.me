@@ -1,5 +1,5 @@
 import PostsList from './pageComponents/postsList'
-import { ROUTERLISTTYPE } from '@/constants/router'
+import { RouterListType } from '@/constants/router'
 export default function Posts() {
   return (
     <>
@@ -8,7 +8,7 @@ export default function Posts() {
           P.Leetcode & typehero
         </h1>
         <p>record my <a className='a-border' href="https://leetcode.com/priority3/">leetcode</a> & <a className='a-border' href="https://typehero.dev/@priority3">typehero</a> travel</p>
-        <PostsList routerType={ROUTERLISTTYPE.LEETCODEPAGE} />
+        <PostsList routerType={RouterListType.LeetcodePage} />
       </div>
     </>
   )

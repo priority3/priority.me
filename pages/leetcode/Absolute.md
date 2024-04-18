@@ -4,6 +4,7 @@ title: Absolute
 date: 2024-03-15
 desc: for typehero
 language: EN/CN
+tag: typehero
 ---
 
 [[toc]]
