@@ -4,6 +4,7 @@ title: Hello world
 date: 2024-03-13
 desc: for typehero
 language: EN/CN
+tag: typehero
 ---
 
 [[toc]]

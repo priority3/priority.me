@@ -1,7 +1,7 @@
 import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { routes } from '@/router'
 import type { RouteMeta, RouterList } from '#/page'
-import { ROUTERLISTTYPE } from '@/constants/router'
+import { RouterListType, ShouldShowTag } from '@/constants/router'
 
 interface IndexRoutePageObj extends IndexRouteObject {
   meta?: {
@@ -15,9 +15,11 @@ interface NonIndexRoutePageObj extends NonIndexRouteObject {
 }
 
 type RoutePageObj = IndexRoutePageObj | NonIndexRoutePageObj
-export function useRouter(routerType?: `${ROUTERLISTTYPE}`) {
+export function useRouter(routerType?: `${RouterListType}`) {
   const pageRaws = routes.filter((page: RoutePageObj) => {
-    return routerType ? page.path?.includes(routerType) : (page.path?.includes(ROUTERLISTTYPE.LEETCODEPAGE) || page.path?.includes(ROUTERLISTTYPE.NORMALPAGE))
+    return routerType
+      ? page.path?.includes(routerType)
+      : (page.path?.includes(RouterListType.LeetcodePage) || page.path?.includes(RouterListType.normalPage))
   })
   const pageRaw: RoutePageObj[] = []
   pageRaws.forEach((page) => {
@@ -46,5 +48,6 @@ export function useRouter(routerType?: `${ROUTERLISTTYPE}`) {
   return {
     routes,
     pageList,
+    showTag: routerType && ShouldShowTag[routerType],
   }
 }

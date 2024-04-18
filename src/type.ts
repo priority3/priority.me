@@ -1,5 +1,5 @@
-import type { ROUTERLISTTYPE } from './constants/router'
+import type { RouterListType } from './constants/router'
 
 export interface RouterTypeListProps {
-  routerType: `${ROUTERLISTTYPE}`
+  routerType: `${RouterListType}`
 }
