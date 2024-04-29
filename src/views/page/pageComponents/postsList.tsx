@@ -52,7 +52,7 @@ export default function PostsList({ routerType }: RouterTypeListProps) {
         showTag && (
           <>
             <div className='absolute top--3 w-30% h-.1 rounded-md border bg-dark-50 op-20' />
-            <div className='fsc gap-2 text-1.5'>
+            <div className='fsc gap-2'>
               <span className="text-[#6E6E6E]">#Tag</span>
               <button
                 className={
