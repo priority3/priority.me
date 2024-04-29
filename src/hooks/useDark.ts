@@ -1,38 +1,39 @@
 import { useEffect, useState } from 'react'
+import { Theme } from '@/constants'
+
+const StoryKey = 'darkModel'
+
+function operateHtmlClassList(theme: Theme) {
+  const el = document.querySelector('html')
+  if (theme === Theme.light) {
+    el?.classList.remove(Theme.dark)
+    el?.classList.add(Theme.light)
+  }
+  else {
+    el?.classList.remove(Theme.light)
+    el?.classList.add(Theme.dark)
+  }
+}
 
 export function useDark() {
-  const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
-  const defaultTheme = localStorage.getItem('theme') ?? (themeMedia.matches ? 'dark' : 'light')
+  const [theme, setTheme] = useState<Theme>()
+  const isDark = theme === Theme.dark
 
-  // const defaultTheme = localStorage.getItem('theme') || 'light'
+  useEffect(() => {
+    const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
+    const defaultTheme
+      = (localStorage.getItem(StoryKey) ?? (themeMedia.matches ? Theme.dark : Theme.light)) as Theme
+    setTheme(defaultTheme)
+    operateHtmlClassList(defaultTheme)
+  }, [])
 
-  const [theme, setTheme] = useState(
-    defaultTheme,
-  )
-  const [isDark, setIsDark] = useState(false)
-  const toggleTheme = () => {
-    if (theme === 'light')
-      setTheme('dark')
-
-    else
-      setTheme('light')
+  const toggle = () => {
+    const toggledTheme = theme === Theme.light ? Theme.dark : Theme.light
+    operateHtmlClassList(toggledTheme)
+    setTheme(toggledTheme)
+    localStorage.setItem(StoryKey, toggledTheme)
   }
-  useEffect(() => {
-    localStorage.setItem('theme', theme)
-    const el = document.querySelector('html')
-    if (theme === 'light') {
-      el?.classList.remove('dark')
-      el?.classList.add('light')
-    }
-    else {
-      el?.classList.remove('light')
-      el?.classList.add('dark')
-    }
-  }, [theme])
 
-  useEffect(() => {
-    setIsDark(theme === 'dark')
-  }, [theme])
-
-  return { isDark, toggleTheme }
+  return { isDark, toggle }
 }
+

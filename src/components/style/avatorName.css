@@ -1,0 +1,27 @@
+#path1 {
+  stroke-dasharray: 3600;
+  stroke-dashoffset: 3600;
+  fill: transparent;
+  animation: drawSignature 32s linear infinite;
+}
+
+@keyframes drawSignature {
+  0% {
+    stroke-dashoffset: 3600;
+  }
+
+  15% {
+    fill: transparent;
+  }
+
+  55%,
+  75% {
+    stroke-dashoffset: 0;
+  }
+
+  90%,
+  100% {
+    stroke-dashoffset: 3600;
+    fill: transparent;
+  }
+}
