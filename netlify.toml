@@ -5,6 +5,7 @@
 [build]
   publish = "dist"
   command = "npx pnpm@latest-8 i --store=node_modules/.pnpm-store && npx pnpm run build"
+  ignore = "git log -1 --pretty=%B | grep -qi '^wip'"
 
 [[redirects]]
   from = "/*"
