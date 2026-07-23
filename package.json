@@ -7,12 +7,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "setup:keystatic": "node scripts/setup-keystatic-github.mjs",
+    "setup:keystatic:netlify": "node scripts/push-keystatic-env-to-netlify.mjs"
   },
   "dependencies": {
+    "@astrojs/netlify": "6.6.5",
     "@keystar/ui": "0.8.0",
     "@keystatic/astro": "^5.2.0",
     "@keystatic/core": "^0.6.0",
+    "@netlify/blobs": "^10.7.9",
     "astro": "^5.7.10",
     "dayjs": "^1.11.13",
     "react": "^19.2.8",
@@ -25,6 +29,7 @@
     "@astrojs/react": "^4.4.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "netlify-cli": "^26.2.0",
     "typescript": "^5.7.3"
   },
   "engines": {

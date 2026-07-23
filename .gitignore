@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 .astro
+.netlify
 *.local
 .env
 .env.*
@@ -26,3 +27,6 @@ dist-ssr
 *.sln
 *.sw?
 .eslintcache
+
+# Local Netlify folder
+.netlify
