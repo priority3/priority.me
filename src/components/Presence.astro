@@ -1,0 +1,309 @@
+---
+/**
+ * Live Presence chip — sits to the right of the PR. brand mark.
+ * Design spirit: Innei header activity (compact icon + name, soft pill).
+ * Data from GET /api/presence (ProcessReporter → this site).
+ */
+---
+
+<div
+  class="presence"
+  data-presence
+  hidden
+  aria-live="polite"
+  aria-atomic="true"
+>
+  <span class="presence__dot" aria-hidden="true"></span>
+  <span class="presence__icon-wrap" data-presence-icon>
+    <svg
+      class="presence__fallback-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+      <path d="M8 20h8"></path>
+      <path d="M12 18v2"></path>
+    </svg>
+  </span>
+  <span class="presence__text">
+    <span class="presence__label" data-presence-label></span>
+    <span class="presence__sub" data-presence-sub hidden></span>
+  </span>
+</div>
+
+<style>
+  .presence {
+    --presence-max: 10.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    max-width: var(--presence-max);
+    min-width: 0;
+    height: 1.85rem;
+    padding: 0 0.55rem 0 0.4rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-neutral-2) 72%, var(--color-paper));
+    color: var(--color-neutral-8);
+    font-size: var(--text-label-12);
+    line-height: 1.2;
+    user-select: none;
+    transition:
+      opacity 0.25s var(--ease-breathe),
+      transform 0.25s var(--ease-breathe),
+      border-color 0.2s var(--ease-breathe),
+      background-color 0.2s var(--ease-breathe);
+  }
+
+  .presence[hidden] {
+    display: none !important;
+  }
+
+  .presence:not([hidden]) {
+    animation: presence-in 0.35s var(--ease-breathe) both;
+  }
+
+  .presence:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+    background: var(--color-neutral-2);
+  }
+
+  .presence__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 45%, transparent);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .presence__dot {
+      animation: presence-pulse 2.2s ease-out infinite;
+    }
+  }
+
+  .presence__icon-wrap {
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 0.28rem;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-paper);
+    color: var(--color-neutral-6);
+  }
+
+  .presence__icon-wrap :global(img),
+  .presence__icon-wrap :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .presence__fallback-icon {
+    width: 0.85rem !important;
+    height: 0.85rem !important;
+    opacity: 0.85;
+  }
+
+  .presence__text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .presence__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-neutral-9);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .presence__sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.625rem;
+    color: var(--color-neutral-6);
+  }
+
+  .presence__sub[hidden] {
+    display: none !important;
+  }
+
+  /* Mobile: keep chip compact so header doesn't overflow */
+  @media (max-width: 639px) {
+    .presence {
+      --presence-max: 6.5rem;
+      padding-right: 0.45rem;
+    }
+
+    .presence__sub {
+      display: none !important;
+    }
+  }
+
+  @keyframes presence-in {
+    from {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes presence-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 50%, transparent);
+    }
+    70% {
+      box-shadow: 0 0 0 0.35rem transparent;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+</style>
+
+<script>
+  type PresencePublic = {
+    online: boolean
+    processName: string | null
+    processInfo: {
+      name?: string | null
+      iconUrl?: string | null
+    } | null
+    mediaInfo: {
+      title?: string | null
+      artist?: string | null
+      processName?: string | null
+    } | null
+    timestamp: number | null
+  }
+
+  const POLL_MS = 20_000
+  const root = document.querySelector<HTMLElement>('[data-presence]')
+  if (root) {
+    const labelEl = root.querySelector<HTMLElement>('[data-presence-label]')
+    const subEl = root.querySelector<HTMLElement>('[data-presence-sub]')
+    const iconWrap = root.querySelector<HTMLElement>('[data-presence-icon]')
+    const fallbackSvg = iconWrap?.querySelector('svg')?.cloneNode(true) as
+      | SVGElement
+      | undefined
+
+    let lastKey = ''
+
+    function mediaLine(data: PresencePublic): string | null {
+      const m = data.mediaInfo
+      if (!m?.title) return null
+      const artist = m.artist?.trim()
+      return artist ? `${m.title} · ${artist}` : m.title
+    }
+
+    function display(data: PresencePublic) {
+      if (!data.online || !labelEl || !subEl || !iconWrap) {
+        root!.hidden = true
+        lastKey = ''
+        return
+      }
+
+      const processName =
+        data.processName || data.mediaInfo?.processName || 'Active'
+      const media = mediaLine(data)
+      // Prefer showing media when present (Innei-like "listening" vibe)
+      const primary = media
+        ? data.mediaInfo?.processName || processName
+        : processName
+      const secondary = media
+        ? media
+        : null
+
+      const key = `${primary}|${secondary ?? ''}|${data.processInfo?.iconUrl ?? ''}`
+      if (key === lastKey) {
+        root!.hidden = false
+        return
+      }
+      lastKey = key
+
+      labelEl.textContent = primary
+      if (secondary) {
+        subEl.textContent = secondary
+        subEl.hidden = false
+      } else {
+        subEl.textContent = ''
+        subEl.hidden = true
+      }
+
+      const iconUrl = data.processInfo?.iconUrl
+      iconWrap.replaceChildren()
+      if (iconUrl) {
+        const img = document.createElement('img')
+        img.src = iconUrl
+        img.alt = ''
+        img.loading = 'lazy'
+        img.decoding = 'async'
+        img.referrerPolicy = 'no-referrer'
+        img.onerror = () => {
+          iconWrap.replaceChildren()
+          if (fallbackSvg) iconWrap.appendChild(fallbackSvg.cloneNode(true))
+        }
+        iconWrap.appendChild(img)
+      } else if (fallbackSvg) {
+        iconWrap.appendChild(fallbackSvg.cloneNode(true))
+      }
+
+      const titleParts = [primary, secondary].filter(Boolean)
+      root!.title = titleParts.join(' — ')
+      root!.setAttribute('aria-label', `正在使用 ${titleParts.join('，')}`)
+      root!.hidden = false
+    }
+
+    async function tick() {
+      try {
+        const res = await fetch('/api/presence', {
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+        })
+        if (!res.ok) {
+          root!.hidden = true
+          return
+        }
+        const data = (await res.json()) as PresencePublic
+        display(data)
+      } catch {
+        // Stay quiet when offline / API missing in pure static preview
+      }
+    }
+
+    tick()
+    const id = window.setInterval(tick, POLL_MS)
+    document.addEventListener(
+      'visibilitychange',
+      () => {
+        if (document.visibilityState === 'visible') tick()
+      },
+      { passive: true },
+    )
+    window.addEventListener(
+      'pagehide',
+      () => {
+        window.clearInterval(id)
+      },
+      { once: true },
+    )
+  }
+</script>
