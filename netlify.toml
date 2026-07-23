@@ -6,3 +6,5 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--version"
+  # Bake GitHub storage into Keystatic config at build time
+  KEYSTATIC_STORAGE = "github"
