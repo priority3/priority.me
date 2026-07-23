@@ -36,7 +36,7 @@ export async function getLeetcodePosts(tag?: 'leetcode' | 'typehero' | 'all') {
 
 export function postHref(collection: 'blogs' | 'leetcode', id: string) {
   const base = collection === 'blogs' ? '/posts' : '/leetcode'
-  // Content Layer ids are already slugified (e.g. default-generic-arguments)
-  const slug = id.replace(/\.md$/, '')
+  // Content Layer ids are slugified; strip any content extension
+  const slug = id.replace(/\.(md|mdoc)$/, '')
   return `${base}/${slug}`
 }

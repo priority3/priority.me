@@ -14,20 +14,12 @@ const posts = (await getBlogPosts()).slice(0, 5)
   <MobileNav path="/" />
 
   <section class="hero">
-    <h1 class="hero__greeting">Hi, I'm <em>raze</em>.</h1>
+    <h1 class="hero__greeting">Hi, I'm <em>PR.</em></h1>
     <p class="hero__lead">
       Student · frontend · open source. Building small tools and writing things down.
     </p>
     <p class="hero__tagline">an independent developer coding with curiosity</p>
     <SocialLinks />
-  </section>
-
-  <section class="home-section" aria-labelledby="recent-posts">
-    <div class="home-section__head">
-      <h2 class="section-title" id="recent-posts">近期笔墨</h2>
-      <a href="/posts">全部文稿 →</a>
-    </div>
-    <PostList posts={posts} collection="blogs" />
   </section>
 
   <section class="home-section" aria-labelledby="recent-projects">
@@ -36,5 +28,13 @@ const posts = (await getBlogPosts()).slice(0, 5)
       <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
     </div>
     <ProjectList />
+  </section>
+
+  <section class="home-section" aria-labelledby="recent-posts">
+    <div class="home-section__head">
+      <h2 class="section-title" id="recent-posts">近期笔墨</h2>
+      <a href="/posts">全部文稿 →</a>
+    </div>
+    <PostList posts={posts} collection="blogs" />
   </section>
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import { nav, site } from '@/lib/site'
 import ThemeToggle from '@/components/ThemeToggle.astro'
+import BrandMark from '@/components/BrandMark.astro'
 
 interface Props {
   path?: string
@@ -16,7 +17,10 @@ function isActive(href: string) {
 
 <header class="site-header">
   <div class="shell site-header__inner">
-    <a class="brand" href="/" aria-label={site.title}>{site.name}</a>
+    <a class="brand" href="/" aria-label={site.title}>
+      <BrandMark />
+      <span class="sr-only">{site.name}</span>
+    </a>
 
     <nav class="nav-pill" aria-label="Primary">
       {

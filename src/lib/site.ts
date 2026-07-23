@@ -48,18 +48,18 @@ export const socialLinks = [
 
 export const projects = [
   {
-    name: 'vite-plugin-react-markdown',
-    description: 'Use markdown in React & Vite',
-    href: 'https://github.com/priority3/vite-plugin-react-markdown',
+    name: 'runPaceFlow',
+    description: 'WIP… Running page with modern UI design',
+    href: 'https://github.com/priority3/runPaceFlow',
   },
   {
-    name: 'leetcode-daily',
-    description: 'Daily algorithms in TS / Python / Rust',
-    href: 'https://github.com/priority3/rookie-Algorithm',
+    name: 'majiang-ex',
+    description: 'Mahjong exercise tool',
+    href: 'https://github.com/priority3/majiang-ex',
   },
   {
-    name: 'p-typewriter',
-    description: 'Typewriter component for Vue 3',
-    href: 'https://github.com/priority3/p-typewriter',
+    name: 'email-otp-autofill',
+    description: 'Local email OTP fetcher + Chrome extension (QQ Mail / Outlook)',
+    href: 'https://github.com/priority3/email-otp-autofill',
   },
 ] as const
