@@ -1,0 +1,21 @@
+/page/posts      /posts      301
+/page/leetcode   /leetcode   301
+/home            /           301
+
+# Old blog paths → new /posts (filename case / slug)
+/blogs/apply-Jetbrains   /posts/apply-jetbrains   301
+/blogs/blog-site-addfun  /posts/blog-site-addfun  301
+/blogs/diff              /posts/diff              301
+/blogs/toy-record        /posts/toy-record        301
+/blogs/vue3-contribution /posts/vue3-contribution 301
+/blogs/why-the-blog      /posts/why-the-blog      301
+/blogs/*                 /posts/:splat            301
+
+# Old leetcode paths
+/leetcode/Absolute                    /leetcode/absolute                    301
+/leetcode/Awaited                     /leetcode/awaited                     301
+/leetcode/Biweekly133                 /leetcode/biweekly133                 301
+/leetcode/Biweekly134                 /leetcode/biweekly134                 301
+/leetcode/MyCapitalize                /leetcode/mycapitalize                301
+/leetcode/Hello%20World               /leetcode/hello-world                 301
+/leetcode/Default%20Generic%20Arguments /leetcode/default-generic-arguments 301

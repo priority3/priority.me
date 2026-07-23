@@ -1,0 +1,60 @@
+---
+import '@/styles/global.css'
+import '@/styles/prose.css'
+import Header from '@/components/Header.astro'
+import Footer from '@/components/Footer.astro'
+import { site } from '@/lib/site'
+
+interface Props {
+  title?: string
+  description?: string
+  /** current path for nav highlight, e.g. /, /posts, /leetcode */
+  path?: string
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  path = '/',
+} = Astro.props
+
+const pageTitle = title === site.title ? title : `${title} · ${site.name}`
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content={site.author} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      ;(function () {
+        try {
+          var key = 'darkModel'
+          var stored = localStorage.getItem(key)
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          // preserve old site semantics: stored "dark"/"light", default prefers
+          var theme = stored || (prefersDark ? 'dark' : 'light')
+          if (theme === 'dark') document.documentElement.classList.add('dark')
+          else document.documentElement.classList.remove('dark')
+        } catch (_) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <Header path={path} />
+    <main class="site-main">
+      <div class="shell">
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

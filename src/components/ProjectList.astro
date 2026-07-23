@@ -1,0 +1,19 @@
+---
+import { projects } from '@/lib/site'
+---
+
+<ul class="project-list">
+  {
+    projects.map(project => (
+      <li class="project-item">
+        <a href={project.href} target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3 class="project-item__name">{project.name}</h3>
+            <p class="project-item__desc">{project.description}</p>
+          </div>
+          <span class="project-item__arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

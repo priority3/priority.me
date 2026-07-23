@@ -1,0 +1,75 @@
+---
+interface Heading {
+  depth: number
+  slug: string
+  text: string
+}
+
+interface Props {
+  headings: Heading[]
+  /** max heading depth to include, default 3 */
+  maxDepth?: number
+}
+
+const { headings, maxDepth = 3 } = Astro.props
+const items = headings.filter(h => h.depth >= 2 && h.depth <= maxDepth)
+---
+
+{
+  items.length > 0 && (
+    <nav class="toc" aria-label="目录">
+      <p class="toc__title">目录</p>
+      <ul>
+        {items.map(h => (
+          <li class={`toc__item toc__item--h${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    margin: 0 0 2rem;
+    padding: 1rem 1.15rem;
+    background: var(--color-neutral-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .toc__title {
+    margin: 0 0 0.6rem;
+    font-size: var(--text-label-12);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-neutral-6);
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc__item {
+    margin: 0.25rem 0;
+  }
+
+  .toc__item--h3 {
+    padding-left: 0.85rem;
+  }
+
+  .toc a {
+    font-size: var(--text-copy-13);
+    color: var(--color-neutral-7);
+    text-decoration: none;
+    line-height: 1.5;
+  }
+
+  .toc a:hover {
+    color: var(--color-accent);
+  }
+</style>

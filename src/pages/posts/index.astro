@@ -1,0 +1,18 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import MobileNav from '@/components/MobileNav.astro'
+import PostList from '@/components/PostList.astro'
+import { getBlogPosts } from '@/lib/posts'
+
+const posts = await getBlogPosts()
+---
+
+<BaseLayout title="文稿" description="Notes and writings." path="/posts">
+  <MobileNav path="/posts" />
+
+  <p class="eyebrow">Blog</p>
+  <h1 class="page-title">文稿</h1>
+  <p class="page-lead">共 {posts.length} 篇</p>
+
+  <PostList posts={posts} collection="blogs" />
+</BaseLayout>

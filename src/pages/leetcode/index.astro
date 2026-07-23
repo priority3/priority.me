@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import MobileNav from '@/components/MobileNav.astro'
+import PostList from '@/components/PostList.astro'
+import { getLeetcodePosts } from '@/lib/posts'
+
+const posts = await getLeetcodePosts()
+---
+
+<BaseLayout
+  title="Leetcode"
+  description="LeetCode & TypeHero notes."
+  path="/leetcode"
+>
+  <MobileNav path="/leetcode" />
+
+  <p class="eyebrow">Practice</p>
+  <h1 class="page-title">Leetcode & TypeHero</h1>
+  <p class="page-lead">
+    记录
+    <a href="https://leetcode.com/priority3/" target="_blank" rel="noopener noreferrer">LeetCode</a>
+    与
+    <a href="https://typehero.dev/@priority3" target="_blank" rel="noopener noreferrer">TypeHero</a>
+    的旅途 · 共 {posts.length} 篇
+  </p>
+
+  <div class="tag-filter" data-tag-filter>
+    <span class="tag-filter__label">#Tag</span>
+    <button type="button" data-tag="all" aria-pressed="true">All</button>
+    <button type="button" data-tag="leetcode" aria-pressed="false">Leetcode</button>
+    <button type="button" data-tag="typehero" aria-pressed="false">Typehero</button>
+  </div>
+
+  <PostList posts={posts} collection="leetcode" showTag />
+</BaseLayout>
+
+<script>
+  const root = document.querySelector('[data-tag-filter]')
+  if (root) {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('button[data-tag]')
+    const items = document.querySelectorAll<HTMLElement>('.post-item[data-tag]')
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag ?? 'all'
+        buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)))
+        items.forEach((item) => {
+          const itemTag = item.dataset.tag ?? ''
+          const show = tag === 'all' || itemTag === tag
+          item.classList.toggle('is-hidden', !show)
+        })
+      })
+    })
+  }
+</script>

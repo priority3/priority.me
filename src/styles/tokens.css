@@ -1,0 +1,91 @@
+/*
+ * Hand-copied Yohaku-inspired design tokens.
+ * Source inspiration: https://github.com/Innei/Yohaku (MIT design-system)
+ * One accent, three neutral tiers, paper surface, the rest is whitespace.
+ */
+
+:root {
+  /* Accent — 梅 ume */
+  --color-accent: #c56473;
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
+
+  /* Neutral 1–10 · parchment undertone (R ≥ G ≥ B) */
+  --color-neutral-1: #f9f8f5;
+  --color-neutral-2: #f0efeb;
+  --color-neutral-3: #e3e1db;
+  --color-neutral-4: #d0cec6;
+  --color-neutral-5: #a8a69f;
+  --color-neutral-6: #787670;
+  --color-neutral-7: #5c5a55;
+  --color-neutral-8: #403f3a;
+  --color-neutral-9: #24231f;
+  --color-neutral-10: #141312;
+
+  /* Surfaces */
+  --color-paper: #fefefb;
+  --color-border: rgba(24, 24, 27, 0.1);
+  --color-hair: rgba(24, 24, 27, 0.08);
+
+  /* Semantic */
+  --color-info: #3d6896;
+  --color-success: #5e9f7e;
+  --color-warning: #a87a3d;
+  --color-error: #a64953;
+
+  /* Type */
+  --font-sans:
+    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
+    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --font-serif:
+    'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', STSong, Georgia,
+    'Times New Roman', serif;
+  --font-mono:
+    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* Scale (role + px) */
+  --text-caption-10: 0.625rem;
+  --text-label-12: 0.75rem;
+  --text-copy-13: 0.8125rem;
+  --text-copy-14: 0.875rem;
+  --text-copy-15: 0.9375rem;
+  --text-copy-16: 1rem;
+  --text-title-20: 1.25rem;
+  --text-title-24: 1.5rem;
+  --text-title-28: 1.75rem;
+  --text-display-36: 2.25rem;
+
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-body: 1.65;
+
+  --ease-breathe: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --shell-max: 720px;
+  --shell-pad-x: 1.5rem;
+  --header-h: 3.5rem;
+}
+
+html.dark {
+  --color-accent: #d67a88;
+
+  --color-neutral-1: #1c1c1e;
+  --color-neutral-2: #242426;
+  --color-neutral-3: #2e2e30;
+  --color-neutral-4: #3a3a3c;
+  --color-neutral-5: #636366;
+  --color-neutral-6: #8e8e93;
+  --color-neutral-7: #aeaeb2;
+  --color-neutral-8: #c7c7cc;
+  --color-neutral-9: #e5e5ea;
+  --color-neutral-10: #f5f5f7;
+
+  --color-paper: rgb(28, 28, 30);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-hair: rgba(255, 255, 255, 0.08);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
