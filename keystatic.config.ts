@@ -1,15 +1,28 @@
 import { collection, config, fields } from '@keystatic/core'
 
 /**
- * Local-mode CMS. Admin UI at /keystatic during `pnpm dev` only
- * (site remains `output: 'static'` for production).
+ * Content CMS for blogs + leetcode Markdown under src/content/*.
  *
- * Content files stay Markdown with YAML frontmatter under src/content/*.
+ * Storage:
+ * - local  → `pnpm dev` (writes files on disk)
+ * - github → production on Netlify (commits via GitHub App; only repo writers)
+ *
+ * Override: KEYSTATIC_STORAGE=local|github
  */
+const useGithub =
+  process.env.KEYSTATIC_STORAGE === 'github'
+  || (process.env.NODE_ENV === 'production' && process.env.KEYSTATIC_STORAGE !== 'local')
+
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: useGithub
+    ? {
+        kind: 'github',
+        // Must match the GitHub repo connected to Netlify
+        repo: 'priority3/priority.me',
+      }
+    : {
+        kind: 'local',
+      },
   ui: {
     brand: { name: 'priority.me' },
   },
@@ -52,6 +65,8 @@ export default config({
         }),
         content: fields.markdoc({
           label: 'Content',
+          // Existing posts are .md (not default .mdoc)
+          extension: 'md',
           options: {
             formatting: true,
             dividers: true,
@@ -109,6 +124,7 @@ export default config({
         }),
         content: fields.markdoc({
           label: 'Content',
+          extension: 'md',
           options: {
             formatting: true,
             dividers: true,

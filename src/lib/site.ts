@@ -3,7 +3,7 @@ export const site = {
   title: 'P. · raze',
   description: "raze's personal site — notes, projects, and leetcode.",
   author: 'raze',
-  url: 'https://priority-me.netlify.app',
+  url: 'https://razet.me',
   github: 'https://github.com/priority3',
 }
 
