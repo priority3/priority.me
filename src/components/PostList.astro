@@ -1,0 +1,34 @@
+---
+import type { PostEntry } from '@/lib/posts'
+import { formatDate, postHref } from '@/lib/posts'
+
+interface Props {
+  posts: PostEntry[]
+  collection: 'blogs' | 'leetcode'
+  showTag?: boolean
+}
+
+const { posts, collection, showTag = false } = Astro.props
+---
+
+<ul class="post-list">
+  {
+    posts.map(post => (
+      <li class="post-item" data-tag={post.data.tag ?? ''}>
+        <a href={postHref(collection, post.id)}>
+          <h3 class="post-item__title">{post.data.title}</h3>
+          <time class="post-item__date" datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date)}
+          </time>
+          {post.data.desc && <p class="post-item__desc">{post.data.desc}</p>}
+          {showTag && post.data.tag && (
+            <div class="post-item__tags">
+              <span class="chip">#{post.data.tag}</span>
+              {post.data.language && <span class="chip">{post.data.language}</span>}
+            </div>
+          )}
+        </a>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import MobileNav from '@/components/MobileNav.astro'
+import SocialLinks from '@/components/SocialLinks.astro'
+import PostList from '@/components/PostList.astro'
+import ProjectList from '@/components/ProjectList.astro'
+import { getBlogPosts } from '@/lib/posts'
+import { site } from '@/lib/site'
+
+const posts = (await getBlogPosts()).slice(0, 5)
+---
+
+<BaseLayout title={site.title} path="/">
+  <MobileNav path="/" />
+
+  <section class="hero">
+    <h1 class="hero__greeting">Hi, I'm <em>raze</em>.</h1>
+    <p class="hero__lead">
+      Student · frontend · open source. Building small tools and writing things down.
+    </p>
+    <p class="hero__tagline">an independent developer coding with curiosity</p>
+    <SocialLinks />
+  </section>
+
+  <section class="home-section" aria-labelledby="recent-posts">
+    <div class="home-section__head">
+      <h2 class="section-title" id="recent-posts">近期笔墨</h2>
+      <a href="/posts">全部文稿 →</a>
+    </div>
+    <PostList posts={posts} collection="blogs" />
+  </section>
+
+  <section class="home-section" aria-labelledby="recent-projects">
+    <div class="home-section__head">
+      <h2 class="section-title" id="recent-projects">项目</h2>
+      <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </div>
+    <ProjectList />
+  </section>
+</BaseLayout>

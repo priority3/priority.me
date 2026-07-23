@@ -1,0 +1,27 @@
+---
+import { nav } from '@/lib/site'
+
+interface Props {
+  path?: string
+}
+
+const { path = '/' } = Astro.props
+
+function isActive(href: string) {
+  if (href === '/') return path === '/'
+  return path === href || path.startsWith(`${href}/`)
+}
+---
+
+<nav class="nav-mobile" aria-label="Mobile">
+  {
+    nav.map(item => (
+      <a
+        href={item.href}
+        aria-current={isActive(item.href) ? 'page' : undefined}
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</nav>

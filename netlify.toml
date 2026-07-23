@@ -1,13 +1,8 @@
-[build.environment]
-  NPM_FLAGS = "--version"
-  NODE_VERSION = "16"
-
 [build]
   publish = "dist"
-  command = "npx pnpm@latest-8 i --store=node_modules/.pnpm-store && npx pnpm run build"
+  command = "npx pnpm@9 i --frozen-lockfile && npx pnpm run build"
   ignore = "git log -1 --pretty=%B | grep -qi '^wip'"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--version"
