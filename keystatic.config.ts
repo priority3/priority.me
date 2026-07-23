@@ -5,13 +5,23 @@ import { collection, config, fields } from '@keystatic/core'
  *
  * Storage:
  * - local  → `pnpm dev` (writes files on disk)
- * - github → production on Netlify (commits via GitHub App; only repo writers)
+ * - github → Netlify production (commits via GitHub App; only repo writers)
  *
  * Override: KEYSTATIC_STORAGE=local|github
+ *
+ * Netlify sets NETLIFY=true / CONTEXT during build & runtime.
  */
 const useGithub =
   process.env.KEYSTATIC_STORAGE === 'github'
-  || (process.env.NODE_ENV === 'production' && process.env.KEYSTATIC_STORAGE !== 'local')
+  || (
+    process.env.KEYSTATIC_STORAGE !== 'local'
+    && (
+      process.env.NETLIFY === 'true'
+      || process.env.CONTEXT === 'production'
+      || process.env.CONTEXT === 'deploy-preview'
+      || process.env.CONTEXT === 'branch-deploy'
+    )
+  )
 
 export default config({
   storage: useGithub
