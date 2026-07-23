@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import '@/styles/prose.css'
 import Header from '@/components/Header.astro'
 import Footer from '@/components/Footer.astro'
+import Umami from '@/components/Umami.astro'
 import { site } from '@/lib/site'
 
 interface Props {
@@ -33,7 +34,14 @@ const pageTitle = title === site.title ? title : `${title} · ${site.name}`
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
     <title>{pageTitle}</title>
+    <Umami />
     <script is:inline>
       ;(function () {
         try {

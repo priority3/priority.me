@@ -156,15 +156,14 @@ button {
 }
 
 .brand {
-  font-family: var(--font-serif);
-  font-size: var(--text-title-20);
-  font-weight: 500;
-  color: var(--color-neutral-10);
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  flex-shrink: 0;
 }
 
 .brand:hover {
-  color: var(--color-accent);
+  /* color handled on BrandMark */
 }
 
 .nav-pill {

@@ -9,16 +9,23 @@ const postSchema = z.object({
   subtitle: z.string().optional(),
   language: z.string().optional(),
   display: z.boolean().default(true),
-  tag: z.enum(['leetcode', 'typehero']).optional(),
+  // Keystatic select may write ""; treat as unset
+  tag: z.preprocess(
+    val => (val === '' || val == null ? undefined : val),
+    z.enum(['leetcode', 'typehero']).optional(),
+  ),
 })
 
+// Keystatic markdoc field may save as .mdoc; keep loading both.
+const contentPattern = '**/*.{md,mdoc}'
+
 const blogs = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blogs' }),
+  loader: glob({ pattern: contentPattern, base: './src/content/blogs' }),
   schema: postSchema,
 })
 
 const leetcode = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/leetcode' }),
+  loader: glob({ pattern: contentPattern, base: './src/content/leetcode' }),
   schema: postSchema,
 })
 
