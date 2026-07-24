@@ -9,19 +9,14 @@ import { collection, config, fields } from '@keystatic/core'
  *
  * Override: KEYSTATIC_STORAGE=local|github
  *
- * Netlify sets NETLIFY=true / CONTEXT during build & runtime.
+ * Reason: Admin UI runs in the browser. `process.env` is empty in the client
+ * bundle, so storage mode is inlined at build time via Vite define
+ * (`__KEYSTATIC_USE_GITHUB__` from astro.config.mjs). Without that, production
+ * incorrectly used local mode → `/api/keystatic/tree` 404 → "Not Found" JSON error.
  */
-const useGithub =
-  process.env.KEYSTATIC_STORAGE === 'github'
-  || (
-    process.env.KEYSTATIC_STORAGE !== 'local'
-    && (
-      process.env.NETLIFY === 'true'
-      || process.env.CONTEXT === 'production'
-      || process.env.CONTEXT === 'deploy-preview'
-      || process.env.CONTEXT === 'branch-deploy'
-    )
-  )
+declare const __KEYSTATIC_USE_GITHUB__: boolean
+
+const useGithub = __KEYSTATIC_USE_GITHUB__
 
 export default config({
   storage: useGithub

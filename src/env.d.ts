@@ -18,5 +18,8 @@ interface ImportMeta {
 // KEYSTATIC_GITHUB_CLIENT_ID
 // KEYSTATIC_GITHUB_CLIENT_SECRET
 // KEYSTATIC_SECRET
-// KEYSTATIC_STORAGE
+// KEYSTATIC_STORAGE — local|github; also inlined for Admin via Vite define
 // PRESENCE_TOKEN — shared secret for ProcessReporter MixSpace destination
+
+/** Inlined by Vite in astro.config.mjs (client + SSR Keystatic bundles). */
+declare const __KEYSTATIC_USE_GITHUB__: boolean
