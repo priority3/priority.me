@@ -6,5 +6,5 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--version"
-  # Bake GitHub storage into Keystatic config at build time
+  # Build-time storage mode (read by astro.config.mjs → Vite define → Admin client)
   KEYSTATIC_STORAGE = "github"
