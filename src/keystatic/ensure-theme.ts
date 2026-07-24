@@ -3,6 +3,10 @@
 // 1) inject a late <style> tag with full skin CSS
 // 2) write critical CSS variables onto the live .kui-scheme--* node (inline
 //    custom properties always beat stylesheets for that element + descendants)
+//
+// Important: do not re-append the style tag / rewrite attrs on every mutation
+// without a re-entry guard — that creates a MutationObserver feedback loop
+// (blank/frozen Admin + Chrome "[Violation] setTimeout handler took …ms").
 
 import themeCss from '../styles/keystatic-theme.css?inline'
 
@@ -126,15 +130,24 @@ function ensureFont() {
   document.head.appendChild(link)
 }
 
+/** Keep the skin stylesheet last in <head> without thrashing the DOM. */
 function ensureStyleTag() {
   let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null
   if (!style) {
     style = document.createElement('style')
     style.id = STYLE_ID
     style.textContent = themeCss
+    document.head.appendChild(style)
+    return
   }
-  // last in <head> → wins stylesheet source-order fights
-  document.head.appendChild(style)
+
+  // Re-append only when something else stole the cascade tail.
+  if (
+    style.parentNode !== document.head
+    || document.head.lastElementChild !== style
+  ) {
+    document.head.appendChild(style)
+  }
 }
 
 function isDarkScheme(el: Element): boolean {
@@ -145,11 +158,15 @@ function isDarkScheme(el: Element): boolean {
 }
 
 function paintSchemeRoot(el: HTMLElement) {
-  const tokens = isDarkScheme(el) ? DARK : LIGHT
+  const mode = isDarkScheme(el) ? 'dark' : 'light'
+  // Skip work if we already painted this mode on this node.
+  if (el.getAttribute(APPLIED_ATTR) === mode) return
+
+  const tokens = mode === 'dark' ? DARK : LIGHT
   for (const [key, value] of Object.entries(tokens)) {
     el.style.setProperty(key, value)
   }
-  el.setAttribute(APPLIED_ATTR, isDarkScheme(el) ? 'dark' : 'light')
+  el.setAttribute(APPLIED_ATTR, mode)
 
   const bg = tokens['--kui-color-background-canvas']
   document.documentElement.style.background = bg
@@ -164,17 +181,64 @@ function skinAllSchemeRoots() {
 }
 
 let watching = false
+/** Blocks MutationObserver re-entry from our own DOM writes. */
+let applying = false
+let scheduled = false
+
+function applySkin() {
+  if (applying) return
+  applying = true
+  try {
+    ensureStyleTag()
+    skinAllSchemeRoots()
+  }
+  finally {
+    // MO callbacks are queued as microtasks; unlock only after they flush.
+    queueMicrotask(() => {
+      applying = false
+    })
+  }
+}
+
+/** Coalesce bursty React mounts into one paint. */
+function scheduleApply() {
+  if (applying || scheduled) return
+  scheduled = true
+  queueMicrotask(() => {
+    scheduled = false
+    applySkin()
+  })
+}
 
 function watch() {
   if (watching) return
   watching = true
 
-  const run = () => {
-    ensureStyleTag()
-    skinAllSchemeRoots()
-  }
+  const schemeSel =
+    '.kui-scheme--light, .kui-scheme--dark, .kui-scheme--auto'
 
-  const obs = new MutationObserver(run)
+  const isSchemeRelated = (el: Element) =>
+    el.matches(schemeSel) || el.querySelector(schemeSel) != null
+
+  const obs = new MutationObserver((records) => {
+    // Ignore mutations we caused (style/font inject). React mounts / scheme
+    // class flips still re-paint.
+    const relevant = records.some((r) => {
+      if (r.type === 'attributes' && r.attributeName === 'class') {
+        // Only the scheme root's own class flips matter (light/dark/auto).
+        return (r.target as Element).matches(schemeSel)
+      }
+      if (r.type !== 'childList') return false
+      for (const n of r.addedNodes) {
+        if (!(n instanceof Element)) continue
+        if (n.id === STYLE_ID || n.id === FONT_ID) continue
+        if (isSchemeRelated(n)) return true
+      }
+      return false
+    })
+    if (relevant) scheduleApply()
+  })
+
   obs.observe(document.documentElement, {
     childList: true,
     subtree: true,
@@ -184,16 +248,24 @@ function watch() {
 
   window
     .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', run)
+    .addEventListener('change', () => {
+      // Force re-paint when system theme flips under --auto.
+      document
+        .querySelectorAll<HTMLElement>(`[${APPLIED_ATTR}]`)
+        .forEach((el) => el.removeAttribute(APPLIED_ATTR))
+      scheduleApply()
+    })
 
-  ;[0, 30, 100, 300, 800, 2000].forEach((ms) => window.setTimeout(run, ms))
+  // A couple of delayed passes for the first Keystatic client mount only.
+  ;[50, 300].forEach((ms) => {
+    window.setTimeout(scheduleApply, ms)
+  })
 }
 
 export function ensureKeystaticTheme() {
   if (typeof document === 'undefined') return
   ensureFont()
-  ensureStyleTag()
-  skinAllSchemeRoots()
+  applySkin()
   watch()
 }
 
