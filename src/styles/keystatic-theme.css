@@ -1,0 +1,166 @@
+/*
+ * Keystatic Admin skin — maps site (Yohaku-inspired) tokens onto Keystar CSS vars.
+ * Keystatic uses classes `.kui-scheme--light` / `.kui-scheme--dark` on the app root.
+ * Accent on the public site is 梅 ume (#c56473); paper surface is parchment-toned.
+ * Fonts are injected from BrandMark.tsx (avoid @import in ?inline CSS).
+ */
+
+:root {
+  --ks-accent: #c56473;
+  --ks-accent-soft: color-mix(in srgb, var(--ks-accent) 14%, transparent);
+  --ks-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Light: parchment paper + ume accent ───────────────────────── */
+
+.kui-scheme--light {
+  /* Neutrals (site tokens, parchment undertone) */
+  --kui-color-scale-slate1: #fefefb;
+  --kui-color-scale-slate2: #f9f8f5;
+  --kui-color-scale-slate3: #f0efeb;
+  --kui-color-scale-slate4: #e3e1db;
+  --kui-color-scale-slate5: #d0cec6;
+  --kui-color-scale-slate6: #a8a69f;
+  --kui-color-scale-slate7: #787670;
+  --kui-color-scale-slate8: #5c5a55;
+  --kui-color-scale-slate9: #403f3a;
+  --kui-color-scale-slate10: #24231f;
+  --kui-color-scale-slate11: #141312;
+
+  /* Accent scale derived from ume */
+  --kui-color-scale-indigo1: #fdf8f9;
+  --kui-color-scale-indigo2: #faf0f2;
+  --kui-color-scale-indigo3: #f5e0e4;
+  --kui-color-scale-indigo4: #efcdd3;
+  --kui-color-scale-indigo5: #e6b0ba;
+  --kui-color-scale-indigo6: #d9929f;
+  --kui-color-scale-indigo7: #cc7a89;
+  --kui-color-scale-indigo8: #c56473;
+  --kui-color-scale-indigo9: #c56473;
+  --kui-color-scale-indigo10: #b05362;
+  --kui-color-scale-indigo11: #8f3f4d;
+
+  --kui-typography-font-family-base:
+    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
+    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --kui-typography-font-family-code:
+    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  --kui-animation-easing-ease-out: var(--ks-ease);
+  --kui-animation-easing-ease-in-out: var(--ks-ease);
+  --kui-animation-duration-short: 180ms;
+  --kui-animation-duration-regular: 280ms;
+  --kui-animation-duration-long: 480ms;
+}
+
+/* ── Dark: iOS-ish charcoal + soft ume ─────────────────────────── */
+
+.kui-scheme--dark {
+  --kui-color-scale-slate1: #1c1c1e;
+  --kui-color-scale-slate2: #242426;
+  --kui-color-scale-slate3: #2e2e30;
+  --kui-color-scale-slate4: #3a3a3c;
+  --kui-color-scale-slate5: #48484a;
+  --kui-color-scale-slate6: #636366;
+  --kui-color-scale-slate7: #8e8e93;
+  --kui-color-scale-slate8: #aeaeb2;
+  --kui-color-scale-slate9: #c7c7cc;
+  --kui-color-scale-slate10: #e5e5ea;
+  --kui-color-scale-slate11: #f5f5f7;
+
+  --kui-color-scale-indigo1: #24181a;
+  --kui-color-scale-indigo2: #2c1c20;
+  --kui-color-scale-indigo3: #3a2429;
+  --kui-color-scale-indigo4: #4a2d34;
+  --kui-color-scale-indigo5: #5c3840;
+  --kui-color-scale-indigo6: #7a4a55;
+  --kui-color-scale-indigo7: #9a5d6a;
+  --kui-color-scale-indigo8: #b86c7a;
+  --kui-color-scale-indigo9: #d67a88;
+  --kui-color-scale-indigo10: #e08f9b;
+  --kui-color-scale-indigo11: #efb0ba;
+
+  --kui-typography-font-family-base:
+    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
+    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --kui-typography-font-family-code:
+    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  --kui-animation-easing-ease-out: var(--ks-ease);
+  --kui-animation-easing-ease-in-out: var(--ks-ease);
+  --kui-animation-duration-short: 180ms;
+  --kui-animation-duration-regular: 280ms;
+  --kui-animation-duration-long: 480ms;
+}
+
+/* Softer selection + hairline feel */
+.kui-scheme--light ::selection,
+.kui-scheme--dark ::selection {
+  background: color-mix(in srgb, var(--ks-accent) 28%, transparent);
+}
+
+/* Brand mark (sidebar) */
+.ks-brand-mark {
+  display: block;
+  color: currentColor;
+  overflow: visible;
+}
+
+.ks-brand-mark__text {
+  font-family: 'Great Vibes', 'Segoe Script', 'Apple Chancery', cursive;
+  font-size: 34px;
+  letter-spacing: 0.04em;
+}
+
+.ks-brand-mark__flourish {
+  opacity: 0.38;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ks-brand-mark__text {
+    opacity: 0;
+    animation: ks-pr-in 0.9s var(--ks-ease) 0.05s forwards;
+  }
+
+  .ks-brand-mark__flourish {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    animation: ks-pr-flourish 1.1s var(--ks-ease) 0.2s forwards;
+  }
+}
+
+@keyframes ks-pr-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ks-pr-flourish {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Subtle page entrance for main content panels */
+@media (prefers-reduced-motion: no-preference) {
+  .kui-scheme--light main,
+  .kui-scheme--dark main {
+    animation: ks-panel-in 0.45s var(--ks-ease) both;
+  }
+}
+
+@keyframes ks-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

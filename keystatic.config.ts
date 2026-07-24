@@ -1,4 +1,7 @@
 import { collection, config, fields } from '@keystatic/core'
+import { BrandMark } from './src/keystatic/BrandMark'
+// Side-effect: inject site-matched Admin skin as soon as the client bundle loads.
+import './src/keystatic/ensure-theme'
 
 /**
  * Content CMS for blogs + leetcode Markdown under src/content/*.
@@ -29,7 +32,13 @@ export default config({
         kind: 'local',
       },
   ui: {
-    brand: { name: 'priority.me' },
+    brand: {
+      name: 'priority.me',
+      mark: BrandMark,
+    },
+    navigation: {
+      Content: ['blogs', '---', 'leetcode'],
+    },
   },
   collections: {
     blogs: collection({
