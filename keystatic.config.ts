@@ -47,6 +47,8 @@ export default config({
       path: 'src/content/blogs/*',
       format: { contentField: 'content' },
       entryLayout: 'content',
+      // Collection list columns (besides Name) — dates read as mono meta in Admin skin
+      columns: ['date', 'author', 'display'],
       schema: {
         title: fields.slug({
           name: {
@@ -101,6 +103,7 @@ export default config({
       path: 'src/content/leetcode/*',
       format: { contentField: 'content' },
       entryLayout: 'content',
+      columns: ['date', 'tag', 'display'],
       schema: {
         title: fields.slug({
           name: {

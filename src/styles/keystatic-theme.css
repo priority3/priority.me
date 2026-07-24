@@ -1,23 +1,32 @@
 /*
- * Keystatic Admin skin — stronger alignment with the public site.
+ * Keystatic Admin skin — priority.me / Yohaku paper aesthetic.
  *
- * Strategy:
- * 1. Override Keystar scale tokens (slate + indigo-as-accent).
- * 2. Cover .kui-scheme--light / --dark / --auto.
- * 3. Structural polish: paper canvas, soft nav, serif titles, breathe motion.
+ * Design goals (match public site):
+ * - Paper canvas (#fefefb) + parchment neutrals + 梅 ume accent
+ * - Serif titles, mono meta, soft hairline dividers
+ * - Pill search / soft action buttons / list-like collection table
+ * - Quiet motion: cubic-bezier(0.22, 1, 0.36, 1)
  *
- * Keystar injects its own scheme vars via emotion; our injector appends this
- * stylesheet after those tags so these declarations win by source order.
+ * Keystar uses emotion + stable ClassList names (`kui:TableView-*`).
+ * This sheet is injected last by ensure-theme.ts so it can override.
  */
+
+/* ── Tokens ─────────────────────────────────────────────────────── */
 
 :root {
   --ks-accent: #c56473;
+  --ks-accent-soft: color-mix(in srgb, #c56473 14%, transparent);
   --ks-accent-dark: #d67a88;
+  --ks-accent-soft-dark: color-mix(in srgb, #d67a88 18%, transparent);
   --ks-paper: #fefefb;
   --ks-paper-dark: #1c1c1e;
   --ks-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ks-hair: rgba(24, 24, 27, 0.08);
   --ks-border: rgba(24, 24, 27, 0.1);
+  --ks-hair-dark: rgba(255, 255, 255, 0.08);
+  --ks-border-dark: rgba(255, 255, 255, 0.1);
+  --ks-shadow-soft: 0 1px 2px rgba(24, 24, 27, 0.04),
+    0 8px 24px rgba(24, 24, 27, 0.04);
   --ks-font-sans:
     system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
     Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
@@ -26,9 +35,14 @@
     'Times New Roman', serif;
   --ks-font-mono:
     'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --ks-radius-sm: 4px;
+  --ks-radius-md: 6px;
+  --ks-radius-lg: 8px;
+  --ks-radius-xl: 12px;
+  --ks-radius-full: 9999px;
 }
 
-/* ── Shared token map (light) ──────────────────────────────────── */
+/* ── Scheme scale remap (light) ─────────────────────────────────── */
 
 .kui-scheme--light,
 .kui-scheme--auto {
@@ -46,7 +60,7 @@
   --kui-color-scale-slate10: #24231f;
   --kui-color-scale-slate11: #141312;
 
-  /* indigo scale remapped → 梅 ume */
+  /* indigo → 梅 ume */
   --kui-color-scale-indigo1: #fdf8f9;
   --kui-color-scale-indigo2: #faf0f2;
   --kui-color-scale-indigo3: #f5e0e4;
@@ -59,6 +73,23 @@
   --kui-color-scale-indigo10: #b05362;
   --kui-color-scale-indigo11: #8f3f4d;
 
+  --kui-color-background-canvas: #fefefb;
+  --kui-color-background-surface: #f9f8f5;
+  --kui-color-background-surface-secondary: #f0efeb;
+  --kui-color-background-surface-tertiary: #e3e1db;
+  --kui-color-background-accent: #f5e0e4;
+  --kui-color-background-accent-emphasis: #c56473;
+
+  --kui-color-foreground-neutral: #24231f;
+  --kui-color-foreground-neutral-emphasis: #141312;
+  --kui-color-foreground-neutral-secondary: #5c5a55;
+  --kui-color-foreground-neutral-tertiary: #787670;
+  --kui-color-foreground-accent: #8f3f4d;
+
+  --kui-color-border-neutral: rgba(24, 24, 27, 0.1);
+  --kui-color-border-muted: rgba(24, 24, 27, 0.08);
+  --kui-color-border-accent: #d9929f;
+
   --kui-typography-font-family-base: var(--ks-font-sans);
   --kui-typography-font-family-code: var(--ks-font-mono);
 
@@ -68,9 +99,35 @@
   --kui-animation-duration-short: 180ms;
   --kui-animation-duration-regular: 280ms;
   --kui-animation-duration-long: 480ms;
+
+  --kui-size-radius-xsmall: 4px;
+  --kui-size-radius-small: 6px;
+  --kui-size-radius-regular: 8px;
+  --kui-size-radius-medium: 12px;
+  --kui-size-radius-large: 16px;
+  --kui-size-radius-xlarge: 20px;
+
+  --kui-color-alias-focus-ring: #c56473;
+  --kui-color-alias-border-focused: #c56473;
+  --kui-color-alias-border-selected: #c56473;
+  --kui-color-alias-border-idle: rgba(24, 24, 27, 0.1);
+  --kui-color-alias-border-hovered: rgba(24, 24, 27, 0.18);
+  --kui-color-alias-foreground-selected: #8f3f4d;
+  --kui-color-alias-foreground-focused: #8f3f4d;
+  --kui-color-alias-background-hovered: #f0efeb;
+  --kui-color-alias-background-pressed: #e3e1db;
+  --kui-color-alias-background-selected: color-mix(
+    in srgb,
+    transparent,
+    #c56473 12%
+  );
+  --kui-color-alias-background-selected-hovered: color-mix(
+    in srgb,
+    transparent,
+    #c56473 18%
+  );
 }
 
-/* auto + OS dark → dark tokens */
 @media (prefers-color-scheme: dark) {
   .kui-scheme--auto {
     color-scheme: dark;
@@ -98,6 +155,43 @@
     --kui-color-scale-indigo9: #d67a88;
     --kui-color-scale-indigo10: #e08f9b;
     --kui-color-scale-indigo11: #efb0ba;
+
+    --kui-color-background-canvas: #1c1c1e;
+    --kui-color-background-surface: #242426;
+    --kui-color-background-surface-secondary: #2e2e30;
+    --kui-color-background-surface-tertiary: #3a3a3c;
+    --kui-color-background-accent: #3a2429;
+    --kui-color-background-accent-emphasis: #d67a88;
+
+    --kui-color-foreground-neutral: #e5e5ea;
+    --kui-color-foreground-neutral-emphasis: #f5f5f7;
+    --kui-color-foreground-neutral-secondary: #aeaeb2;
+    --kui-color-foreground-neutral-tertiary: #8e8e93;
+    --kui-color-foreground-accent: #efb0ba;
+
+    --kui-color-border-neutral: rgba(255, 255, 255, 0.1);
+    --kui-color-border-muted: rgba(255, 255, 255, 0.08);
+    --kui-color-border-accent: #7a4a55;
+
+    --kui-color-alias-focus-ring: #d67a88;
+    --kui-color-alias-border-focused: #d67a88;
+    --kui-color-alias-border-selected: #d67a88;
+    --kui-color-alias-border-idle: rgba(255, 255, 255, 0.1);
+    --kui-color-alias-border-hovered: rgba(255, 255, 255, 0.18);
+    --kui-color-alias-foreground-selected: #efb0ba;
+    --kui-color-alias-foreground-focused: #efb0ba;
+    --kui-color-alias-background-hovered: #2e2e30;
+    --kui-color-alias-background-pressed: #3a3a3c;
+    --kui-color-alias-background-selected: color-mix(
+      in srgb,
+      transparent,
+      #d67a88 14%
+    );
+    --kui-color-alias-background-selected-hovered: color-mix(
+      in srgb,
+      transparent,
+      #d67a88 22%
+    );
   }
 }
 
@@ -128,6 +222,23 @@
   --kui-color-scale-indigo10: #e08f9b;
   --kui-color-scale-indigo11: #efb0ba;
 
+  --kui-color-background-canvas: #1c1c1e;
+  --kui-color-background-surface: #242426;
+  --kui-color-background-surface-secondary: #2e2e30;
+  --kui-color-background-surface-tertiary: #3a3a3c;
+  --kui-color-background-accent: #3a2429;
+  --kui-color-background-accent-emphasis: #d67a88;
+
+  --kui-color-foreground-neutral: #e5e5ea;
+  --kui-color-foreground-neutral-emphasis: #f5f5f7;
+  --kui-color-foreground-neutral-secondary: #aeaeb2;
+  --kui-color-foreground-neutral-tertiary: #8e8e93;
+  --kui-color-foreground-accent: #efb0ba;
+
+  --kui-color-border-neutral: rgba(255, 255, 255, 0.1);
+  --kui-color-border-muted: rgba(255, 255, 255, 0.08);
+  --kui-color-border-accent: #7a4a55;
+
   --kui-typography-font-family-base: var(--ks-font-sans);
   --kui-typography-font-family-code: var(--ks-font-mono);
 
@@ -136,22 +247,53 @@
   --kui-animation-duration-short: 180ms;
   --kui-animation-duration-regular: 280ms;
   --kui-animation-duration-long: 480ms;
+
+  --kui-size-radius-xsmall: 4px;
+  --kui-size-radius-small: 6px;
+  --kui-size-radius-regular: 8px;
+  --kui-size-radius-medium: 12px;
+  --kui-size-radius-large: 16px;
+  --kui-size-radius-xlarge: 20px;
+
+  --kui-color-alias-focus-ring: #d67a88;
+  --kui-color-alias-border-focused: #d67a88;
+  --kui-color-alias-border-selected: #d67a88;
+  --kui-color-alias-border-idle: rgba(255, 255, 255, 0.1);
+  --kui-color-alias-border-hovered: rgba(255, 255, 255, 0.18);
+  --kui-color-alias-foreground-selected: #efb0ba;
+  --kui-color-alias-foreground-focused: #efb0ba;
+  --kui-color-alias-background-hovered: #2e2e30;
+  --kui-color-alias-background-pressed: #3a3a3c;
+  --kui-color-alias-background-selected: color-mix(
+    in srgb,
+    transparent,
+    #d67a88 14%
+  );
+  --kui-color-alias-background-selected-hovered: color-mix(
+    in srgb,
+    transparent,
+    #d67a88 22%
+  );
 }
 
-/* ── Document chrome ───────────────────────────────────────────── */
+/* ── Document chrome ────────────────────────────────────────────── */
 
 html:has(.kui-scheme--light),
-html:has(.kui-scheme--auto) {
-  background: var(--ks-paper);
+html:has(.kui-scheme--auto),
+body:has(.kui-scheme--light),
+body:has(.kui-scheme--auto) {
+  background: var(--ks-paper) !important;
 }
 
-html:has(.kui-scheme--dark) {
-  background: var(--ks-paper-dark);
+html:has(.kui-scheme--dark),
+body:has(.kui-scheme--dark) {
+  background: var(--ks-paper-dark) !important;
 }
 
 @media (prefers-color-scheme: dark) {
-  html:has(.kui-scheme--auto) {
-    background: var(--ks-paper-dark);
+  html:has(.kui-scheme--auto),
+  body:has(.kui-scheme--auto) {
+    background: var(--ks-paper-dark) !important;
   }
 }
 
@@ -161,6 +303,7 @@ html:has(.kui-scheme--dark) {
   font-family: var(--ks-font-sans) !important;
   letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .kui-scheme--light ::selection,
@@ -169,7 +312,6 @@ html:has(.kui-scheme--dark) {
   background: color-mix(in srgb, var(--ks-accent) 28%, transparent);
 }
 
-/* Scrollbar — thin, site-like */
 .kui-scheme--light *,
 .kui-scheme--dark *,
 .kui-scheme--auto * {
@@ -177,7 +319,7 @@ html:has(.kui-scheme--dark) {
   scrollbar-color: var(--kui-color-scale-slate4) transparent;
 }
 
-/* ── Brand mark ────────────────────────────────────────────────── */
+/* ── Brand mark ─────────────────────────────────────────────────── */
 
 .ks-brand-mark {
   display: block;
@@ -225,34 +367,49 @@ html:has(.kui-scheme--dark) {
   }
 }
 
-/* ── Structural polish (layout still Keystatic, feel closer to site) ─ */
+/* ── Typography ─────────────────────────────────────────────────── */
 
-/* Softer focus rings → ume */
-.kui-scheme--light,
-.kui-scheme--dark,
-.kui-scheme--auto {
-  --kui-color-alias-focus-ring: var(--kui-color-scale-indigo9);
-  --kui-color-alias-border-focused: var(--kui-color-scale-indigo9);
-  --kui-color-alias-border-selected: var(--kui-color-scale-indigo9);
-  --kui-color-alias-foreground-selected: var(--kui-color-scale-indigo11);
-  --kui-color-alias-foreground-focused: var(--kui-color-scale-indigo11);
-  --kui-color-alias-background-selected: color-mix(
-    in srgb,
-    transparent,
-    var(--kui-color-scale-indigo9) 12%
-  );
-  --kui-color-alias-background-selected-hovered: color-mix(
-    in srgb,
-    transparent,
-    var(--kui-color-scale-indigo9) 18%
-  );
-  --kui-color-foreground-accent: var(--kui-color-scale-indigo11);
-  --kui-color-border-accent: var(--kui-color-scale-indigo6);
-  --kui-color-background-accent: var(--kui-color-scale-indigo3);
-  --kui-color-background-accent-emphasis: var(--kui-color-scale-indigo9);
+.kui-scheme--light h1,
+.kui-scheme--dark h1,
+.kui-scheme--auto h1,
+.kui-scheme--light h2,
+.kui-scheme--dark h2,
+.kui-scheme--auto h2,
+.kui-scheme--light .kui\:Heading,
+.kui-scheme--dark .kui\:Heading,
+.kui-scheme--auto .kui\:Heading {
+  font-family: var(--ks-font-serif) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
 }
 
-/* Main panel entrance */
+#page-title {
+  font-family: var(--ks-font-serif) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.015em;
+  font-size: 1.35rem !important;
+}
+
+/* ── Motion + interactive defaults ──────────────────────────────── */
+
+.kui-scheme--light button,
+.kui-scheme--dark button,
+.kui-scheme--auto button,
+.kui-scheme--light a,
+.kui-scheme--dark a,
+.kui-scheme--auto a,
+.kui-scheme--light [role='button'],
+.kui-scheme--dark [role='button'],
+.kui-scheme--auto [role='button'] {
+  transition:
+    color 0.2s var(--ks-ease),
+    background-color 0.2s var(--ks-ease),
+    border-color 0.2s var(--ks-ease),
+    opacity 0.2s var(--ks-ease),
+    box-shadow 0.2s var(--ks-ease),
+    transform 0.2s var(--ks-ease) !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .kui-scheme--light main,
   .kui-scheme--dark main,
@@ -272,85 +429,352 @@ html:has(.kui-scheme--dark) {
   }
 }
 
-/* Prefer serif for large headings inside admin content chrome */
-.kui-scheme--light h1,
-.kui-scheme--dark h1,
-.kui-scheme--auto h1,
-.kui-scheme--light h2,
-.kui-scheme--dark h2,
-.kui-scheme--auto h2 {
-  font-family: var(--ks-font-serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
+/* ── Sidebar ────────────────────────────────────────────────────── */
 
-/* Buttons / links: slightly longer transitions */
-.kui-scheme--light button,
-.kui-scheme--dark button,
-.kui-scheme--auto button,
-.kui-scheme--light a,
-.kui-scheme--dark a,
-.kui-scheme--auto a {
-  transition:
-    color 0.2s var(--ks-ease),
-    background-color 0.2s var(--ks-ease),
-    border-color 0.2s var(--ks-ease),
-    opacity 0.2s var(--ks-ease),
-    box-shadow 0.2s var(--ks-ease),
-    transform 0.2s var(--ks-ease) !important;
-}
-
-/* Primary-looking filled buttons → ume (heuristic: indigo emphasis bg) */
-.kui-scheme--light [style*='background'],
-.kui-scheme--dark [style*='background'],
-.kui-scheme--auto [style*='background'] {
-  /* no-op placeholder — emotion uses CSS vars, not inline for most buttons */
-}
-
-/* Login / empty shells: paper feel */
-body:has(.kui-scheme--light),
-body:has(.kui-scheme--auto) {
-  background: var(--ks-paper) !important;
-}
-
-body:has(.kui-scheme--dark) {
-  background: var(--ks-paper-dark) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  body:has(.kui-scheme--auto) {
-    background: var(--ks-paper-dark) !important;
-  }
-}
-
-/* Nav rows: softer hover like site post-list */
+/* Surface already uses tokens; polish brand row + nav feel */
 .kui-scheme--light nav a,
 .kui-scheme--dark nav a,
 .kui-scheme--auto nav a,
 .kui-scheme--light [role='navigation'] a,
 .kui-scheme--dark [role='navigation'] a,
 .kui-scheme--auto [role='navigation'] a {
-  border-radius: 8px;
+  border-radius: var(--ks-radius-lg) !important;
 }
 
-/* Reduce harsh pure-white panels inside light scheme */
-.kui-scheme--light {
-  --kui-color-background-canvas: var(--kui-color-scale-slate1);
-  --kui-color-background-surface: var(--kui-color-scale-slate2);
-  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
-  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
+/* Soft left rail separator */
+.kui-scheme--light [data-keystar-affordance='splitview'] > :first-child,
+.kui-scheme--dark [data-keystar-affordance='splitview'] > :first-child,
+.kui-scheme--auto [data-keystar-affordance='splitview'] > :first-child {
+  border-inline-end: 1px solid var(--kui-color-border-muted) !important;
 }
 
-.kui-scheme--dark {
-  --kui-color-background-canvas: var(--kui-color-scale-slate1);
-  --kui-color-background-surface: var(--kui-color-scale-slate2);
-  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
-  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
+/* ── Main panel header (title + search + create) ─────────────────── */
+
+/* Page header row — site sticky header vibe */
+main[id] > div:first-child {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(
+    in srgb,
+    var(--kui-color-background-canvas) 88%,
+    transparent
+  ) !important;
+  border-bottom: 1px solid var(--kui-color-border-muted);
+  margin-bottom: 0.25rem;
 }
 
+/* ── Search field (collection filter) ───────────────────────────── */
+
+[role='search'] {
+  min-width: 12rem;
+}
+
+/* Pill track behind the input */
+[role='search'] [role='presentation'] {
+  border-radius: var(--ks-radius-full) !important;
+  background: var(--kui-color-background-surface-secondary) !important;
+  border-color: var(--kui-color-border-neutral) !important;
+  box-shadow: none !important;
+  transition:
+    border-color 0.2s var(--ks-ease),
+    background-color 0.2s var(--ks-ease),
+    box-shadow 0.2s var(--ks-ease) !important;
+}
+
+[role='search']:has(input:hover) [role='presentation'] {
+  border-color: var(--kui-color-alias-border-hovered) !important;
+  background: var(--kui-color-background-surface) !important;
+}
+
+[role='search']:has(input:focus) [role='presentation'],
+[role='search']:has(input:focus-visible) [role='presentation'] {
+  border-color: var(--kui-color-alias-border-focused) !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--ks-accent) 18%, transparent) !important;
+  background: var(--kui-color-background-canvas) !important;
+}
+
+[role='search'] input[type='search'],
+[role='search'] input {
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.01em;
+}
+
+[role='search'] input::placeholder {
+  color: var(--kui-color-foreground-neutral-tertiary) !important;
+  letter-spacing: 0.02em;
+}
+
+/* General text fields inherit site sans */
+.kui-scheme--light input:not([type='checkbox']):not([type='radio']),
+.kui-scheme--dark input:not([type='checkbox']):not([type='radio']),
+.kui-scheme--auto input:not([type='checkbox']):not([type='radio']),
+.kui-scheme--light textarea,
+.kui-scheme--dark textarea,
+.kui-scheme--auto textarea {
+  font-family: var(--ks-font-sans) !important;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+
+/* Default action buttons — quiet outline chips (site icon-btn family) */
+.kui-scheme--light .kui\:ActionButton:not([data-prominence='low']):not([aria-pressed='true']),
+.kui-scheme--dark .kui\:ActionButton:not([data-prominence='low']):not([aria-pressed='true']),
+.kui-scheme--auto .kui\:ActionButton:not([data-prominence='low']):not([aria-pressed='true']) {
+  border-radius: var(--ks-radius-full) !important;
+}
+
+.kui-scheme--light .kui\:Button,
+.kui-scheme--dark .kui\:Button,
+.kui-scheme--auto .kui\:Button {
+  border-radius: var(--ks-radius-full) !important;
+}
+
+/* High prominence primary → ume soft fill */
+.kui-scheme--light .kui\:Button[data-prominence='high'],
+.kui-scheme--dark .kui\:Button[data-prominence='high'],
+.kui-scheme--auto .kui\:Button[data-prominence='high'],
+.kui-scheme--light button[data-prominence='high'],
+.kui-scheme--dark button[data-prominence='high'],
+.kui-scheme--auto button[data-prominence='high'] {
+  border-radius: var(--ks-radius-full) !important;
+  box-shadow: none !important;
+  letter-spacing: 0.01em;
+}
+
+/* ── Collection table → post-list aesthetic ─────────────────────── */
+
+/*
+ * ClassList elements (stable):
+ *   .kui:TableView
+ *   .kui:TableView-body
+ *   .kui:TableView-header
+ *   .kui:TableView-cell
+ *   .kui:TableView-cell-wrapper
+ * Rows use emotion-only classes → target via role + body descendant.
+ */
+
+.kui\:TableView {
+  --ks-table-pad-x: 0.65rem;
+}
+
+/* Drop the heavy card chrome — paper list instead */
+.kui\:TableView-body {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Header strip — quiet eyebrow */
+.kui\:TableView-header {
+  border-bottom: 1px solid var(--kui-color-border-muted) !important;
+}
+
+.kui\:TableView-header .kui\:TableView-cell,
+.kui\:TableView [role='columnheader'] {
+  background: transparent !important;
+  color: var(--kui-color-foreground-neutral-tertiary) !important;
+  font-family: var(--ks-font-sans) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  padding-block: 0.65rem !important;
+}
+
+.kui\:TableView [role='columnheader'][aria-sort]:hover,
+.kui\:TableView [role='columnheader'][data-hovered='true'] {
+  color: var(--kui-color-foreground-neutral-emphasis) !important;
+}
+
+/* Rows — hairline + soft hover like .post-item */
+.kui\:TableView-body [role='row'] {
+  border-radius: var(--ks-radius-md);
+  margin-inline: 0;
+}
+
+.kui\:TableView-body [role='row']::after {
+  /* Keystar paints separator via inset box-shadow on ::after */
+  box-shadow: inset 0 -1px 0 0 var(--kui-color-border-muted) !important;
+  border-radius: inherit;
+}
+
+.kui\:TableView-body [role='row'][data-flush-with-container-bottom]::after {
+  box-shadow: none !important;
+}
+
+/* Cell base */
+.kui\:TableView-cell,
+.kui\:TableView-cell-wrapper {
+  background: transparent !important;
+}
+
+.kui\:TableView-body .kui\:TableView-cell {
+  padding-block: 1rem !important;
+  color: var(--kui-color-foreground-neutral-secondary) !important;
+  font-size: 0.875rem !important;
+}
+
+/* Default body text → mono meta (date / author / flags) */
+.kui\:TableView-body [role='row'] .kui\:Text {
+  font-family: var(--ks-font-mono) !important;
+  font-weight: 400 !important;
+  font-size: 0.75rem !important;
+  color: var(--kui-color-foreground-neutral-secondary) !important;
+  letter-spacing: 0.02em;
+  line-height: 1.45 !important;
+}
+
+/*
+ * Name / slug column → serif title (mirrors .post-item__title).
+ * - No status col: first cell is Name
+ * - With status col: first cell is icon-only, Name is the next sibling
+ */
+.kui\:TableView-body [role='row'] > *:first-child .kui\:Text,
+.kui\:TableView-body [role='row'] > *:first-child:not(:has(.kui\:Text)) + * .kui\:Text {
+  font-family: var(--ks-font-serif) !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  color: var(--kui-color-foreground-neutral-emphasis) !important;
+  letter-spacing: -0.01em;
+  line-height: 1.35 !important;
+}
+
+/* Hover / press — neutral-2 wash */
+.kui\:TableView-body [role='row'][data-hovered='true'] .kui\:TableView-cell,
+.kui\:TableView-body [role='row'][data-hovered='true'] .kui\:TableView-cell-wrapper {
+  background: var(--kui-color-background-surface-secondary) !important;
+}
+
+.kui\:TableView-body [role='row'][data-pressed='true'] .kui\:TableView-cell,
+.kui\:TableView-body [role='row'][data-pressed='true'] .kui\:TableView-cell-wrapper {
+  background: var(--kui-color-background-surface-tertiary) !important;
+}
+
+.kui\:TableView-body [role='rowheader'] {
+  cursor: pointer;
+}
+
+/* Focus bar → ume */
+.kui\:TableView-body [role='row'][data-focus-visible]::before {
+  background: var(--ks-accent) !important;
+  border-radius: 2px !important;
+}
+
+/* Empty state */
+.kui\:TableView-body {
+  min-height: 12rem;
+}
+
+/* ── ListView (if used elsewhere) ───────────────────────────────── */
+
+.kui\:ListView {
+  border: none !important;
+  background: transparent !important;
+}
+
+.kui\:ListViewItem-row {
+  border-radius: var(--ks-radius-md) !important;
+  border-bottom: 1px solid var(--kui-color-border-muted) !important;
+}
+
+.kui\:ListViewItem-row[data-hovered='true'] {
+  background: var(--kui-color-background-surface-secondary) !important;
+}
+
+/* ── Tags / chips / badges ──────────────────────────────────────── */
+
+.kui\:Badge,
+.kui\:Tag {
+  border-radius: var(--ks-radius-md) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.02em;
+}
+
+/* ── Dialogs / menus ────────────────────────────────────────────── */
+
+.kui\:Dialog,
+[role='dialog'] {
+  border-radius: var(--ks-radius-xl) !important;
+  border: 1px solid var(--kui-color-border-muted) !important;
+  box-shadow: var(--ks-shadow-soft) !important;
+}
+
+.kui\:Dialog-heading,
+[role='dialog'] h2,
+[role='dialog'] h3 {
+  font-family: var(--ks-font-serif) !important;
+  font-weight: 500 !important;
+}
+
+/* ── Editor / form surfaces ─────────────────────────────────────── */
+
+/* Soften editor chrome when present */
+.kui-scheme--light [data-keystatic-editor],
+.kui-scheme--dark [data-keystatic-editor],
+.kui-scheme--auto [data-keystatic-editor] {
+  border-radius: var(--ks-radius-lg);
+}
+
+/* Content entry layout breathing room */
+main[id] {
+  background: var(--kui-color-background-canvas);
+}
+
+/* ── Breadcrumbs ────────────────────────────────────────────────── */
+
+.kui\:Breadcrumbs-link {
+  border-radius: var(--ks-radius-md);
+  transition: color 0.2s var(--ks-ease), background-color 0.2s var(--ks-ease);
+}
+
+.kui\:Breadcrumbs-link:hover {
+  color: var(--kui-color-foreground-accent) !important;
+}
+
+/* ── Login / empty shells ───────────────────────────────────────── */
+
+.kui-scheme--light,
+.kui-scheme--dark,
 .kui-scheme--auto {
-  --kui-color-background-canvas: var(--kui-color-scale-slate1);
-  --kui-color-background-surface: var(--kui-color-scale-slate2);
-  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
-  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
+  /* ensure full-bleed paper */
+  min-height: 100%;
+}
+
+/* GitHub auth card polish */
+.kui-scheme--light [role='main'] section,
+.kui-scheme--dark [role='main'] section,
+.kui-scheme--auto [role='main'] section {
+  border-radius: var(--ks-radius-xl);
+}
+
+/* ── Utility: quieter dividers ──────────────────────────────────── */
+
+.kui\:Divider {
+  background: var(--kui-color-border-muted) !important;
+  opacity: 1 !important;
+}
+
+/* ── Checkbox / switch accents inherit tokens already ───────────── */
+
+/* ── Responsive tweaks ──────────────────────────────────────────── */
+
+@media (max-width: 739px) {
+  #page-title {
+    font-size: 1.15rem !important;
+  }
+
+  .kui\:TableView-body .kui\:TableView-cell {
+    padding-block: 0.85rem !important;
+  }
+
+  [role='search'] {
+    min-width: 0;
+    width: 100%;
+  }
 }
