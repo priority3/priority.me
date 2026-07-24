@@ -8,3 +8,6 @@
   NPM_FLAGS = "--version"
   # Build-time storage mode (read by astro.config.mjs → Vite define → Admin client)
   KEYSTATIC_STORAGE = "github"
+  # Umami analytics (public website id — also appears in page HTML)
+  PUBLIC_UMAMI_SRC = "https://cloud.umami.is/script.js"
+  PUBLIC_UMAMI_WEBSITE_ID = "c03df9e1-9160-4308-8c61-d05ca939c4e6"
