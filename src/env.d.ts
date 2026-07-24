@@ -23,3 +23,8 @@ interface ImportMeta {
 
 /** Inlined by Vite in astro.config.mjs (client + SSR Keystatic bundles). */
 declare const __KEYSTATIC_USE_GITHUB__: boolean
+
+declare module '*.css?inline' {
+  const css: string
+  export default css
+}
