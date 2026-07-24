@@ -1,20 +1,39 @@
 /*
- * Keystatic Admin skin — maps site (Yohaku-inspired) tokens onto Keystar CSS vars.
- * Keystatic uses classes `.kui-scheme--light` / `.kui-scheme--dark` on the app root.
- * Accent on the public site is 梅 ume (#c56473); paper surface is parchment-toned.
- * Fonts are injected from BrandMark.tsx (avoid @import in ?inline CSS).
+ * Keystatic Admin skin — stronger alignment with the public site.
+ *
+ * Strategy:
+ * 1. Override Keystar scale tokens (slate + indigo-as-accent).
+ * 2. Cover .kui-scheme--light / --dark / --auto.
+ * 3. Structural polish: paper canvas, soft nav, serif titles, breathe motion.
+ *
+ * Keystar injects its own scheme vars via emotion; our injector appends this
+ * stylesheet after those tags so these declarations win by source order.
  */
 
 :root {
   --ks-accent: #c56473;
-  --ks-accent-soft: color-mix(in srgb, var(--ks-accent) 14%, transparent);
+  --ks-accent-dark: #d67a88;
+  --ks-paper: #fefefb;
+  --ks-paper-dark: #1c1c1e;
   --ks-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ks-hair: rgba(24, 24, 27, 0.08);
+  --ks-border: rgba(24, 24, 27, 0.1);
+  --ks-font-sans:
+    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
+    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --ks-font-serif:
+    'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', STSong, Georgia,
+    'Times New Roman', serif;
+  --ks-font-mono:
+    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
-/* ── Light: parchment paper + ume accent ───────────────────────── */
+/* ── Shared token map (light) ──────────────────────────────────── */
 
-.kui-scheme--light {
-  /* Neutrals (site tokens, parchment undertone) */
+.kui-scheme--light,
+.kui-scheme--auto {
+  color-scheme: light;
+
   --kui-color-scale-slate1: #fefefb;
   --kui-color-scale-slate2: #f9f8f5;
   --kui-color-scale-slate3: #f0efeb;
@@ -27,7 +46,7 @@
   --kui-color-scale-slate10: #24231f;
   --kui-color-scale-slate11: #141312;
 
-  /* Accent scale derived from ume */
+  /* indigo scale remapped → 梅 ume */
   --kui-color-scale-indigo1: #fdf8f9;
   --kui-color-scale-indigo2: #faf0f2;
   --kui-color-scale-indigo3: #f5e0e4;
@@ -40,22 +59,51 @@
   --kui-color-scale-indigo10: #b05362;
   --kui-color-scale-indigo11: #8f3f4d;
 
-  --kui-typography-font-family-base:
-    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
-    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
-  --kui-typography-font-family-code:
-    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --kui-typography-font-family-base: var(--ks-font-sans);
+  --kui-typography-font-family-code: var(--ks-font-mono);
 
   --kui-animation-easing-ease-out: var(--ks-ease);
   --kui-animation-easing-ease-in-out: var(--ks-ease);
+  --kui-animation-easing-ease-in: cubic-bezier(0.4, 0, 1, 1);
   --kui-animation-duration-short: 180ms;
   --kui-animation-duration-regular: 280ms;
   --kui-animation-duration-long: 480ms;
 }
 
-/* ── Dark: iOS-ish charcoal + soft ume ─────────────────────────── */
+/* auto + OS dark → dark tokens */
+@media (prefers-color-scheme: dark) {
+  .kui-scheme--auto {
+    color-scheme: dark;
+
+    --kui-color-scale-slate1: #1c1c1e;
+    --kui-color-scale-slate2: #242426;
+    --kui-color-scale-slate3: #2e2e30;
+    --kui-color-scale-slate4: #3a3a3c;
+    --kui-color-scale-slate5: #48484a;
+    --kui-color-scale-slate6: #636366;
+    --kui-color-scale-slate7: #8e8e93;
+    --kui-color-scale-slate8: #aeaeb2;
+    --kui-color-scale-slate9: #c7c7cc;
+    --kui-color-scale-slate10: #e5e5ea;
+    --kui-color-scale-slate11: #f5f5f7;
+
+    --kui-color-scale-indigo1: #24181a;
+    --kui-color-scale-indigo2: #2c1c20;
+    --kui-color-scale-indigo3: #3a2429;
+    --kui-color-scale-indigo4: #4a2d34;
+    --kui-color-scale-indigo5: #5c3840;
+    --kui-color-scale-indigo6: #7a4a55;
+    --kui-color-scale-indigo7: #9a5d6a;
+    --kui-color-scale-indigo8: #b86c7a;
+    --kui-color-scale-indigo9: #d67a88;
+    --kui-color-scale-indigo10: #e08f9b;
+    --kui-color-scale-indigo11: #efb0ba;
+  }
+}
 
 .kui-scheme--dark {
+  color-scheme: dark;
+
   --kui-color-scale-slate1: #1c1c1e;
   --kui-color-scale-slate2: #242426;
   --kui-color-scale-slate3: #2e2e30;
@@ -80,11 +128,8 @@
   --kui-color-scale-indigo10: #e08f9b;
   --kui-color-scale-indigo11: #efb0ba;
 
-  --kui-typography-font-family-base:
-    system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI',
-    Roboto, 'Helvetica Neue', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
-  --kui-typography-font-family-code:
-    'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --kui-typography-font-family-base: var(--ks-font-sans);
+  --kui-typography-font-family-code: var(--ks-font-mono);
 
   --kui-animation-easing-ease-out: var(--ks-ease);
   --kui-animation-easing-ease-in-out: var(--ks-ease);
@@ -93,13 +138,47 @@
   --kui-animation-duration-long: 480ms;
 }
 
-/* Softer selection + hairline feel */
+/* ── Document chrome ───────────────────────────────────────────── */
+
+html:has(.kui-scheme--light),
+html:has(.kui-scheme--auto) {
+  background: var(--ks-paper);
+}
+
+html:has(.kui-scheme--dark) {
+  background: var(--ks-paper-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:has(.kui-scheme--auto) {
+    background: var(--ks-paper-dark);
+  }
+}
+
+.kui-scheme--light,
+.kui-scheme--dark,
+.kui-scheme--auto {
+  font-family: var(--ks-font-sans) !important;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
 .kui-scheme--light ::selection,
-.kui-scheme--dark ::selection {
+.kui-scheme--dark ::selection,
+.kui-scheme--auto ::selection {
   background: color-mix(in srgb, var(--ks-accent) 28%, transparent);
 }
 
-/* Brand mark (sidebar) */
+/* Scrollbar — thin, site-like */
+.kui-scheme--light *,
+.kui-scheme--dark *,
+.kui-scheme--auto * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--kui-color-scale-slate4) transparent;
+}
+
+/* ── Brand mark ────────────────────────────────────────────────── */
+
 .ks-brand-mark {
   display: block;
   color: currentColor;
@@ -146,10 +225,38 @@
   }
 }
 
-/* Subtle page entrance for main content panels */
+/* ── Structural polish (layout still Keystatic, feel closer to site) ─ */
+
+/* Softer focus rings → ume */
+.kui-scheme--light,
+.kui-scheme--dark,
+.kui-scheme--auto {
+  --kui-color-alias-focus-ring: var(--kui-color-scale-indigo9);
+  --kui-color-alias-border-focused: var(--kui-color-scale-indigo9);
+  --kui-color-alias-border-selected: var(--kui-color-scale-indigo9);
+  --kui-color-alias-foreground-selected: var(--kui-color-scale-indigo11);
+  --kui-color-alias-foreground-focused: var(--kui-color-scale-indigo11);
+  --kui-color-alias-background-selected: color-mix(
+    in srgb,
+    transparent,
+    var(--kui-color-scale-indigo9) 12%
+  );
+  --kui-color-alias-background-selected-hovered: color-mix(
+    in srgb,
+    transparent,
+    var(--kui-color-scale-indigo9) 18%
+  );
+  --kui-color-foreground-accent: var(--kui-color-scale-indigo11);
+  --kui-color-border-accent: var(--kui-color-scale-indigo6);
+  --kui-color-background-accent: var(--kui-color-scale-indigo3);
+  --kui-color-background-accent-emphasis: var(--kui-color-scale-indigo9);
+}
+
+/* Main panel entrance */
 @media (prefers-reduced-motion: no-preference) {
   .kui-scheme--light main,
-  .kui-scheme--dark main {
+  .kui-scheme--dark main,
+  .kui-scheme--auto main {
     animation: ks-panel-in 0.45s var(--ks-ease) both;
   }
 }
@@ -163,4 +270,87 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Prefer serif for large headings inside admin content chrome */
+.kui-scheme--light h1,
+.kui-scheme--dark h1,
+.kui-scheme--auto h1,
+.kui-scheme--light h2,
+.kui-scheme--dark h2,
+.kui-scheme--auto h2 {
+  font-family: var(--ks-font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Buttons / links: slightly longer transitions */
+.kui-scheme--light button,
+.kui-scheme--dark button,
+.kui-scheme--auto button,
+.kui-scheme--light a,
+.kui-scheme--dark a,
+.kui-scheme--auto a {
+  transition:
+    color 0.2s var(--ks-ease),
+    background-color 0.2s var(--ks-ease),
+    border-color 0.2s var(--ks-ease),
+    opacity 0.2s var(--ks-ease),
+    box-shadow 0.2s var(--ks-ease),
+    transform 0.2s var(--ks-ease) !important;
+}
+
+/* Primary-looking filled buttons → ume (heuristic: indigo emphasis bg) */
+.kui-scheme--light [style*='background'],
+.kui-scheme--dark [style*='background'],
+.kui-scheme--auto [style*='background'] {
+  /* no-op placeholder — emotion uses CSS vars, not inline for most buttons */
+}
+
+/* Login / empty shells: paper feel */
+body:has(.kui-scheme--light),
+body:has(.kui-scheme--auto) {
+  background: var(--ks-paper) !important;
+}
+
+body:has(.kui-scheme--dark) {
+  background: var(--ks-paper-dark) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body:has(.kui-scheme--auto) {
+    background: var(--ks-paper-dark) !important;
+  }
+}
+
+/* Nav rows: softer hover like site post-list */
+.kui-scheme--light nav a,
+.kui-scheme--dark nav a,
+.kui-scheme--auto nav a,
+.kui-scheme--light [role='navigation'] a,
+.kui-scheme--dark [role='navigation'] a,
+.kui-scheme--auto [role='navigation'] a {
+  border-radius: 8px;
+}
+
+/* Reduce harsh pure-white panels inside light scheme */
+.kui-scheme--light {
+  --kui-color-background-canvas: var(--kui-color-scale-slate1);
+  --kui-color-background-surface: var(--kui-color-scale-slate2);
+  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
+  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
+}
+
+.kui-scheme--dark {
+  --kui-color-background-canvas: var(--kui-color-scale-slate1);
+  --kui-color-background-surface: var(--kui-color-scale-slate2);
+  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
+  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
+}
+
+.kui-scheme--auto {
+  --kui-color-background-canvas: var(--kui-color-scale-slate1);
+  --kui-color-background-surface: var(--kui-color-scale-slate2);
+  --kui-color-background-surface-secondary: var(--kui-color-scale-slate3);
+  --kui-color-background-surface-tertiary: var(--kui-color-scale-slate4);
 }
