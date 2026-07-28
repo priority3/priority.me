@@ -3,7 +3,7 @@ title: leetcode-3513 三数异或
 author: priority
 date: 2026-07-24
 language: CN
-display: false
+display: true
 tag: leetcode
 ---
 [https://leetcode.com/problems/number-of-unique-xor-triplets-i](https://leetcode.com/problems/number-of-unique-xor-triplets-i)\
