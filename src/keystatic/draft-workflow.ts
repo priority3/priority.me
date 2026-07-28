@@ -122,59 +122,36 @@ function ensureStyles() {
   const style = document.createElement('style')
   style.id = 'priority-draft-style'
   style.textContent = `
+    /* Compact publish control — no instructional banner */
     #${BANNER_ID} {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 12px;
+      right: 16px;
       z-index: 10000;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px 12px;
       align-items: center;
-      justify-content: space-between;
-      padding: 8px 14px;
-      font: 13px/1.4 system-ui, sans-serif;
-      color: #24231f;
-      background: color-mix(in srgb, #f5e0e4 70%, #fefefb);
-      border-bottom: 1px solid #e6b0ba;
-      box-shadow: 0 1px 0 rgb(0 0 0 / 4%);
-    }
-    #${BANNER_ID}[data-dark="1"] {
-      color: #f5f5f7;
-      background: color-mix(in srgb, #3a2429 80%, #1c1c1e);
-      border-bottom-color: #5c3840;
-    }
-    #${BANNER_ID} .pd-actions {
-      display: flex;
-      flex-wrap: wrap;
       gap: 8px;
-      align-items: center;
-    }
-    #${BANNER_ID} button, #${BANNER_ID} label {
-      font: inherit;
+      pointer-events: none;
     }
     #${BANNER_ID} button {
+      pointer-events: auto;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 999px;
       border: 1px solid #d9929f;
       background: #c56473;
       color: #fff;
-      padding: 6px 12px;
-      font-weight: 600;
+      padding: 7px 14px;
+      font: 600 13px/1.2 system-ui, sans-serif;
+      box-shadow: 0 4px 14px rgb(0 0 0 / 10%);
     }
-    #${BANNER_ID} button[data-secondary] {
-      background: transparent;
-      color: inherit;
-      border-color: #d0cec6;
+    #${BANNER_ID}[data-dark="1"] button {
+      border-color: #7a4a55;
+      background: #d67a88;
+      color: #1c1c1e;
     }
     #${BANNER_ID} button:disabled {
       opacity: 0.55;
       cursor: not-allowed;
-    }
-    #${BANNER_ID} .pd-note {
-      opacity: 0.85;
-      max-width: 52rem;
     }
     #${TOAST_ID} {
       position: fixed;
@@ -198,10 +175,6 @@ function ensureStyles() {
     }
     #${TOAST_ID}[data-kind="error"] { background: #8f3f4d; }
     #${TOAST_ID}[data-kind="ok"] { background: #3d6b4f; }
-    /* Make room so Keystatic header isn't covered */
-    body:has(#${BANNER_ID}) {
-      scroll-padding-top: 52px;
-    }
   `
   document.head.appendChild(style)
 }
@@ -224,7 +197,6 @@ async function redirectToDraftsIfNeeded(): Promise<boolean> {
   // create may have no slug yet — still move user onto drafts branch
   if (route.mode === 'item' && slug) {
     try {
-      toast('正在准备草稿分支…', 'info')
       await api({
         action: 'prepare',
         collection: route.collection,
@@ -274,53 +246,14 @@ function ensureBanner() {
     ban = document.createElement('div')
     ban.id = BANNER_ID
     ban.dataset.priorityDraft = '1'
-    ban.innerHTML = `
-      <div class="pd-note">
-        <strong>草稿模式</strong>
-        · 右上角 <strong>Save</strong> 只提交到 <code>${DRAFT_BRANCH}</code>（不会上线）
-        · 本地输入会自动缓存在浏览器
-        · <strong>发布</strong> 才会写入 main 并删除草稿
-      </div>
-      <div class="pd-actions">
-        <label title="发布后是否在站点列表展示">
-          <input type="checkbox" id="pd-display" checked />
-          发布后可见
-        </label>
-        <button type="button" data-secondary id="pd-refresh-status">状态</button>
-        <button type="button" id="pd-publish">发布到 main</button>
-      </div>
-    `
-    document.body.prepend(ban)
+    ban.innerHTML = `<button type="button" id="pd-publish" title="将当前草稿合并到 main 并删除草稿">发布</button>`
+    document.body.appendChild(ban)
 
     ban.querySelector('#pd-publish')?.addEventListener('click', () => {
       void onPublish()
     })
-    ban.querySelector('#pd-refresh-status')?.addEventListener('click', () => {
-      void onStatus()
-    })
   }
   ban.dataset.dark = isDarkUi() ? '1' : '0'
-}
-
-async function onStatus() {
-  const route = parseRoute()
-  if (!route?.slug) {
-    toast('新建条目请先 Save 生成 slug', 'info')
-    return
-  }
-  try {
-    const data = await api({
-      action: 'status',
-      collection: route.collection,
-      slug: route.slug,
-    })
-    toast(
-      `草稿: ${data.hasDraft ? '有' : '无'} · 已发布: ${data.hasPublished ? '有' : '无'}`,
-      'info',
-    )
-  } catch (err) {
-    toast(err instanceof Error ? err.message : '状态查询失败', 'error')
-  }
 }
 
 async function onPublish() {
@@ -340,33 +273,25 @@ async function onPublish() {
     slug = slugify(title)
   }
   if (!slug) {
-    toast('请先填写标题，并点击 Save 保存草稿后再发布', 'error')
+    toast('请先填写标题并 Save，再发布', 'error')
     return
   }
-
-  const displayEl = document.getElementById('pd-display') as HTMLInputElement | null
-  const display = displayEl ? displayEl.checked : true
 
   const btn = document.getElementById('pd-publish') as HTMLButtonElement | null
   if (btn) btn.disabled = true
   try {
-    toast('发布中：写入 main 并清理草稿…', 'info')
-    // Prefer server reading drafts branch (user must have Saved).
-    // If draft missing, error message tells them to Save first.
+    // display 以右侧「Display on site」为准：Save 进 drafts 的 frontmatter 已包含该字段
     await api({
       action: 'publish',
       collection: route.collection,
       slug,
-      display,
     })
-    toast('已发布到 main，草稿已删除。站点将在 Netlify 构建后更新。', 'ok')
-    // Jump to main item view
-    const encodedMain = encodeURIComponent('main')
+    toast('已发布', 'ok')
     const target =
-      `/keystatic/branch/${encodedMain}/collection/${route.collection}/item/${encodeURIComponent(slug)}`
+      `/keystatic/branch/${encodeURIComponent('main')}/collection/${route.collection}/item/${encodeURIComponent(slug)}`
     window.setTimeout(() => {
       location.assign(target)
-    }, 800)
+    }, 600)
   } catch (err) {
     toast(err instanceof Error ? err.message : '发布失败', 'error')
   } finally {
