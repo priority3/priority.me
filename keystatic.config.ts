@@ -10,6 +10,11 @@ import './src/keystatic/ensure-theme'
  * - local  → `pnpm dev` (writes files on disk)
  * - github → Netlify production (commits via GitHub App; only repo writers)
  *
+ * Draft workflow (GitHub mode, see src/keystatic/draft-workflow.ts):
+ * - Auto-save: browser IndexedDB only (Keystatic built-in)
+ * - Save: forced onto branch `keystatic/drafts` (not main)
+ * - Publish: banner button → main + delete draft
+ *
  * Override: KEYSTATIC_STORAGE=local|github
  *
  * Reason: Admin UI runs in the browser. `process.env` is empty in the client

@@ -9,6 +9,8 @@
 // (blank/frozen Admin + Chrome "[Violation] setTimeout handler took …ms").
 
 import themeCss from '../styles/keystatic-theme.css?inline'
+// Side-effect: draft branch redirect + Publish control (GitHub mode only).
+import './draft-workflow'
 
 const STYLE_ID = 'priority-keystatic-theme'
 const FONT_ID = 'priority-keystatic-font'
