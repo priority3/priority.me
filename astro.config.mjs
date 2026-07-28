@@ -43,6 +43,7 @@ export default defineConfig({
     define: {
       // Inlined into client + SSR so Admin storage matches Netlify/GitHub mode.
       __KEYSTATIC_USE_GITHUB__: JSON.stringify(keystaticUseGithub()),
+      'import.meta.env.KEYSTATIC_USE_GITHUB': JSON.stringify(keystaticUseGithub()),
     },
     resolve: {
       alias: {
