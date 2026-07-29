@@ -21,10 +21,14 @@
     "@netlify/blobs": "^10.7.9",
     "astro": "^5.7.10",
     "dayjs": "^1.11.13",
+    "katex": "^0.18.1",
     "react": "^19.2.8",
     "react-aria": "3.50.0",
     "react-dom": "^19.2.8",
-    "react-stately": "3.48.0"
+    "react-stately": "3.48.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

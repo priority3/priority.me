@@ -4,6 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import MobileNav from '@/components/MobileNav.astro'
 import TableOfContents from '@/components/TableOfContents.astro'
 import Comments from '@/components/Comments.astro'
+import LinkCards from '@/components/LinkCards.astro'
 import { formatDisplayDate } from '@/lib/posts'
 
 export async function getStaticPaths() {
@@ -43,6 +44,8 @@ const { title, desc, date, language, subtitle } = post.data
     <div class="prose">
       <Content />
     </div>
+
+    <LinkCards />
 
     <Comments slug={post.id} title={title} collection="blogs" />
 

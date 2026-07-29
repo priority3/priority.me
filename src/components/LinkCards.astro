@@ -1,0 +1,184 @@
+---
+/**
+ * Upgrade bare external links inside .prose into rich link cards (X, GitHub, …).
+ * Place once per article after the prose content.
+ */
+---
+
+<script>
+  type LinkCardData = {
+    url: string
+    provider: string
+    title: string
+    description?: string | null
+    image?: string | null
+    siteName: string
+    favicon?: string | null
+    author?: string | null
+  }
+
+  const cache = new Map<string, LinkCardData | null>()
+
+  function isBareLinkParagraph(p: HTMLParagraphElement): HTMLAnchorElement | null {
+    // Single child <a>, or only whitespace + one <a>
+    const links = [...p.querySelectorAll(':scope > a[href]')] as HTMLAnchorElement[]
+    if (links.length !== 1) return null
+    const a = links[0]!
+    // Ignore internal / relative
+    const href = a.getAttribute('href') || ''
+    if (!/^https?:\/\//i.test(href)) return null
+    // Text ≈ url (autolink style) OR sole visible content
+    const text = (a.textContent || '').trim()
+    const rest = (p.textContent || '').replace(text, '').trim()
+    if (rest.length > 0) return null
+    const bare =
+      !text ||
+      text === href ||
+      text === href.replace(/^https?:\/\//, '') ||
+      text.replace(/\/$/, '') === href.replace(/\/$/, '')
+    // Also cardify when link text is short host-ish
+    if (!bare && text.length > 0 && text.length < 80 && !text.includes(' ')) {
+      // e.g. display text "tweet" — skip; only bare-ish
+      return null
+    }
+    if (!bare) return null
+    return a
+  }
+
+  function el(tag: string, className?: string, attrs?: Record<string, string>) {
+    const node = document.createElement(tag)
+    if (className) node.className = className
+    if (attrs) {
+      for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v)
+    }
+    return node
+  }
+
+  function renderCard(data: LinkCardData): HTMLElement {
+    const a = el('a', `link-card link-card--${data.provider}`, {
+      href: data.url,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    }) as HTMLAnchorElement
+
+    const body = el('div', 'link-card__body')
+    const meta = el('div', 'link-card__meta')
+    if (data.favicon) {
+      const fav = el('img', 'link-card__favicon', {
+        src: data.favicon,
+        alt: '',
+        loading: 'lazy',
+        width: '14',
+        height: '14',
+        referrerpolicy: 'no-referrer',
+      }) as HTMLImageElement
+      fav.onerror = () => fav.remove()
+      meta.appendChild(fav)
+    }
+    const site = el('span', 'link-card__site')
+    site.textContent = data.siteName
+    meta.appendChild(site)
+    if (data.author) {
+      const author = el('span', 'link-card__author')
+      author.textContent = data.author
+      meta.appendChild(author)
+    }
+    body.appendChild(meta)
+
+    const title = el('div', 'link-card__title')
+    title.textContent = data.title
+    body.appendChild(title)
+
+    if (data.description) {
+      const desc = el('div', 'link-card__desc')
+      desc.textContent = data.description
+      body.appendChild(desc)
+    }
+
+    a.appendChild(body)
+
+    if (data.image) {
+      const media = el('div', 'link-card__media')
+      const img = el('img', 'link-card__img', {
+        src: data.image,
+        alt: '',
+        loading: 'lazy',
+        referrerpolicy: 'no-referrer',
+      }) as HTMLImageElement
+      img.onerror = () => media.remove()
+      media.appendChild(img)
+      a.appendChild(media)
+    }
+
+    return a
+  }
+
+  function skeleton(href: string): HTMLElement {
+    const a = el('a', 'link-card link-card--loading', {
+      href,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    })
+    a.innerHTML = `<div class="link-card__body"><div class="link-card__pulse"></div><div class="link-card__pulse link-card__pulse--short"></div></div>`
+    return a
+  }
+
+  async function loadCard(href: string): Promise<LinkCardData | null> {
+    if (cache.has(href)) return cache.get(href)!
+    try {
+      const res = await fetch(`/api/link-card?url=${encodeURIComponent(href)}`, {
+        headers: { Accept: 'application/json' },
+      })
+      if (!res.ok) {
+        cache.set(href, null)
+        return null
+      }
+      const data = (await res.json()) as { card?: LinkCardData }
+      const card = data.card || null
+      cache.set(href, card)
+      return card
+    } catch {
+      cache.set(href, null)
+      return null
+    }
+  }
+
+  async function upgrade(p: HTMLParagraphElement, a: HTMLAnchorElement) {
+    const href = a.href
+    const sk = skeleton(href)
+    p.replaceWith(sk)
+    const card = await loadCard(href)
+    if (!card) {
+      // restore simple link block
+      const fallback = el('p')
+      const link = el('a', undefined, {
+        href,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      })
+      link.textContent = href
+      fallback.appendChild(link)
+      sk.replaceWith(fallback)
+      return
+    }
+    sk.replaceWith(renderCard(card))
+  }
+
+  function scan(root: ParentNode = document) {
+    const prose = root.querySelectorAll?.('.prose') ?? []
+    prose.forEach((box) => {
+      box.querySelectorAll('p').forEach((p) => {
+        if (!(p instanceof HTMLParagraphElement)) return
+        if (p.closest('.link-card')) return
+        const a = isBareLinkParagraph(p)
+        if (a) void upgrade(p, a)
+      })
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => scan(), { once: true })
+  } else {
+    scan()
+  }
+</script>

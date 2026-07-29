@@ -2,6 +2,8 @@ import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
 import keystatic from '@keystatic/astro'
 import netlify from '@astrojs/netlify'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 import { fileURLToPath } from 'node:url'
 
 /**
@@ -31,6 +33,8 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [react(), keystatic()],
   markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
     shikiConfig: {
       themes: {
         light: 'vitesse-light',
