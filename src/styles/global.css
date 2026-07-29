@@ -145,6 +145,7 @@ button {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-hair);
+  overflow: visible;
 }
 
 .site-header__inner {
@@ -161,6 +162,8 @@ button {
   gap: 0.55rem;
   min-width: 0;
   flex-shrink: 1;
+  position: relative;
+  overflow: visible;
 }
 
 .brand {

@@ -16,6 +16,8 @@ export interface PresenceMedia {
   duration?: number | null
   elapsedTime?: number | null
   processName?: string | null
+  /** Optional album/track artwork when ProcessReporter provides it. */
+  artworkUrl?: string | null
 }
 
 /** Stored snapshot (server-side only; no token). */
@@ -35,6 +37,8 @@ export interface PresencePublic {
   processInfo: PresenceProcess | null
   mediaInfo: PresenceMedia | null
   timestamp: number | null
+  /** Server wall clock (ms) so clients can align progress. */
+  serverNow: number
 }
 
 /** MixSpace / ProcessReporter POST body. */
@@ -49,6 +53,8 @@ export interface PresencePostBody {
 export const PRESENCE_TTL_MS = 5 * 60 * 1000
 
 export function toPublic(snapshot: PresenceSnapshot | null): PresencePublic {
+  const serverNow = Date.now()
+
   if (!snapshot) {
     return {
       online: false,
@@ -56,19 +62,22 @@ export function toPublic(snapshot: PresenceSnapshot | null): PresencePublic {
       processInfo: null,
       mediaInfo: null,
       timestamp: null,
+      serverNow,
     }
   }
 
-  const age = Date.now() - snapshot.receivedAt
+  const age = serverNow - snapshot.receivedAt
   const online = age >= 0 && age <= PRESENCE_TTL_MS
   const processName = snapshot.process?.name?.trim() || null
+  const hasSignal = Boolean(processName || snapshot.media?.title)
 
   return {
-    online: online && Boolean(processName || snapshot.media?.title),
+    online: online && hasSignal,
     processName: online ? processName : null,
     processInfo: online ? snapshot.process : null,
     mediaInfo: online ? snapshot.media : null,
     timestamp: online ? snapshot.timestamp : null,
+    serverNow,
   }
 }
 
@@ -90,6 +99,7 @@ export function sanitizeIncoming(body: PresencePostBody): PresenceSnapshot {
         duration: cleanNum(body.media.duration),
         elapsedTime: cleanNum(body.media.elapsedTime),
         processName: cleanStr(body.media.processName),
+        artworkUrl: cleanUrl(body.media.artworkUrl),
       }
     : null
 
@@ -114,6 +124,7 @@ function cleanStr(value: unknown): string | null {
 
 function cleanNum(value: unknown): number | null {
   if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  if (value < 0) return 0
   return value
 }
 

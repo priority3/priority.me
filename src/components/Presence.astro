@@ -1,48 +1,124 @@
 ---
 /**
- * Live Presence chip — sits to the right of the PR. brand mark.
- * Design spirit: Innei header activity (compact icon + name, soft pill).
+ * Live Desk — header presence chip + expandable panel.
  * Data from GET /api/presence (ProcessReporter → this site).
+ * Design: paper UI tokens; structure inspired by Innei Live Desk.
  */
+import { site } from '@/lib/site'
+
+const author = site.author
 ---
 
 <div
-  class="presence"
-  data-presence
+  class="live-desk"
+  data-live-desk
+  data-author={author}
   hidden
-  aria-live="polite"
-  aria-atomic="true"
 >
-  <span class="presence__dot" aria-hidden="true"></span>
-  <span class="presence__icon-wrap" data-presence-icon>
-    <svg
-      class="presence__fallback-icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.75"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="3" y="4" width="18" height="14" rx="2"></rect>
-      <path d="M8 20h8"></path>
-      <path d="M12 18v2"></path>
-    </svg>
-  </span>
-  <span class="presence__text">
-    <span class="presence__label" data-presence-label></span>
-    <span class="presence__sub" data-presence-sub hidden></span>
-  </span>
+  <button
+    type="button"
+    class="live-desk__chip"
+    data-live-desk-trigger
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    aria-controls="live-desk-panel"
+    hidden
+  >
+    <span class="live-desk__dot" aria-hidden="true"></span>
+    <span class="live-desk__chip-icon" data-chip-icon>
+      <svg
+        class="live-desk__fallback-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        data-icon-monitor
+      >
+        <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+        <path d="M8 20h8"></path>
+        <path d="M12 18v2"></path>
+      </svg>
+    </span>
+    <span class="live-desk__chip-text">
+      <span class="live-desk__chip-label" data-chip-label></span>
+      <span class="live-desk__chip-sub" data-chip-sub hidden></span>
+    </span>
+  </button>
+
+  <div
+    id="live-desk-panel"
+    class="live-desk__panel"
+    data-live-desk-panel
+    role="dialog"
+    aria-modal="false"
+    aria-label="Live Desk"
+    hidden
+  >
+    <header class="live-desk__head">
+      <div class="live-desk__head-main">
+        <p class="live-desk__kicker">Live Desk</p>
+        <p class="live-desk__owner" data-panel-owner>{author}</p>
+      </div>
+      <p class="live-desk__status">
+        <span class="live-desk__status-dot" aria-hidden="true"></span>
+        <span data-panel-status>在线</span>
+      </p>
+    </header>
+
+    <section class="live-desk__media" data-panel-media hidden>
+      <div class="live-desk__media-art" data-media-art aria-hidden="true"></div>
+      <div class="live-desk__media-body">
+        <p class="live-desk__media-title" data-media-title></p>
+        <p class="live-desk__media-artist" data-media-artist hidden></p>
+        <p class="live-desk__media-source" data-media-source hidden></p>
+        <div class="live-desk__progress" data-media-progress hidden>
+          <div class="live-desk__progress-track" aria-hidden="true">
+            <div class="live-desk__progress-fill" data-progress-fill></div>
+          </div>
+          <div class="live-desk__progress-times">
+            <span data-progress-elapsed>0:00</span>
+            <span data-progress-duration>0:00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="live-desk__app" data-panel-app hidden>
+      <span class="live-desk__app-icon" data-app-icon aria-hidden="true"></span>
+      <p class="live-desk__app-text">
+        <span class="live-desk__app-prefix">正在使用</span>
+        <strong class="live-desk__app-name" data-app-name></strong>
+      </p>
+    </section>
+
+    <p class="live-desk__empty" data-panel-empty hidden>暂无活动</p>
+  </div>
 </div>
 
 <style>
-  .presence {
-    --presence-max: 10.5rem;
+  .live-desk {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    flex-shrink: 1;
+    z-index: 45;
+  }
+
+  .live-desk[hidden] {
+    display: none !important;
+  }
+
+  /* ── Chip ─────────────────────────────────────────── */
+  .live-desk__chip {
+    --chip-max: 11rem;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    max-width: var(--presence-max);
+    max-width: var(--chip-max);
     min-width: 0;
     height: 1.85rem;
     padding: 0 0.55rem 0 0.4rem;
@@ -50,30 +126,43 @@
     border: 1px solid var(--color-border);
     background: color-mix(in srgb, var(--color-neutral-2) 72%, var(--color-paper));
     color: var(--color-neutral-8);
+    font: inherit;
     font-size: var(--text-label-12);
     line-height: 1.2;
+    cursor: pointer;
     user-select: none;
     transition:
       opacity 0.25s var(--ease-breathe),
       transform 0.25s var(--ease-breathe),
       border-color 0.2s var(--ease-breathe),
-      background-color 0.2s var(--ease-breathe);
+      background-color 0.2s var(--ease-breathe),
+      box-shadow 0.2s var(--ease-breathe);
   }
 
-  .presence[hidden] {
+  .live-desk__chip[hidden] {
     display: none !important;
   }
 
-  .presence:not([hidden]) {
-    animation: presence-in 0.35s var(--ease-breathe) both;
+  .live-desk__chip:not([hidden]) {
+    animation: live-desk-in 0.35s var(--ease-breathe) both;
   }
 
-  .presence:hover {
+  .live-desk__chip:hover,
+  .live-desk__chip[aria-expanded='true'] {
     border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
     background: var(--color-neutral-2);
   }
 
-  .presence__dot {
+  .live-desk__chip:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+    outline-offset: 2px;
+  }
+
+  .live-desk__chip[aria-expanded='true'] {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 18%, transparent);
+  }
+
+  .live-desk__dot {
     width: 0.4rem;
     height: 0.4rem;
     border-radius: 50%;
@@ -83,12 +172,12 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .presence__dot {
-      animation: presence-pulse 2.2s ease-out infinite;
+    .live-desk__dot {
+      animation: live-desk-pulse 2.2s ease-out infinite;
     }
   }
 
-  .presence__icon-wrap {
+  .live-desk__chip-icon {
     width: 1.05rem;
     height: 1.05rem;
     border-radius: 0.28rem;
@@ -101,28 +190,33 @@
     color: var(--color-neutral-6);
   }
 
-  .presence__icon-wrap :global(img),
-  .presence__icon-wrap :global(svg) {
+  .live-desk__chip-icon :global(img),
+  .live-desk__chip-icon :global(svg),
+  .live-desk__media-art :global(img),
+  .live-desk__media-art :global(svg),
+  .live-desk__app-icon :global(img),
+  .live-desk__app-icon :global(svg) {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
   }
 
-  .presence__fallback-icon {
+  .live-desk__fallback-icon {
     width: 0.85rem !important;
     height: 0.85rem !important;
     opacity: 0.85;
   }
 
-  .presence__text {
+  .live-desk__chip-text {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
+    gap: 0.02rem;
+    text-align: left;
   }
 
-  .presence__label {
+  .live-desk__chip-label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -131,7 +225,7 @@
     letter-spacing: 0.01em;
   }
 
-  .presence__sub {
+  .live-desk__chip-sub {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -139,23 +233,282 @@
     color: var(--color-neutral-6);
   }
 
-  .presence__sub[hidden] {
+  .live-desk__chip-sub[hidden] {
     display: none !important;
   }
 
-  /* Mobile: keep chip compact so header doesn't overflow */
-  @media (max-width: 639px) {
-    .presence {
-      --presence-max: 6.5rem;
-      padding-right: 0.45rem;
-    }
+  /* ── Panel ────────────────────────────────────────── */
+  .live-desk__panel {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    width: min(19rem, calc(100vw - 2rem));
+    padding: 0.75rem 0.8rem 0.7rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-paper) 92%, var(--color-neutral-2));
+    box-shadow:
+      0 12px 32px color-mix(in srgb, var(--color-neutral-10) 10%, transparent),
+      0 2px 8px color-mix(in srgb, var(--color-neutral-10) 4%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--color-neutral-9);
+    z-index: 60;
+    transform-origin: top left;
+  }
 
-    .presence__sub {
-      display: none !important;
+  .live-desk__panel[hidden] {
+    display: none !important;
+  }
+
+  .live-desk__panel:not([hidden]) {
+    animation: live-desk-panel-in 0.22s var(--ease-breathe) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-desk__panel:not([hidden]) {
+      animation: none;
     }
   }
 
-  @keyframes presence-in {
+  .live-desk__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .live-desk__kicker {
+    margin: 0;
+    font-size: var(--text-caption-10);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-neutral-5);
+    font-weight: 600;
+  }
+
+  .live-desk__owner {
+    margin: 0.12rem 0 0;
+    font-size: var(--text-copy-14);
+    font-weight: 600;
+    color: var(--color-neutral-10);
+    letter-spacing: 0.01em;
+  }
+
+  .live-desk__status {
+    margin: 0.15rem 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-6);
+    flex-shrink: 0;
+  }
+
+  .live-desk__status-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-success) 18%, transparent);
+  }
+
+  /* Media card */
+  .live-desk__media {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.55rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-hair);
+    background: color-mix(in srgb, var(--color-neutral-2) 55%, var(--color-paper));
+  }
+
+  .live-desk__media[hidden],
+  .live-desk__app[hidden],
+  .live-desk__empty[hidden],
+  .live-desk__progress[hidden],
+  .live-desk__media-artist[hidden],
+  .live-desk__media-source[hidden] {
+    display: none !important;
+  }
+
+  .live-desk__media-art {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-neutral-3);
+    color: var(--color-neutral-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--color-hair);
+  }
+
+  .live-desk__media-art :global(svg) {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    opacity: 0.8;
+  }
+
+  .live-desk__media-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+  }
+
+  .live-desk__media-title {
+    margin: 0;
+    font-size: var(--text-copy-13);
+    font-weight: 600;
+    color: var(--color-neutral-10);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-desk__media-artist {
+    margin: 0;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-desk__media-source {
+    margin: 0.05rem 0 0;
+    font-size: var(--text-caption-10);
+    color: var(--color-neutral-5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-desk__progress {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+  }
+
+  .live-desk__progress-track {
+    height: 0.2rem;
+    border-radius: var(--radius-full);
+    background: var(--color-neutral-3);
+    overflow: hidden;
+  }
+
+  .live-desk__progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--color-accent) 75%, var(--color-neutral-6));
+    transition: width 0.25s linear;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-desk__progress-fill {
+      transition: none;
+    }
+  }
+
+  .live-desk__progress-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-caption-10);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-neutral-5);
+  }
+
+  /* App row */
+  .live-desk__app {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.55rem;
+    padding: 0.35rem 0.2rem 0.1rem;
+    min-width: 0;
+  }
+
+  .live-desk__media + .live-desk__app {
+    margin-top: 0.55rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--color-hair);
+  }
+
+  .live-desk__app-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-neutral-2);
+    color: var(--color-neutral-6);
+    border: 1px solid var(--color-hair);
+  }
+
+  .live-desk__app-icon :global(svg) {
+    width: 0.85rem !important;
+    height: 0.85rem !important;
+  }
+
+  .live-desk__app-text {
+    margin: 0;
+    min-width: 0;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-desk__app-prefix {
+    margin-right: 0.25rem;
+  }
+
+  .live-desk__app-name {
+    font-weight: 600;
+    color: var(--color-neutral-10);
+  }
+
+  .live-desk__empty {
+    margin: 0;
+    padding: 0.35rem 0.15rem 0.15rem;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-6);
+  }
+
+  /* Mobile chip + panel */
+  @media (max-width: 639px) {
+    .live-desk__chip {
+      --chip-max: 7.25rem;
+      padding-right: 0.45rem;
+    }
+
+    .live-desk__chip-sub {
+      display: none !important;
+    }
+
+    .live-desk__panel {
+      position: fixed;
+      left: 0.85rem;
+      right: 0.85rem;
+      top: calc(var(--header-h) + 0.4rem);
+      width: auto;
+      transform-origin: top center;
+    }
+  }
+
+  @keyframes live-desk-in {
     from {
       opacity: 0;
       transform: translateX(-4px);
@@ -166,7 +519,18 @@
     }
   }
 
-  @keyframes presence-pulse {
+  @keyframes live-desk-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes live-desk-pulse {
     0% {
       box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 50%, transparent);
     }
@@ -180,96 +544,298 @@
 </style>
 
 <script>
+  type PresenceProcess = {
+    name?: string | null
+    iconUrl?: string | null
+  }
+
+  type PresenceMedia = {
+    title?: string | null
+    artist?: string | null
+    duration?: number | null
+    elapsedTime?: number | null
+    processName?: string | null
+    artworkUrl?: string | null
+  }
+
   type PresencePublic = {
     online: boolean
     processName: string | null
-    processInfo: {
-      name?: string | null
-      iconUrl?: string | null
-    } | null
-    mediaInfo: {
-      title?: string | null
-      artist?: string | null
-      processName?: string | null
-    } | null
+    processInfo: PresenceProcess | null
+    mediaInfo: PresenceMedia | null
     timestamp: number | null
+    serverNow?: number
   }
 
-  const POLL_MS = 20_000
-  const root = document.querySelector<HTMLElement>('[data-presence]')
-  if (root) {
-    const labelEl = root.querySelector<HTMLElement>('[data-presence-label]')
-    const subEl = root.querySelector<HTMLElement>('[data-presence-sub]')
-    const iconWrap = root.querySelector<HTMLElement>('[data-presence-icon]')
-    const fallbackSvg = iconWrap?.querySelector('svg')?.cloneNode(true) as
-      | SVGElement
-      | undefined
+  type MediaClock = {
+    title: string
+    elapsed: number
+    duration: number
+    /** performance.now() when base elapsed was set */
+    at: number
+  }
 
-    let lastKey = ''
+  const POLL_MS_IDLE = 20_000
+  const POLL_MS_OPEN = 10_000
+  const TICK_MS = 250
 
-    function mediaLine(data: PresencePublic): string | null {
-      const m = data.mediaInfo
-      if (!m?.title) return null
-      const artist = m.artist?.trim()
-      return artist ? `${m.title} · ${artist}` : m.title
+  const rootEl = document.querySelector<HTMLElement>('[data-live-desk]')
+  if (rootEl) {
+    const root = rootEl
+    const author = root.dataset.author || 'raze'
+    const trigger = root.querySelector<HTMLButtonElement>('[data-live-desk-trigger]')!
+    const panel = root.querySelector<HTMLElement>('[data-live-desk-panel]')!
+    const chipIcon = root.querySelector<HTMLElement>('[data-chip-icon]')!
+    const chipLabel = root.querySelector<HTMLElement>('[data-chip-label]')!
+    const chipSub = root.querySelector<HTMLElement>('[data-chip-sub]')!
+    const panelOwner = root.querySelector<HTMLElement>('[data-panel-owner]')!
+    const panelStatus = root.querySelector<HTMLElement>('[data-panel-status]')!
+    const mediaSec = root.querySelector<HTMLElement>('[data-panel-media]')!
+    const mediaArt = root.querySelector<HTMLElement>('[data-media-art]')!
+    const mediaTitle = root.querySelector<HTMLElement>('[data-media-title]')!
+    const mediaArtist = root.querySelector<HTMLElement>('[data-media-artist]')!
+    const mediaSource = root.querySelector<HTMLElement>('[data-media-source]')!
+    const progressWrap = root.querySelector<HTMLElement>('[data-media-progress]')!
+    const progressFill = root.querySelector<HTMLElement>('[data-progress-fill]')!
+    const progressElapsed = root.querySelector<HTMLElement>('[data-progress-elapsed]')!
+    const progressDuration = root.querySelector<HTMLElement>('[data-progress-duration]')!
+    const appSec = root.querySelector<HTMLElement>('[data-panel-app]')!
+    const appIcon = root.querySelector<HTMLElement>('[data-app-icon]')!
+    const appName = root.querySelector<HTMLElement>('[data-app-name]')!
+    const emptyEl = root.querySelector<HTMLElement>('[data-panel-empty]')!
+
+    const monitorSvg = root
+      .querySelector<SVGElement>('[data-icon-monitor]')
+      ?.cloneNode(true) as SVGElement | undefined
+
+    const musicSvg = svgIcon(
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+    )
+
+    let open = false
+    let pollId = 0
+    let tickId = 0
+    let mediaClock: MediaClock | null = null
+
+    panelOwner.textContent = author
+
+    function svgIcon(html: string): SVGElement {
+      const wrap = document.createElement('div')
+      wrap.innerHTML = html.trim()
+      return wrap.firstElementChild as SVGElement
     }
 
-    function display(data: PresencePublic) {
-      if (!data.online || !labelEl || !subEl || !iconWrap) {
-        root!.hidden = true
-        lastKey = ''
-        return
-      }
+    function formatTime(sec: number): string {
+      if (!Number.isFinite(sec) || sec < 0) return '0:00'
+      const s = Math.floor(sec)
+      const m = Math.floor(s / 60)
+      const r = s % 60
+      return `${m}:${r.toString().padStart(2, '0')}`
+    }
 
-      const processName =
-        data.processName || data.mediaInfo?.processName || 'Active'
-      const media = mediaLine(data)
-      // Prefer showing media when present (Innei-like "listening" vibe)
-      const primary = media
-        ? data.mediaInfo?.processName || processName
-        : processName
-      const secondary = media
-        ? media
-        : null
-
-      const key = `${primary}|${secondary ?? ''}|${data.processInfo?.iconUrl ?? ''}`
-      if (key === lastKey) {
-        root!.hidden = false
-        return
-      }
-      lastKey = key
-
-      labelEl.textContent = primary
-      if (secondary) {
-        subEl.textContent = secondary
-        subEl.hidden = false
-      } else {
-        subEl.textContent = ''
-        subEl.hidden = true
-      }
-
-      const iconUrl = data.processInfo?.iconUrl
-      iconWrap.replaceChildren()
-      if (iconUrl) {
+    function setIcon(
+      el: HTMLElement,
+      url: string | null | undefined,
+      fallback: SVGElement | undefined,
+    ) {
+      el.replaceChildren()
+      if (url) {
         const img = document.createElement('img')
-        img.src = iconUrl
+        img.src = url
         img.alt = ''
         img.loading = 'lazy'
         img.decoding = 'async'
         img.referrerPolicy = 'no-referrer'
         img.onerror = () => {
-          iconWrap.replaceChildren()
-          if (fallbackSvg) iconWrap.appendChild(fallbackSvg.cloneNode(true))
+          el.replaceChildren()
+          if (fallback) el.appendChild(fallback.cloneNode(true))
         }
-        iconWrap.appendChild(img)
-      } else if (fallbackSvg) {
-        iconWrap.appendChild(fallbackSvg.cloneNode(true))
+        el.appendChild(img)
+        return
+      }
+      if (fallback) el.appendChild(fallback.cloneNode(true))
+    }
+
+    function currentElapsed(): number {
+      if (!mediaClock) return 0
+      const extra = (performance.now() - mediaClock.at) / 1000
+      let elapsed = mediaClock.elapsed + extra
+      if (mediaClock.duration > 0) {
+        elapsed = Math.min(elapsed, mediaClock.duration)
+      }
+      return Math.max(0, elapsed)
+    }
+
+    function paintProgress() {
+      if (!mediaClock || mediaClock.duration <= 0) {
+        progressWrap.hidden = true
+        return
+      }
+      progressWrap.hidden = false
+      const elapsed = currentElapsed()
+      const pct = Math.min(100, (elapsed / mediaClock.duration) * 100)
+      progressFill.style.width = `${pct}%`
+      progressElapsed.textContent = formatTime(elapsed)
+      progressDuration.textContent = formatTime(mediaClock.duration)
+    }
+
+    function startTick() {
+      stopTick()
+      if (!mediaClock || mediaClock.duration <= 0) return
+      paintProgress()
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      tickId = window.setInterval(paintProgress, TICK_MS)
+    }
+
+    function stopTick() {
+      if (tickId) {
+        window.clearInterval(tickId)
+        tickId = 0
+      }
+    }
+
+    function setOpen(next: boolean) {
+      open = next
+      panel.hidden = !next
+      trigger.setAttribute('aria-expanded', String(next))
+      if (next) {
+        paintProgress()
+        startTick()
+        schedulePoll()
+      } else {
+        // Keep progress ticking only while media exists; cheap either way
+        schedulePoll()
+      }
+    }
+
+    function schedulePoll() {
+      if (pollId) window.clearInterval(pollId)
+      const ms = open ? POLL_MS_OPEN : POLL_MS_IDLE
+      pollId = window.setInterval(tick, ms)
+    }
+
+    function display(data: PresencePublic) {
+      if (!data.online) {
+        root.hidden = true
+        trigger.hidden = true
+        setOpen(false)
+        mediaClock = null
+        stopTick()
+        return
       }
 
-      const titleParts = [primary, secondary].filter(Boolean)
-      root!.title = titleParts.join(' — ')
-      root!.setAttribute('aria-label', `正在使用 ${titleParts.join('，')}`)
-      root!.hidden = false
+      root.hidden = false
+      trigger.hidden = false
+      panelStatus.textContent = '在线'
+
+      const media = data.mediaInfo
+      const processName =
+        data.processName || media?.processName || null
+      const processIcon = data.processInfo?.iconUrl || null
+      const hasMedia = Boolean(media?.title)
+      const mediaIcon =
+        media?.artworkUrl || processIcon || null
+
+      // Chip
+      if (hasMedia && media) {
+        const artist = media.artist?.trim()
+        chipLabel.textContent = artist
+          ? `播放中 · ${artist}`
+          : '播放中'
+        chipSub.textContent = media.title || ''
+        chipSub.hidden = !media.title
+        setIcon(chipIcon, mediaIcon, musicSvg)
+      } else {
+        chipLabel.textContent = processName || '在线'
+        chipSub.textContent = ''
+        chipSub.hidden = true
+        setIcon(chipIcon, processIcon, monitorSvg)
+      }
+
+      const titleParts = [
+        hasMedia && media
+          ? [media.title, media.artist].filter(Boolean).join(' · ')
+          : null,
+        processName ? `使用 ${processName}` : null,
+      ].filter(Boolean)
+      trigger.title = titleParts.join(' · ') || 'Live Desk'
+      trigger.setAttribute(
+        'aria-label',
+        titleParts.length
+          ? `Live Desk：${titleParts.join('，')}，点击展开`
+          : 'Live Desk，点击展开',
+      )
+
+      // Media panel
+      if (hasMedia && media?.title) {
+        mediaSec.hidden = false
+        mediaTitle.textContent = media.title
+        if (media.artist) {
+          mediaArtist.textContent = media.artist
+          mediaArtist.hidden = false
+        } else {
+          mediaArtist.textContent = ''
+          mediaArtist.hidden = true
+        }
+        const source = media.processName?.trim()
+        if (source) {
+          mediaSource.textContent = `${source} · 播放中`
+          mediaSource.hidden = false
+        } else {
+          mediaSource.textContent = '播放中'
+          mediaSource.hidden = false
+        }
+        setIcon(mediaArt, mediaIcon, musicSvg)
+
+        const duration =
+          typeof media.duration === 'number' && media.duration > 0
+            ? media.duration
+            : 0
+        const elapsed =
+          typeof media.elapsedTime === 'number' && media.elapsedTime >= 0
+            ? media.elapsedTime
+            : 0
+
+        const sameTrack = mediaClock?.title === media.title
+        // Recalibrate; prefer server elapsed if it moved forward or track changed
+        if (
+          !sameTrack ||
+          !mediaClock ||
+          elapsed >= mediaClock.elapsed - 1.5
+        ) {
+          mediaClock = {
+            title: media.title,
+            elapsed,
+            duration,
+            at: performance.now(),
+          }
+        } else if (mediaClock && duration > 0) {
+          mediaClock.duration = duration
+        }
+        paintProgress()
+        startTick()
+      } else {
+        mediaSec.hidden = true
+        mediaClock = null
+        stopTick()
+        progressWrap.hidden = true
+      }
+
+      // App row — show focused process; if only media process, still show it
+      const appLabel = data.processName || media?.processName || null
+      if (appLabel) {
+        appSec.hidden = false
+        appName.textContent = appLabel
+        setIcon(
+          appIcon,
+          data.processInfo?.iconUrl || null,
+          monitorSvg,
+        )
+      } else {
+        appSec.hidden = true
+      }
+
+      emptyEl.hidden = !(mediaSec.hidden && appSec.hidden)
     }
 
     async function tick() {
@@ -279,7 +845,8 @@
           cache: 'no-store',
         })
         if (!res.ok) {
-          root!.hidden = true
+          root.hidden = true
+          setOpen(false)
           return
         }
         const data = (await res.json()) as PresencePublic
@@ -289,8 +856,29 @@
       }
     }
 
-    tick()
-    const id = window.setInterval(tick, POLL_MS)
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation()
+      setOpen(!open)
+    })
+
+    document.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (!open) return
+        const t = e.target as Node | null
+        if (t && root.contains(t)) return
+        setOpen(false)
+      },
+      true,
+    )
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && open) {
+        setOpen(false)
+        trigger.focus()
+      }
+    })
+
     document.addEventListener(
       'visibilitychange',
       () => {
@@ -298,12 +886,17 @@
       },
       { passive: true },
     )
+
     window.addEventListener(
       'pagehide',
       () => {
-        window.clearInterval(id)
+        if (pollId) window.clearInterval(pollId)
+        stopTick()
       },
       { once: true },
     )
+
+    tick()
+    schedulePoll()
   }
 </script>
