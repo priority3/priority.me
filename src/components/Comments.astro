@@ -1,0 +1,590 @@
+---
+/**
+ * Post comments — GitHub login + Issues backend (lazy issue on first comment).
+ * Works for blogs and leetcode via namespaced comment keys.
+ */
+import {
+  commentKey,
+  type CommentCollection,
+} from '@/lib/comments'
+
+interface Props {
+  slug: string
+  title: string
+  collection?: CommentCollection
+}
+
+const { slug, title, collection = 'blogs' } = Astro.props
+const key = commentKey(collection, slug)
+---
+
+<section
+  class="comments"
+  data-comments
+  data-slug={key}
+  data-title={title}
+  aria-labelledby="comments-heading"
+>
+  <header class="comments__head">
+    <h2 class="comments__title" id="comments-heading">评论</h2>
+    <p class="comments__lead" data-comments-count>加载中…</p>
+  </header>
+
+  <div class="comments__auth" data-comments-auth hidden></div>
+
+  <form class="comments__form" data-comments-form hidden>
+    <label class="sr-only" for="comment-body">写下你的想法</label>
+    <textarea
+      id="comment-body"
+      class="comments__textarea"
+      data-comments-input
+      rows="4"
+      maxlength="4000"
+      placeholder="写下你的想法…"
+      required
+    ></textarea>
+    <div class="comments__form-bar">
+      <p class="comments__hint">通过 GitHub Issue 保存 · 第一条评论时自动建帖</p>
+      <button type="submit" class="comments__submit" data-comments-submit>
+        发表
+      </button>
+    </div>
+    <p class="comments__error" data-comments-error hidden></p>
+  </form>
+
+  <div class="comments__login-card" data-comments-login hidden>
+    <p>使用 GitHub 登录后即可留言。</p>
+    <a class="comments__gh-btn" data-comments-login-link href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16">
+        <path
+          d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"
+        ></path>
+      </svg>
+      使用 GitHub 登录
+    </a>
+  </div>
+
+  <p class="comments__unconfigured" data-comments-unconfigured hidden>
+    评论功能尚未配置。
+  </p>
+
+  <ol class="comments__list" data-comments-list></ol>
+
+  <p class="comments__empty" data-comments-empty hidden>还没有评论，来做第一个吧。</p>
+
+  <p class="comments__issue" data-comments-issue hidden>
+    <a data-comments-issue-link href="#" target="_blank" rel="noopener noreferrer"
+      >在 GitHub 上查看讨论 →</a
+    >
+  </p>
+</section>
+
+<style>
+  .comments {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-hair);
+  }
+
+  .comments__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .comments__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-title-20);
+    font-weight: 500;
+    color: var(--color-neutral-10);
+  }
+
+  .comments__lead {
+    margin: 0;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-6);
+  }
+
+  .comments__auth {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-7);
+  }
+
+  .comments__auth[hidden],
+  .comments__form[hidden],
+  .comments__login-card[hidden],
+  .comments__unconfigured[hidden],
+  .comments__empty[hidden],
+  .comments__issue[hidden],
+  .comments__error[hidden] {
+    display: none !important;
+  }
+
+  .comments__auth-avatar {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+
+  .comments__auth a {
+    color: var(--color-neutral-6);
+  }
+
+  .comments__auth a:hover {
+    color: var(--color-accent);
+  }
+
+  .comments__form {
+    margin-bottom: 1.75rem;
+  }
+
+  .comments__textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 6.5rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-paper);
+    color: var(--color-neutral-10);
+    font: inherit;
+    font-size: var(--text-copy-14);
+    line-height: var(--lh-body);
+    transition:
+      border-color 0.2s var(--ease-breathe),
+      box-shadow 0.2s var(--ease-breathe);
+  }
+
+  .comments__textarea:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+
+  .comments__textarea::placeholder {
+    color: var(--color-neutral-5);
+  }
+
+  .comments__form-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.65rem;
+  }
+
+  .comments__hint {
+    margin: 0;
+    font-size: var(--text-caption-10);
+    color: var(--color-neutral-5);
+  }
+
+  .comments__submit {
+    flex-shrink: 0;
+    height: 2rem;
+    padding: 0 0.95rem;
+    border-radius: var(--radius-full);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font: inherit;
+    font-size: var(--text-label-12);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.2s var(--ease-breathe),
+      border-color 0.2s var(--ease-breathe),
+      color 0.2s var(--ease-breathe);
+  }
+
+  .comments__submit:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-accent) 22%, var(--color-paper));
+    border-color: var(--color-accent);
+  }
+
+  .comments__submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .comments__error {
+    margin: 0.55rem 0 0;
+    font-size: var(--text-label-12);
+    color: var(--color-error);
+  }
+
+  .comments__login-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--color-border);
+    background: color-mix(in srgb, var(--color-neutral-2) 50%, var(--color-paper));
+    font-size: var(--text-copy-13);
+    color: var(--color-neutral-7);
+  }
+
+  .comments__login-card p {
+    margin: 0;
+  }
+
+  .comments__gh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 2rem;
+    padding: 0 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: var(--color-paper);
+    color: var(--color-neutral-9);
+    font-size: var(--text-label-12);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .comments__gh-btn:hover {
+    border-color: var(--color-neutral-4);
+    background: var(--color-neutral-2);
+    color: var(--color-neutral-10);
+  }
+
+  .comments__unconfigured {
+    margin: 0 0 1rem;
+    font-size: var(--text-label-12);
+    color: var(--color-neutral-6);
+  }
+
+  .comments__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .comments__item {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.7rem;
+    align-items: start;
+  }
+
+  .comments__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    background: var(--color-neutral-2);
+  }
+
+  .comments__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.55rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .comments__author {
+    font-size: var(--text-copy-13);
+    font-weight: 600;
+    color: var(--color-neutral-10);
+    text-decoration: none;
+  }
+
+  .comments__author:hover {
+    color: var(--color-accent);
+  }
+
+  .comments__time {
+    font-size: var(--text-caption-10);
+    color: var(--color-neutral-5);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .comments__body {
+    margin: 0;
+    font-size: var(--text-copy-14);
+    line-height: var(--lh-body);
+    color: var(--color-neutral-8);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .comments__empty {
+    margin: 0.5rem 0 0;
+    font-size: var(--text-copy-13);
+    color: var(--color-neutral-6);
+  }
+
+  .comments__issue {
+    margin: 1.5rem 0 0;
+    font-size: var(--text-label-12);
+  }
+
+  .comments__issue a {
+    color: var(--color-neutral-6);
+  }
+
+  .comments__issue a:hover {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  type CommentAuthor = {
+    id: number
+    login: string
+    name: string | null
+    avatarUrl: string
+    htmlUrl: string
+  }
+
+  type BlogComment = {
+    id: number
+    body: string
+    createdAt: string
+    updatedAt: string
+    htmlUrl: string
+    author: CommentAuthor
+  }
+
+  type CommentsPublic = {
+    slug: string
+    issueNumber: number | null
+    issueUrl: string | null
+    comments: BlogComment[]
+    configured: boolean
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-comments]')
+  if (root) {
+    const slug = root.dataset.slug || ''
+    const postTitle = root.dataset.title || slug
+    const countEl = root.querySelector<HTMLElement>('[data-comments-count]')!
+    const authEl = root.querySelector<HTMLElement>('[data-comments-auth]')!
+    const formEl = root.querySelector<HTMLFormElement>('[data-comments-form]')!
+    const inputEl = root.querySelector<HTMLTextAreaElement>('[data-comments-input]')!
+    const submitEl = root.querySelector<HTMLButtonElement>('[data-comments-submit]')!
+    const errorEl = root.querySelector<HTMLElement>('[data-comments-error]')!
+    const loginCard = root.querySelector<HTMLElement>('[data-comments-login]')!
+    const loginLink = root.querySelector<HTMLAnchorElement>('[data-comments-login-link]')!
+    const unconfigured = root.querySelector<HTMLElement>('[data-comments-unconfigured]')!
+    const listEl = root.querySelector<HTMLOListElement>('[data-comments-list]')!
+    const emptyEl = root.querySelector<HTMLElement>('[data-comments-empty]')!
+    const issueWrap = root.querySelector<HTMLElement>('[data-comments-issue]')!
+    const issueLink = root.querySelector<HTMLAnchorElement>('[data-comments-issue-link]')!
+
+    const returnTo = `${window.location.pathname}${window.location.search}`
+    loginLink.href = `/api/comments/auth/login?returnTo=${encodeURIComponent(returnTo)}`
+
+    function escapeHtml(s: string): string {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+    }
+
+    function formatTime(iso: string): string {
+      try {
+        const d = new Date(iso)
+        return d.toLocaleString('zh-CN', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      } catch {
+        return iso
+      }
+    }
+
+    function showError(msg: string | null) {
+      if (!msg) {
+        errorEl.hidden = true
+        errorEl.textContent = ''
+        return
+      }
+      errorEl.hidden = false
+      errorEl.textContent = msg
+    }
+
+    function renderComments(comments: BlogComment[]) {
+      listEl.replaceChildren()
+      for (const c of comments) {
+        const li = document.createElement('li')
+        li.className = 'comments__item'
+        const name = c.author.name || c.author.login
+        li.innerHTML = `
+          <img class="comments__avatar" src="${escapeHtml(c.author.avatarUrl)}" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer" />
+          <div>
+            <div class="comments__meta">
+              <a class="comments__author" href="${escapeHtml(c.author.htmlUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>
+              <time class="comments__time" datetime="${escapeHtml(c.createdAt)}">${escapeHtml(formatTime(c.createdAt))}</time>
+            </div>
+            <p class="comments__body">${escapeHtml(c.body)}</p>
+          </div>
+        `
+        listEl.appendChild(li)
+      }
+      emptyEl.hidden = comments.length > 0
+      countEl.textContent =
+        comments.length === 0 ? '暂无评论' : `${comments.length} 条评论`
+    }
+
+    function renderAuth(user: CommentAuthor | null, configured: boolean) {
+      if (!configured) {
+        authEl.hidden = true
+        formEl.hidden = true
+        loginCard.hidden = true
+        unconfigured.hidden = false
+        return
+      }
+      unconfigured.hidden = true
+      if (user) {
+        loginCard.hidden = true
+        formEl.hidden = false
+        authEl.hidden = false
+        const display = user.name || user.login
+        authEl.innerHTML = `
+          <img class="comments__auth-avatar" src="${escapeHtml(user.avatarUrl)}" alt="" width="24" height="24" referrerpolicy="no-referrer" />
+          <span>以 <strong>${escapeHtml(display)}</strong> 身份评论</span>
+          <a href="/api/comments/auth/logout?returnTo=${encodeURIComponent(returnTo)}">退出</a>
+        `
+      } else {
+        formEl.hidden = true
+        authEl.hidden = true
+        loginCard.hidden = false
+      }
+    }
+
+    function renderIssue(issueUrl: string | null) {
+      if (issueUrl) {
+        issueWrap.hidden = false
+        issueLink.href = issueUrl
+      } else {
+        issueWrap.hidden = true
+      }
+    }
+
+    async function loadMe() {
+      try {
+        const res = await fetch('/api/comments/me', {
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin',
+          cache: 'no-store',
+        })
+        if (!res.ok) return { configured: false, user: null }
+        return (await res.json()) as {
+          configured: boolean
+          user: CommentAuthor | null
+        }
+      } catch {
+        return { configured: false, user: null }
+      }
+    }
+
+    async function loadComments() {
+      const res = await fetch(
+        `/api/comments?slug=${encodeURIComponent(slug)}`,
+        {
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+        },
+      )
+      if (!res.ok) throw new Error('load failed')
+      return (await res.json()) as CommentsPublic
+    }
+
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      showError(null)
+      const body = inputEl.value.trim()
+      if (!body) {
+        showError('请输入评论内容')
+        return
+      }
+      submitEl.disabled = true
+      submitEl.textContent = '发送中…'
+      try {
+        const res = await fetch('/api/comments', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ slug, body, postTitle }),
+        })
+        const data = (await res.json()) as {
+          error?: string
+          comment?: BlogComment
+          issueUrl?: string
+        }
+        if (!res.ok) {
+          showError(data.error || '发表失败')
+          return
+        }
+        inputEl.value = ''
+        // Refresh list
+        const list = await loadComments()
+        renderComments(list.comments)
+        renderIssue(list.issueUrl)
+      } catch {
+        showError('网络错误，请稍后再试')
+      } finally {
+        submitEl.disabled = false
+        submitEl.textContent = '发表'
+      }
+    })
+
+    // Surface OAuth error from query string once
+    try {
+      const u = new URL(window.location.href)
+      const err = u.searchParams.get('comments_error')
+      if (err) {
+        showError('GitHub 登录未完成，请重试')
+        u.searchParams.delete('comments_error')
+        window.history.replaceState({}, '', u.pathname + u.search + u.hash)
+      }
+    } catch {
+      /* ignore */
+    }
+
+    ;(async () => {
+      try {
+        const [me, list] = await Promise.all([loadMe(), loadComments()])
+        renderAuth(me.user, me.configured && list.configured)
+        if (!list.configured) {
+          countEl.textContent = ''
+          emptyEl.hidden = true
+          return
+        }
+        renderComments(list.comments)
+        renderIssue(list.issueUrl)
+      } catch {
+        countEl.textContent = '加载失败'
+        showError('无法加载评论')
+      }
+    })()
+  }
+</script>

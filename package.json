@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "setup:keystatic": "node scripts/setup-keystatic-github.mjs",
-    "setup:keystatic:netlify": "node scripts/push-keystatic-env-to-netlify.mjs"
+    "setup:keystatic:netlify": "node scripts/push-keystatic-env-to-netlify.mjs",
+    "setup:comments": "node scripts/setup-comments-github.mjs",
+    "setup:comments:netlify": "node scripts/push-comments-env-to-netlify.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "6.6.5",

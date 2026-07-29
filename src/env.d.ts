@@ -20,6 +20,11 @@ interface ImportMeta {
 // KEYSTATIC_SECRET
 // KEYSTATIC_STORAGE — local|github; also inlined for Admin via Vite define
 // PRESENCE_TOKEN — shared secret for ProcessReporter MixSpace destination
+// COMMENTS_GITHUB_CLIENT_ID — GitHub App (or OAuth App) for visitor login
+// COMMENTS_GITHUB_CLIENT_SECRET
+// COMMENTS_GITHUB_APP_ID + COMMENTS_GITHUB_PRIVATE_KEY — Issues via installation token
+// COMMENTS_GITHUB_TOKEN — optional PAT override (Issues r/w)
+// COMMENTS_SESSION_SECRET — HMAC secret for comment session cookie
 
 /** Inlined by Vite in astro.config.mjs (client + SSR Keystatic bundles). */
 declare const __KEYSTATIC_USE_GITHUB__: boolean
