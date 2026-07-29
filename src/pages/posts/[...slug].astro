@@ -5,6 +5,7 @@ import MobileNav from '@/components/MobileNav.astro'
 import TableOfContents from '@/components/TableOfContents.astro'
 import Comments from '@/components/Comments.astro'
 import LinkCards from '@/components/LinkCards.astro'
+import Mermaid from '@/components/Mermaid.astro'
 import { formatDisplayDate } from '@/lib/posts'
 
 export async function getStaticPaths() {
@@ -46,6 +47,7 @@ const { title, desc, date, language, subtitle } = post.data
     </div>
 
     <LinkCards />
+    <Mermaid />
 
     <Comments slug={post.id} title={title} collection="blogs" />
 

@@ -378,3 +378,127 @@ html.dark .prose .astro-code span {
     animation: none;
   }
 }
+
+/* ── GitHub-style callouts (remark-github-alerts) ──── */
+.prose .markdown-alert {
+  margin: 1.35em 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-left-width: 3px;
+  background: color-mix(in srgb, var(--color-neutral-2) 55%, var(--color-paper));
+}
+
+.prose .markdown-alert .markdown-alert-title {
+  margin: 0 0 0.45rem;
+  font-size: var(--text-copy-13);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--color-neutral-10);
+}
+
+.prose .markdown-alert p {
+  margin: 0 0 0.55em;
+  color: var(--color-neutral-8);
+  font-size: var(--text-copy-14);
+}
+
+.prose .markdown-alert p:last-child {
+  margin-bottom: 0;
+}
+
+.prose .markdown-alert-note {
+  border-left-color: var(--color-info);
+  --color-note: var(--color-info);
+}
+
+.prose .markdown-alert-tip {
+  border-left-color: var(--color-success);
+  --color-tip: var(--color-success);
+}
+
+.prose .markdown-alert-important {
+  border-left-color: #7c6bdb;
+  --color-important: #7c6bdb;
+}
+
+.prose .markdown-alert-warning {
+  border-left-color: var(--color-warning);
+  --color-warning-alert: var(--color-warning);
+}
+
+.prose .markdown-alert-caution {
+  border-left-color: var(--color-error);
+  --color-caution: var(--color-error);
+}
+
+/* ── Mermaid ───────────────────────────────────────── */
+.prose .mermaid-wrap {
+  margin: 1.5em 0;
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-neutral-2) 40%, var(--color-paper));
+  overflow-x: auto;
+  text-align: center;
+}
+
+.prose .mermaid-wrap svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose .mermaid-loading {
+  margin: 0;
+  font-size: var(--text-label-12);
+  color: var(--color-neutral-5);
+}
+
+.prose .mermaid-error {
+  margin: 0;
+  font-size: var(--text-label-12);
+  color: var(--color-error);
+}
+
+/* ── Shiki extras (notation / meta highlight) ──────── */
+.prose pre {
+  position: relative;
+}
+
+.prose .astro-code .line {
+  display: inline-block;
+  width: 100%;
+  padding-left: 0.15rem;
+  padding-right: 0.15rem;
+}
+
+.prose .astro-code .highlighted,
+.prose .astro-code .line.highlighted {
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.prose .astro-code .diff.add,
+.prose .astro-code .line.diff.add {
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+}
+
+.prose .astro-code .diff.remove,
+.prose .astro-code .line.diff.remove {
+  background: color-mix(in srgb, var(--color-error) 12%, transparent);
+}
+
+.prose .astro-code .focused {
+  opacity: 1;
+}
+
+.prose .astro-code:has(.focused) .line:not(.focused) {
+  opacity: 0.55;
+  filter: blur(0.4px);
+  transition: opacity 0.2s var(--ease-breathe);
+}
+
+.prose .astro-code:has(.focused):hover .line {
+  opacity: 1;
+  filter: none;
+}

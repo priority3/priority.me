@@ -1,0 +1,91 @@
+---
+/**
+ * Client-render Mermaid diagrams prepared by remarkMermaid.
+ * Source is kept in data-src (URI-encoded) so theme toggles can re-draw.
+ */
+---
+
+<script>
+  let mermaidMod: typeof import('mermaid') | null = null
+  let drawing = false
+
+  async function getMermaid() {
+    if (!mermaidMod) mermaidMod = await import('mermaid')
+    return mermaidMod.default
+  }
+
+  async function drawAll() {
+    const wraps = [
+      ...document.querySelectorAll<HTMLElement>('[data-mermaid][data-src]'),
+    ]
+    if (!wraps.length) return
+    if (drawing) return
+    drawing = true
+
+    try {
+      const mermaid = await getMermaid()
+      const dark = document.documentElement.classList.contains('dark')
+
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'strict',
+        theme: dark ? 'dark' : 'neutral',
+        fontFamily: 'inherit',
+      })
+
+      let i = 0
+      for (const wrap of wraps) {
+        const encoded = wrap.dataset.src || ''
+        let src = ''
+        try {
+          src = decodeURIComponent(encoded)
+        } catch {
+          src = encoded
+        }
+        if (!src.trim()) continue
+
+        const id = `mmd-${Date.now()}-${i++}`
+        try {
+          // mermaid mutates global theme; re-init per theme change is enough
+          const { svg } = await mermaid.render(id, src)
+          wrap.innerHTML = svg
+          wrap.classList.add('mermaid-wrap--ready')
+          wrap.classList.remove('mermaid-wrap--error')
+        } catch (err) {
+          console.warn('[mermaid]', err)
+          wrap.classList.add('mermaid-wrap--error')
+          wrap.innerHTML =
+            '<p class="mermaid-error">Mermaid 图渲染失败，请检查语法。</p>'
+        }
+      }
+    } finally {
+      drawing = false
+    }
+  }
+
+  function schedule() {
+    void drawAll()
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedule, { once: true })
+  } else {
+    schedule()
+  }
+
+  // Theme toggle (html.dark)
+  const mo = new MutationObserver(() => {
+    // Clear ready content so we redraw from data-src
+    document.querySelectorAll<HTMLElement>('[data-mermaid][data-src]').forEach((el) => {
+      el.classList.remove('mermaid-wrap--ready', 'mermaid-wrap--error')
+      if (!el.querySelector('.mermaid-loading')) {
+        el.innerHTML = '<div class="mermaid-loading">绘制中…</div>'
+      }
+    })
+    schedule()
+  })
+  mo.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+</script>

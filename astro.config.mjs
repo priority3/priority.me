@@ -3,8 +3,18 @@ import react from '@astrojs/react'
 import keystatic from '@keystatic/astro'
 import netlify from '@astrojs/netlify'
 import remarkMath from 'remark-math'
+import remarkGfm from 'remark-gfm'
+import remarkGithubAlerts from 'remark-github-alerts'
 import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
+import {
+  transformerMetaHighlight,
+  transformerNotationDiff,
+  transformerNotationHighlight,
+  transformerNotationFocus,
+} from '@shikijs/transformers'
 import { fileURLToPath } from 'node:url'
+import { remarkMermaid } from './src/lib/remark-mermaid'
 
 /**
  * Resolve Keystatic storage at config-load time (Node).
@@ -33,14 +43,27 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [react(), keystatic()],
   markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    remarkPlugins: [
+      remarkGfm,
+      remarkGithubAlerts,
+      remarkMath,
+      remarkMermaid,
+    ],
+    // rehype-raw: allow remarkMermaid HTML; katex after raw
+    rehypePlugins: [rehypeRaw, rehypeKatex],
     shikiConfig: {
       themes: {
         light: 'vitesse-light',
         dark: 'vitesse-dark',
       },
       defaultColor: false,
+      wrap: true,
+      transformers: [
+        transformerNotationDiff(),
+        transformerNotationHighlight(),
+        transformerNotationFocus(),
+        transformerMetaHighlight(),
+      ],
     },
   },
   vite: {
