@@ -1,0 +1,2 @@
+{"file": ".trellis/tasks/07-30-keystatic-ux-fixes/research/keystatic-ux-findings.md", "reason": "验证选择器与残余限制说明"}
+{"file": ".trellis/spec/frontend/markdown-pipeline.md", "reason": "构建基线与既有 warning/error 说明（Known pre-existing noise 一节）"}

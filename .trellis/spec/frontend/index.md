@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Markdown Pipeline](./markdown-pipeline.md) | remark/rehype/Shiki ordering, math & mermaid rendering, Keystatic gotchas | Filled |
+| [Keystatic Admin](./keystatic-admin.md) | Admin customization wiring, toolbar host contract, editor scroll anatomy | Filled |
 
 ---
 
