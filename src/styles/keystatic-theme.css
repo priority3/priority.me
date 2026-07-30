@@ -726,6 +726,27 @@ main[id] {
   background: var(--kui-color-background-canvas);
 }
 
+/*
+ * Caret breathing room at the end of long documents.
+ * Keystatic gives the ProseMirror content only 32px of bottom padding, so the
+ * caret on the last line sits glued to the scroll-container bottom. ProseMirror
+ * computes its own scrollTop for typing/Enter scrolls and ignores CSS
+ * scroll-padding — extra padding-bottom on the content element is the CSS
+ * lever. Only padding-bottom is overridden (emotion sets the `padding`
+ * shorthand for top/side spacing). Scoped to the main entry layout so small
+ * bordered inline editors are not inflated.
+ */
+[data-keystatic-editor='root'][data-layout='main']
+  > div
+  > [data-keystatic-editor='content'] {
+  padding-bottom: 33vh !important;
+}
+
+/* Browser-native caret-reveal scrolls (plain typing) honor scroll-padding */
+[data-scrollable]:has([data-keystatic-editor='root'][data-layout='main']) {
+  scroll-padding-bottom: 25vh;
+}
+
 /* ── Breadcrumbs ────────────────────────────────────────────────── */
 
 .kui\:Breadcrumbs-link {

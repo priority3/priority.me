@@ -264,10 +264,14 @@ function findHeaderActionsHost(): HTMLElement | null {
   const title = document.getElementById('page-title')
   if (title?.parentElement) return title.parentElement
 
-  // Sticky header under main
+  // Page header under main. Keystatic renders it as <header>; the previous
+  // `:scope > div` fallback grabbed the Suspense loading Flex instead (first
+  // div child of <main> while an item loads), rendering the toolbar mid-page
+  // next to the spinner. Return null when absent — the ensureToolbar interval
+  // retries until the header exists.
   const main = document.querySelector('main[id]')
-  const first = main?.querySelector(':scope > div')
-  return (first as HTMLElement) || null
+  const header = main?.querySelector(':scope > header')
+  return (header as HTMLElement) || null
 }
 
 function ensureToolbar() {
