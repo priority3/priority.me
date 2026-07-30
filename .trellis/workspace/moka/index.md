@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 1
+- **Total Sessions**: 2
 - **Last Active**: 2026-07-30
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~41 | Active |
+| `journal-1.md` | ~74 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 2 | 2026-07-30 | Keystatic admin UX fixes: toolbar loading placement, editor caret room | `1c6a716` | `main` |
 | 1 | 2026-07-30 | Math code blocks render as KaTeX display math | `26340e2`, `930c4d7` | `main` |
 <!-- @@@/auto:session-history -->
 
