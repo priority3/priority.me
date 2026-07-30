@@ -51,6 +51,8 @@ export default defineConfig({
     ],
     // rehype-raw: allow remarkMermaid HTML; katex after raw
     rehypePlugins: [rehypeRaw, rehypeKatex],
+    // Shiki skips `math` fences so rehype-katex receives `language-math` blocks
+    syntaxHighlight: { type: 'shiki', excludeLangs: ['math'] },
     shikiConfig: {
       themes: {
         light: 'vitesse-light',
