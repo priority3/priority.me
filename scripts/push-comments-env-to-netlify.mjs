@@ -57,7 +57,10 @@ for (const k of keys) {
 const tmp = join(root, '.env.comments.netlify-import')
 let body = ''
 for (const k of keys) {
-  const v = env[k].replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+  // Keep literal \n as-is: `netlify env:import` turns it into a real newline.
+  // Doubling backslashes here (\n → \\n) made the parser emit "\" + newline,
+  // leaving a stray "\" on every PEM line and breaking JWT signing in prod.
+  const v = env[k].replace(/"/g, '\\"')
   body += `${k}="${v}"\n`
 }
 writeFileSync(tmp, body)

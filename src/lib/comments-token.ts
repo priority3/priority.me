@@ -26,6 +26,9 @@ function b64url(input: Buffer | string): string {
 function normalizePem(raw: string): string {
   // Netlify env often stores PEM with literal \n
   let pem = raw.trim().replace(/\\n/g, '\n')
+  // Mangled dotenv imports (\\n → "\" + newline) leave a stray "\" per line;
+  // legit PEM never contains backslashes, so stripping them is safe.
+  pem = pem.replace(/\\(?=\r?\n|$)/g, '')
   if (!pem.includes('BEGIN')) {
     // bare base64 body
     pem = `-----BEGIN RSA PRIVATE KEY-----\n${pem}\n-----END RSA PRIVATE KEY-----`
