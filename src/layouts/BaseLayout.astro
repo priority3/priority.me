@@ -8,6 +8,7 @@ import 'remark-github-alerts/styles/github-colors-dark-class.css'
 import Header from '@/components/Header.astro'
 import Footer from '@/components/Footer.astro'
 import Umami from '@/components/Umami.astro'
+import WebMcp from '@/components/WebMcp.astro'
 import { site } from '@/lib/site'
 
 interface Props {
@@ -24,6 +25,10 @@ const {
 } = Astro.props
 
 const pageTitle = title === site.title ? title : `${title} · ${site.name}`
+
+// WebMCP ships behind an origin trial (Chrome 149 / Edge 150). Absent token → no meta tag,
+// and the tools simply stay dormant. Register at https://developer.chrome.com/origintrials
+const originTrialToken = import.meta.env.PUBLIC_WEBMCP_ORIGIN_TRIAL_TOKEN
 ---
 
 <!doctype html>
@@ -32,6 +37,7 @@ const pageTitle = title === site.title ? title : `${title} · ${site.name}`
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    {originTrialToken && <meta http-equiv="origin-trial" content={originTrialToken} />}
     <meta name="author" content={site.author} />
     <meta name="description" content={description} />
     <meta property="og:title" content={pageTitle} />
@@ -68,5 +74,6 @@ const pageTitle = title === site.title ? title : `${title} · ${site.name}`
       </div>
     </main>
     <Footer />
+    <WebMcp />
   </body>
 </html>

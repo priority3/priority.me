@@ -1,0 +1,22 @@
+---
+/**
+ * Exposes this site's capabilities as WebMCP tools for browser-integrated AI agents.
+ *
+ * Progressive enhancement only: in hosts without `document.modelContext` nothing beyond
+ * the feature check is downloaded. The search index is fetched later still — on the first
+ * content tool call — so ordinary visitors pay for none of this.
+ */
+---
+
+<script>
+  // Reason: WebMCP is an origin trial, so today almost no visitor has a host for it.
+  // Keep the ~5KB of tool code out of everyone's bundle by loading it dynamically,
+  // and ship only this check eagerly.
+  if (document.modelContext?.registerTool) {
+    import('@/lib/webmcp/register')
+      .then(({ registerAll }) => registerAll())
+      .catch(() => {
+        // Chunk failed to load (offline, cache miss) — the site works without tools.
+      })
+  }
+</script>
