@@ -22,6 +22,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Markdown Pipeline](./markdown-pipeline.md) | remark/rehype/Shiki ordering, math & mermaid rendering, Keystatic gotchas | Filled |
 | [Keystatic Admin](./keystatic-admin.md) | Admin customization wiring, toolbar host contract, editor scroll anatomy | Filled |
+| [WebMCP Agent Tools](./webmcp-tools.md) | Agent tool contracts, client/server import boundary, navigation allowlist, search index | Filled |
 
 ---
 
